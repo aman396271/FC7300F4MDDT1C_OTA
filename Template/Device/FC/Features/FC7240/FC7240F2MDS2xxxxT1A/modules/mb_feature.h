@@ -1,0 +1,6 @@
+#ifndef _DEVICE_FEATURES_FC7240F2MDS2_MB_COMMON_H_
+#define _DEVICE_FEATURES_FC7240F2MDS2_MB_COMMON_H_
+
+/************ MB Features **************/
+
+#endif /* _DEVICE_FEATURES_FC7240F2MDS2_MB_COMMON_H_ */

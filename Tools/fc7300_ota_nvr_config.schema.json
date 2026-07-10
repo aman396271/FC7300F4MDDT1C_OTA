@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FC7300 OTA NVR Config",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "chip": {
+      "type": "string",
+      "default": "FC7300F4MDDT1C"
+    },
+    "rm_source": {
+      "type": "string",
+      "description": "Reference document/source used for the field definitions"
+    },
+    "nvr_base": {
+      "type": ["string", "integer"],
+      "description": "NVR base address, default 0x04400000"
+    },
+    "otac0_offset": {
+      "type": ["string", "integer"],
+      "description": "Byte offset of OTAC0 in NVR, default 0x100"
+    },
+    "otac_high0_offset": {
+      "type": ["string", "integer"],
+      "description": "Byte offset of OTAC_HIGH0 in NVR, default 0x108"
+    },
+    "bank0_base": {
+      "type": ["string", "integer"],
+      "description": "F4MDD PFlash Bank0 base address, default 0x01000000"
+    },
+    "bank1_base": {
+      "type": ["string", "integer"],
+      "description": "F4MDD PFlash Bank1 base address, default 0x01200000"
+    },
+    "bank_size": {
+      "type": ["string", "integer"],
+      "description": "F4MDD OTA bank size, fixed at 0x00200000 for this demo"
+    },
+    "ota0": {
+      "type": "object",
+      "required": [
+        "enabled",
+        "low_start",
+        "low_end",
+        "high_start",
+        "high_end",
+        "version_offset",
+        "version_select"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "enable_code": {
+          "type": ["string", "integer"],
+          "description": "OTA enable code; enabled OTA requires 0b01010 / 0x0A"
+        },
+        "low_start": {
+          "type": ["string", "integer"],
+          "description": "Lower 1MB OTA range start, absolute PFlash address or 1MB-relative offset"
+        },
+        "low_end": {
+          "type": ["string", "integer"],
+          "description": "Lower 1MB OTA range inclusive end, absolute PFlash address or 1MB-relative offset"
+        },
+        "high_start": {
+          "type": ["string", "integer"],
+          "description": "Upper 1MB OTA range start, absolute PFlash address or 1MB-relative offset"
+        },
+        "high_end": {
+          "type": ["string", "integer"],
+          "description": "Upper 1MB OTA range inclusive end, absolute PFlash address or 1MB-relative offset"
+        },
+        "version_offset": {
+          "type": ["string", "integer"],
+          "description": "OTAC0[51:32], PFlash logical offset inside the selected 1MB half"
+        },
+        "version_select": {
+          "oneOf": [
+            {
+              "type": "string",
+              "enum": ["high", "lower", "low", "0xAA", "0x55"]
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 255
+            }
+          ]
+        }
+      }
+    },
+    "ota_indicator": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Generate optional PFlash OTA content/indicator records from RM Table 55"
+        },
+        "layout": {
+          "type": "string",
+          "enum": ["version_then_valid_code", "valid_code_then_version"],
+          "description": "Byte layout of the 16-byte OTA content at version_offset. Default puts the lower 64-bit version pair first."
+        },
+        "low_version": {
+          "type": ["string", "integer"],
+          "description": "32-bit software version written to the Low OTA indicator"
+        },
+        "high_version": {
+          "type": ["string", "integer"],
+          "description": "32-bit software version written to the High OTA indicator"
+        },
+        "valid_code_f4mdd": {
+          "type": ["string", "integer"],
+          "description": "RM Table 55 valid code for F4MDDxxxT1C"
+        },
+        "valid_code_f4mds": {
+          "type": ["string", "integer"],
+          "description": "RM Table 55 valid code for F4MDSxxxT1C"
+        }
+      }
+    }
+  }
+}

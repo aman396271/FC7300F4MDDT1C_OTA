@@ -1,0 +1,13 @@
+#ifndef _DEVICE_FEATURES_FC7300_FCUART_COMMON_H_
+#define _DEVICE_FEATURES_FC7300_FCUART_COMMON_H_
+
+/************ FCUART Features **************/
+
+
+
+
+
+
+
+
+#endif /* _DEVICE_FEATURES_FC7300_FCUART_COMMON_H_ */

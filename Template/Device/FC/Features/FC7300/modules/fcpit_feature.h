@@ -1,0 +1,7 @@
+#ifndef _DEVICE_FEATURES_FC7300_FCPIT_COMMON_H_
+#define _DEVICE_FEATURES_FC7300_FCPIT_COMMON_H_
+
+/************ FCPIT Features **************/
+
+
+#endif /* _DEVICE_FEATURES_FC7300_FCPIT_COMMON_H_ */

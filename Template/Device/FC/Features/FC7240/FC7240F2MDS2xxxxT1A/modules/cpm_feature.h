@@ -1,0 +1,10 @@
+#ifndef _DEVICE_FEATURES_FC7240F2MDS2_CPM_COMMON_H_
+#define _DEVICE_FEATURES_FC7240F2MDS2_CPM_COMMON_H_
+
+#define CPU_CORE_NUM                1U
+
+#define  Cpm_HWA_GetCoreId()    0U
+
+#define CPM_ERRATA       STD_ON
+
+#endif /* _DEVICE_FEATURES_FC7240F2MDS2_CPM_COMMON_H_ */

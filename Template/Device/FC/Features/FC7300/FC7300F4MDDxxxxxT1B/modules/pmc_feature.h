@@ -1,0 +1,16 @@
+#ifndef _DEVICE_FEATURES_FC7300F4MDDxxxxxT1B_PMC_COMMON_H_
+#define _DEVICE_FEATURES_FC7300F4MDDxxxxxT1B_PMC_COMMON_H_
+
+/************ PMC Specfic Features **************/
+#define PMC_HVD5VB_SUPPORT         (1u)
+#define PMC_V15_CTRL_SUPPORT       (1u)
+#define PMC_V15_FLAG_SUPPORT       (1u)
+#define PMC_VX_DOUBLE_FLAG_SUPPORT (0u)
+#define PMC_V15_STATUS_SUPPORT     (1u)
+#define PMC_V11_STATUS_SUPPORT     (0u)
+
+#define LVSCR_DEFAULT_VAL   0x80FF007FU
+#define CONFIG_DEFAULT_VAL  0x20U
+
+
+#endif /* _DEVICE_FEATURES_FC7300F4MDDxxxxxT1B_PMC_COMMON_H_ */

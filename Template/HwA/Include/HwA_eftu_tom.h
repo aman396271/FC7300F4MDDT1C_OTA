@@ -1,0 +1,1161 @@
+/**
+ * @file HwA_eftu_tom.h
+ * @author flagchip
+ * @brief Hardware access layer for EFTU TOM
+ * @version 2.0.0
+ * @date 2024-08-20
+ *
+ * SDK Version: 2.6.0
+ *
+
+ * @copyright Copyright (c) 2024 Flagchip Semiconductors Co., Ltd.
+ *
+ */
+/* ********************************************************************************
+   *   Revision History:
+   *
+   *   Version     Date          Initials      CR#          Descriptions
+   *   ---------   ----------    ------------  ----------   ---------------
+   *   0.1.0      2023-12-15     Flagchip030   N/A          First version for FC7300
+   *   2.0.0      2024-10-12     Flagchip099   N/A          Change version and release
+   ******************************************************************************** */
+
+#ifndef _HWA_EFTU_TOM_H_
+#define _HWA_EFTU_TOM_H_
+#include "device_header.h"
+
+#if defined(EFTU_INSTANCE_COUNT) && (EFTU_INSTANCE_COUNT > 0U)
+
+/**
+ * @defgroup HwA_eftu_tom HwA_eftu_tom
+ * @ingroup module_driver_eftu_tom
+ * @{
+ */
+
+/**
+ * @brief Selection of Time Base Used for Comparison
+ *
+ */
+typedef enum
+{
+	EFTU_TOM_TBU_SEL_TS0 = 0u,  /* TBU_TS0 selected */
+	EFTU_TOM_TBU_SEL_TS1 = 1u,  /* TBU_TS1 selected */
+	EFTU_TOM_TBU_SEL_TS2 = 2u   /* TBU_TS2 selected */
+} EFTU_TOM_TimeBaseSelectionType;
+
+/**
+ * @brief TOM Channel Mode Select
+ * 
+ */
+typedef enum
+{
+	EFTU_TOM_CHANNEL_MODE_IMMEDIATE 		= 0u, 
+	EFTU_TOM_CHANNEL_MODE_COMPARE			= 1u, 
+	EFTU_TOM_CHANNEL_MODE_PWM				= 2u,
+	EFTU_TOM_CHANNEL_MODE_SERIAL			= 3u,
+	EFTU_TOM_CHANNEL_MODE_BUFFERD_COMPARE	= 4u,
+} EFTU_TOM_ChannelModeType;
+
+/**
+ * @brief Initial Signal Level
+ * 
+ */
+typedef enum
+{
+	EFTU_TOM_SIGNAL_LEVEL_LOW		= 0u,   /* Low signal level */
+	EFTU_TOM_SIGNAL_LEVEL_HIGH		= 1u    /* High signal level */
+} EFTU_TOM_SignalLevelType;
+
+/**
+ * @brief Enumeration for Trigger Pulse Types
+ * 
+ */
+typedef enum
+{
+	EFTU_TOM_TRIG_PULSE_SUSTAINED			= 0u,   /* Output on TOM_OUT_T is '1' as long as CN0=SR0 */
+	EFTU_TOM_TRIG_PULSE_ONE_CLUSTER_CLK		= 1u,   /* Output on TOM_OUT_T is '1' for only one cluster clock period if CN0=SR0 */
+} EFTU_TOM_TriggerPulseType;
+
+/**
+ * @brief Up/down Counter Mode
+ * 
+ * This enumeration type EFTU_TOM_UpDownModeType defines the different up-down counting modes for the EFTU counter.
+ * Each value represents a specific counting update condition, including counting only upwards, counting both up and down, and specific update conditions.
+ */
+typedef enum
+{
+	EFTU_TOM_UP_MODE								= 0u,   /* up/down counter mode disabled: CN0 counts always up */
+	EFTU_TOM_UP_DOWN_MODE_UPDATE_CN0_REACH_0		= 1u,   /* up/down counter mode enabled: CN0 counts up and down,
+                                                               CM0, CM1, CTRL[SL] and CTRL[CLK_SRC] are updated if CN0 is 0 (i.e.
+                                                               the counting direction changes from down to up). */
+	EFTU_TOM_UP_DOWN_MODE_UPDATE_CN0_REACH_CM0		= 2u,   /* up/down counter mode enabled: CN0 counts up and down,
+                                                               CM0, CM1, CTRL[SL] and CTRL[CLK_SRC] are updated if CN0 reaches
+                                                               CM0-1 or the channel receives the trigger signal and the counting
+                                                               direction changes from up to down */ 
+	EFTU_TOM_UP_DOWN_MODE_UPDATE_CN0_REACH_0_OR_CM0	= 3u,   /* up/down counter mode enabled: CN0 counts up and down,
+                                                               CM0, CM1, CTRL[SL] and CTRL[CLK_SRC] are updated if CN0 is 0 or
+                                                               reaches CM0-1 or the channel receives the trigger signal and the
+                                                               counting direction changes from up to down*/
+} EFTU_TOM_UpDownModeType;
+
+/**
+ * @brief Reset Source of CCU0
+ *
+ */
+typedef enum
+{
+	EFTU_TOM_RESET_CN0_ON_MATCHING_CM0		= 0u,   /* Reset counter register CN0 to 0 on matching comparison with
+                                                       CM0 */
+	EFTU_TOM_RESET_CN0_ON_TRIGGER			= 1u,   /* Reset counter register CN0 to 0 when has trigger in
+                                                       (internal/external) */
+} EFTU_TOM_CCO0ResetSourceType;
+
+/**
+ * @brief Select time base value from TBU_CNT1 and TBU_CNT2.
+ * 
+ */
+typedef enum
+{
+	EFTU_TOM_SEL_TBU_TS1		= 0u,   /* TBU_CNT1 selected */
+	EFTU_TOM_SEL_TBU_TS2		= 1u,   /* TBU_CNT2 selected */
+} EFTU_TOM_TBValueSelectionType;
+
+/**
+ * @brief Trigger output selection (output signal TOM_CH_TRIGOUT) of TOMchannel N
+ * 
+ */
+typedef enum
+{
+	EFTU_TOM_TRIG_OUT_BYPASS_TRIG_IN	= 0U,   /* Bypass trigger in (from the preceding channel, selected by
+                                                   TRIG_OUT_USE_EXT) to trigger out (to following channel) */
+	EFTU_TOM_TRIG_OUT_USE_TRIG_CCU0,            /* Use TRIG_CCU0 (generated by the current channel) to trigger out
+                                                   (to following channel) */
+} EFTU_TOM_TrigOutSelectionType;
+
+/**
+ * @brief Trigger request signal
+ * @note This field is controlled by EFTU_TOM_TGC_SPEC_LOCK.
+ * 
+ * Trigger request signal (see TGC) to update the register 
+ * TGC_ENDIS_STAT and TGC_OUTEN_STAT, and trigger a force update
+ * when enable force update.
+ * 
+ * @param pTOM Pointer to the base address of the EFTU_TOM type, used to access hardware registers
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_SetHostTriggerRequest(EFTU_TOM_Type * const pTOM)
+{
+	pTOM->TGC_GLB_CTRL |= EFTU_TOM_TGC_GLB_CTRL_HOST_TRIG_MASK;
+}
+
+/**
+ * @brief Disable the global time base
+ * @note This field is controlled by EFTU_TOM_TGC_SPEC_LOCK.
+ * 
+ * @param pTOM Base address pointer to the EFTU_TOM module, used to access the module's registers
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_DisableGlobalTimeBase(EFTU_TOM_Type * const pTOM)
+{
+	pTOM->TGC_GLB_CTRL |= EFTU_TOM_TGC_GLB_CTRL_GLBEN_BYPASS_MASK;
+}
+
+/**
+ * @brief Enable the global time base
+ * @note This field is controlled by EFTU_TOM_TGC_SPEC_LOCK.
+ * 
+ * @param pTOM Base address pointer to the EFTU_TOM module, used to access the module's registers
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_EnableGlobalTimeBase(EFTU_TOM_Type * const pTOM)
+{
+	pTOM->TGC_GLB_CTRL &= ~(uint32_t)EFTU_TOM_TGC_GLB_CTRL_GLBEN_BYPASS_MASK;
+}
+
+/**
+ * @brief Reset specific channels of the EFTU TOM module
+ * 
+ * This function is used to reset specific channels within the EFTU TOM module.
+ * It performs the reset operation by setting the corresponding bits in the TGC_GLB_CTRL register
+ * according to the provided channel mask.
+ * 
+ * @param pTOM Pointer to the EFTU TOM module type structure, which should point to the memory-mapped address of the TOM module
+ * @param u8ChannelMask Channel mask, used to specify which channels need to be reset. Each bit in the mask corresponds to a channel.
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_ResetChannel(EFTU_TOM_Type * const pTOM, uint8_t u8ChannelMask)
+{
+	pTOM->TGC_GLB_CTRL |= EFTU_TOM_TGC_GLB_CTRL_RST_CH(u8ChannelMask);
+}
+
+/**
+ * @brief Enable EFTU TOM Channel Update
+ * 
+ * Enable TOM Channel update of registers CM0, CM1, CTRL[SL] and CTRL[CLK_SRC], SR0, SR1, CTRL_SR[SL_SR] and 
+ * CTRL_SR[CLK_SRC_SR].
+ * 
+ * @param pTOM Pointer to the base address of the EFTU TOM module, used to access registers
+ * @param u8Channel The channel number to enable for updates
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_EnableChannelUpdate(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->TGC_GLB_CTRL = 	  (pTOM->TGC_GLB_CTRL & (~(((uint32_t)EFTU_TOM_TGC_GLB_CTRL_UPEN_CTRL0_MASK) << ((uint32_t)u8Channel << 1U))))
+							| ((uint32_t)EFTU_TOM_TGC_GLB_CTRL_UPEN_CTRL0(2u) << ((uint32_t)u8Channel << 1U));
+}
+
+/**
+ * @brief Disable EFTU TOM Channel Update
+ * 
+ * Disable TOM Channel update of registers CM0, CM1, CTRL[SL] and CTRL[CLK_SRC], SR0, SR1, CTRL_SR[SL_SR] and 
+ * CTRL_SR[CLK_SRC_SR].
+ * 
+ * @param pTOM Pointer to the base address of the EFTU TOM module, used to access registers
+ * @param u8Channel The channel number to enable for updates
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_DisableChannelUpdate(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->TGC_GLB_CTRL = 	  (pTOM->TGC_GLB_CTRL & (~(((uint32_t)EFTU_TOM_TGC_GLB_CTRL_UPEN_CTRL0_MASK) << ((uint32_t)u8Channel << 1U))))
+							| ((uint32_t)EFTU_TOM_TGC_GLB_CTRL_UPEN_CTRL0(1u) << ((uint32_t)u8Channel << 1U));
+}
+
+/**
+ * @brief Get the value of the TGC global control register
+ *
+ * @param pTOM Pointer to the EFTU_TOM module, which contains the global control register
+ * @return uint32_t The current value of the TGC global control register
+ */
+LOCAL_INLINE uint32_t EFTU_TOM_HWA_GetGlobalControl(EFTU_TOM_Type * const pTOM)
+{
+	return pTOM->TGC_GLB_CTRL;
+}
+
+/**
+ * @brief Set the value of the TGC global control register
+ * 
+ * @param pTOM Base address pointer to the EFTU TOM module, used to access the module's registers
+ * @param u32Value Value to be written to the global control register, used to configure the module
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_SetGlobalControl(EFTU_TOM_Type * const pTOM, uint32_t u32Value)
+{
+	pTOM->TGC_GLB_CTRL = u32Value;
+}
+
+/**
+ * Enable channel on an update trigger
+ *
+ * @param pTOM Base address pointer of the EFTU_TOM peripheral to access its registers.
+ * @param u8Channel The channel number to enable.
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_EnableChannelOnUpdateTrig(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->TGC_ENDIS_CTRL = 		  (pTOM->TGC_ENDIS_CTRL & (~((uint32_t)EFTU_TOM_TGC_ENDIS_CTRL_ENDIS_CTRL0_MASK << ((uint32_t)u8Channel << 1U))))
+								| ((uint32_t)EFTU_TOM_TGC_ENDIS_CTRL_ENDIS_CTRL0(2u) << ((uint32_t)u8Channel << 1U));
+}
+
+/**
+ * Disable channel on an update trigger
+ *
+ * @param pTOM Base address pointer of the EFTU_TOM peripheral to access its registers.
+ * @param u8Channel The channel number to disable.
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_DisableChannelOnUpdateTrig(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->TGC_ENDIS_CTRL = (pTOM->TGC_ENDIS_CTRL & (~((uint32_t)EFTU_TOM_TGC_ENDIS_CTRL_ENDIS_CTRL0_MASK << ((uint32_t)u8Channel << 1U))))
+						 | ((uint32_t)EFTU_TOM_TGC_ENDIS_CTRL_ENDIS_CTRL0(1u) << ((uint32_t)u8Channel << 1U));
+}
+
+/**
+ * Enable channel 
+ *
+ * @param pTOM Base address pointer of the EFTU_TOM peripheral to access its registers.
+ * @param u8Channel The channel number to enable.
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_EnableChannel(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->TGC_ENDIS_STAT = 	   (pTOM->TGC_ENDIS_STAT & (~((uint32_t)EFTU_TOM_TGC_ENDIS_STAT_ENDIS_STAT0_MASK << ((uint32_t)u8Channel << 1U))))
+							 | ((uint32_t)EFTU_TOM_TGC_ENDIS_STAT_ENDIS_STAT0(2u) << ((uint32_t)u8Channel << 1U));
+}
+
+/**
+ * Disable channel 
+ *
+ * @param pTOM Base address pointer of the EFTU_TOM peripheral to access its registers.
+ * @param u8Channel The channel number to disable.
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_DisableChannel(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->TGC_ENDIS_STAT = 	  (pTOM->TGC_ENDIS_STAT & (~((uint32_t)EFTU_TOM_TGC_ENDIS_STAT_ENDIS_STAT0_MASK << ((uint32_t)u8Channel << 1U))))
+							| ((uint32_t)EFTU_TOM_TGC_ENDIS_STAT_ENDIS_STAT0(1u) << ((uint32_t)u8Channel << 1U));
+}
+
+/**
+ * Set the action Time Base value
+ *
+ * @param pTOM Base address pointer of the EFTU_TOM peripheral to access its registers.
+ * @param u8Channel The time base value to be set
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_SetTimeBaseValue(EFTU_TOM_Type * const pTOM, uint32_t u32Value)
+{
+	pTOM->TGC_ACT_TB = (pTOM->TGC_ACT_TB & ~EFTU_TOM_TGC_ACT_TB_ACT_TB_MASK) | (u32Value & EFTU_TOM_TGC_ACT_TB_ACT_TB_MASK);
+}
+
+/**
+ * Set time base trigger request
+ *
+ * @param pTOM Base address pointer of the EFTU_TOM peripheral to access its registers.
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_SetTimeBaseTrigger(EFTU_TOM_Type * const pTOM)
+{
+	pTOM->TGC_ACT_TB |= EFTU_TOM_TGC_ACT_TB_TB_TRIG_MASK;
+}
+
+/**
+ * @brief Selects the time base for Comparison
+ * 
+ * @param pTOM Base address pointer of the EFTU TOM module, used to access the module's registers
+ * @param eSelection The selection value for the time base, determining which time base to use
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_SelectTimeBase(EFTU_TOM_Type * const pTOM, EFTU_TOM_TimeBaseSelectionType eSelection)
+{
+	pTOM->TGC_ACT_TB = (pTOM->TGC_ACT_TB & ~EFTU_TOM_TGC_ACT_TB_TBU_SEL_MASK) | EFTU_TOM_TGC_ACT_TB_TBU_SEL(eSelection);
+}
+
+/**
+ * Enable the output of an EFTU_TOM channel on update trigger.
+ * 
+ * @param pTOM Pointer to the base address of the EFTU_TOM module, used to access the module's registers.
+ * @param u8Channel The channel number to enable output. 
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_EnableChannelOutputOnUpdateTrig(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->TGC_OUTEN_CTRL = 		  (pTOM->TGC_OUTEN_CTRL & (~(((uint32_t)EFTU_TOM_TGC_OUTEN_CTRL_OUTEN_CTRL0_MASK) << ((uint32_t)u8Channel << 1U))))
+								| (EFTU_TOM_TGC_OUTEN_CTRL_OUTEN_CTRL0(2u) << ((uint32_t)u8Channel << 1U));
+}
+
+/**
+ * Disable the output of an EFTU_TOM channel on update trigger.
+ * 
+ * @param pTOM Pointer to the base address of the EFTU_TOM module, used to access the module's registers.
+ * @param u8Channel The channel number to disable output. 
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_DisableChannelOutputOnUpdateTrig(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->TGC_OUTEN_CTRL = 		  (pTOM->TGC_OUTEN_CTRL & (~(((uint32_t)EFTU_TOM_TGC_OUTEN_CTRL_OUTEN_CTRL0_MASK) << ((uint32_t)u8Channel << 1U))))
+								| (EFTU_TOM_TGC_OUTEN_CTRL_OUTEN_CTRL0(1u) << ((uint32_t)u8Channel << 1U));
+}
+
+/**
+ * Enable the output of an EFTU_TOM channel.
+ * 
+ * @param pTOM Pointer to the base address of the EFTU_TOM module, used to access the module's registers.
+ * @param u8Channel The channel number to enable output. 
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_EnableChannelOutput(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->TGC_OUTEN_STAT = 		  (pTOM->TGC_OUTEN_STAT & (~(((uint32_t)EFTU_TOM_TGC_OUTEN_STAT_OUTEN_STAT0_MASK) << ((uint32_t)u8Channel << 1U))))
+								| (EFTU_TOM_TGC_OUTEN_STAT_OUTEN_STAT0(2u) << ((uint32_t)u8Channel << 1U));
+}
+
+/**
+ * Disable the output of an EFTU_TOM channel.
+ * 
+ * @param pTOM Pointer to the base address of the EFTU_TOM module, used to access the module's registers.
+ * @param u8Channel The channel number to enable output. 
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_DisableChannelOutput(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->TGC_OUTEN_STAT = 		  (pTOM->TGC_OUTEN_STAT & (~(((uint32_t)EFTU_TOM_TGC_OUTEN_STAT_OUTEN_STAT0_MASK) << ((uint32_t)u8Channel << 1U))))
+								| (EFTU_TOM_TGC_OUTEN_STAT_OUTEN_STAT0(1u) << ((uint32_t)u8Channel << 1U));
+}
+
+/**
+ * Enable the force update of an EFTU_TOM channel.
+ * 
+ * @param pTOM Pointer to the base address of the EFTU_TOM module, used to access the module's registers.
+ * @param u8Channel The channel number to enable force update. 
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_EnableForceUpdate(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->TGC_FUPD_CTRL = (pTOM->TGC_FUPD_CTRL & (~(((uint32_t)EFTU_TOM_TGC_FUPD_CTRL_FUPD_CTRL0_MASK) << ((uint32_t)u8Channel << 1U))))
+						| (EFTU_TOM_TGC_FUPD_CTRL_FUPD_CTRL0(2u) << ((uint32_t)u8Channel << 1U));
+}
+
+/**
+ * Disable the force update of an EFTU_TOM channel.
+ * 
+ * @param pTOM Pointer to the base address of the EFTU_TOM module, used to access the module's registers.
+ * @param u8Channel The channel number to disable force update. 
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_DisableForceUpdate(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->TGC_FUPD_CTRL = (pTOM->TGC_FUPD_CTRL & (~(((uint32_t)EFTU_TOM_TGC_FUPD_CTRL_FUPD_CTRL0_MASK) << ((uint32_t)u8Channel << 1U))))
+						| (EFTU_TOM_TGC_FUPD_CTRL_FUPD_CTRL0(1u) << ((uint32_t)u8Channel << 1U));
+}
+
+/**
+ * Enable the reset CN0 of channel n on force update event 
+ * 
+ * @param pTOM Pointer to the base address of the EFTU_TOM module, used to access the module's registers.
+ * @param u8Channel The channel number to enable the reset CN0 on force update event. 
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_EnableForceUpdateResetCN0(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->TGC_FUPD_CTRL = (pTOM->TGC_FUPD_CTRL & (~(((uint32_t)EFTU_TOM_TGC_FUPD_CTRL_RSTCN0_CH0_MASK) << ((uint32_t)u8Channel << 1U))))
+						| (EFTU_TOM_TGC_FUPD_CTRL_RSTCN0_CH0(2u) << ((uint32_t)u8Channel << 1U));
+}
+
+/**
+ * Disable the reset CN0 of channel n on force update event 
+ * 
+ * @param pTOM Pointer to the base address of the EFTU_TOM module, used to access the module's registers.
+ * @param u8Channel The channel number to disable the reset CN0 on force update event. 
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_DisableForceUpdateResetCN0(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->TGC_FUPD_CTRL = (pTOM->TGC_FUPD_CTRL & (~(((uint32_t)EFTU_TOM_TGC_FUPD_CTRL_RSTCN0_CH0_MASK) << ((uint32_t)u8Channel << 1U))))
+						| (EFTU_TOM_TGC_FUPD_CTRL_RSTCN0_CH0(1u) << ((uint32_t)u8Channel << 1U));
+}
+
+/**
+ * @brief Enable the input signal TOM_CH_TRIGOUT as a trigger source
+ * 
+ * @param pTOM Base address pointer to the EFTU_TOM module, used to access the module's registers
+ * @param u8Channel Channel number of the EFTU_TOM module, specifying which channel to configure
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_EnableInternalTrigger(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->TGC_INT_TRIG = (pTOM->TGC_INT_TRIG & (~(((uint32_t)EFTU_TOM_TGC_INT_TRIG_INT_TRIG0_MASK) << ((uint32_t)u8Channel << 1U))))
+						| (EFTU_TOM_TGC_INT_TRIG_INT_TRIG0(2u) << ((uint32_t)u8Channel << 1U));
+}
+
+/**
+ * @brief Disable the input signal TOM_CH_TRIGOUT as a trigger source
+ * 
+ * @param pTOM Base address pointer to the EFTU_TOM module, used to access the module's registers
+ * @param u8Channel Channel number of the EFTU_TOM module, specifying which channel to configure
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_DisableInternalTrigger(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->TGC_INT_TRIG = (pTOM->TGC_INT_TRIG & (~(((uint32_t)EFTU_TOM_TGC_INT_TRIG_INT_TRIG0_MASK) << ((uint32_t)u8Channel << 1U))))
+						| (EFTU_TOM_TGC_INT_TRIG_INT_TRIG0(1u) << ((uint32_t)u8Channel << 1U));
+}
+
+/**
+ * @brief Lock the special lock in the EFTU TOM module
+ * 
+ * @param pTOM Pointer to the base address of the EFTU TOM module, used to access registers within the module.
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_LockSpecialLock(EFTU_TOM_Type * const pTOM)
+{
+	pTOM->TGC_SPEC_LOCK = 0x5AFECAFEu;
+}
+
+/**
+ * @brief Unlock the special lock in the EFTU TOM module
+ * 
+ * @param pTOM Pointer to the base address of the EFTU TOM module, used to access registers within the module.
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_UnlockSpecialLock(EFTU_TOM_Type * const pTOM)
+{
+	pTOM->TGC_SPEC_LOCK = 0xBEEFCAFEu;
+}
+
+/**
+ * @brief Set the channel mode for EFTU TOM
+ * 
+ * @param pTOM Pointer to the base address of the EFTU TOM module, used to access the module's registers
+ * @param u8Channel The channel number to set the mode for
+ * @param eChannelMode The new channel mode, which is an enumerated type defining the different modes the channel can operate in
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_SetChannelMode(EFTU_TOM_Type * const pTOM, uint8_t u8Channel, EFTU_TOM_ChannelModeType eChannelMode)
+{
+	pTOM->Channel[u8Channel].CH_CTRL = (pTOM->Channel[u8Channel].CH_CTRL & (~(uint32_t)EFTU_TOM_CHn_CTRL_MODE_MASK))
+									|  EFTU_TOM_CHn_CTRL_MODE(eChannelMode);
+}
+
+/**
+ * @brief Set the TOM channel control mode 
+ * 
+ * @param pTOM Pointer to the base address of the EFTU TOM module, used to access the module's registers
+ * @param u8Channel The channel number to set the mode for
+ * @param u8TomModeCtrl TOM mode control value
+ *                      SOMI Mode:
+ *                          TMCB[0]:
+ *                          0b - Set output to the inverse value of CTRL[SL]
+ *                          1b - Set output to CTRL[SL]
+ *                          TMCB[4:1]: Reserved
+ *                      SOMC Mode:
+ *                          TMCB[1:0]: Signal level control
+ *                          00b - No signal level change at output (exception TMCB[4:2] = 0b001)
+ *                          01b - Set output signal level to 1 when CTRL[SL] = 0 else output
+ *                                signal level to 0 (exception TMCB[4 :2] = 0b001).
+ *                          10b - Set output signal level to 0 when CTRL[SL] = 0 else output
+ *                                signal level to 1 (exception TMCB[4 :2] = 0b001)
+ *                          11b - Toggle output signal level (exception TMCB[4:2] = 0b001)
+ *                          TMCB[4:2]: Compare strategy
+ *                          000b - Compare in CCU0 and CCU1 in parallel, disable the CCUx on a
+ *                                 compare match on either of compare units. Use TBU_CNT0 in CCU0
+ *                                 and TBU_CNT1 or TBU_CNT2 in CCU1.
+ *                          001b - Compare in CCU0 and CCU1 in parallel, disable the
+ *                                 CCU0/CCU1 on a compare match on either compare units. Use
+ *                                 TBU_CNT0 in CCU0 and TBU_CNT1 or TBU_CNT2 in CCU1.
+ *                          010b - Compare in CCU0 only against TBU_CNT0.
+ *                          011b - Compare in CCU1 only against TBU_CNT1 or TBU_CNT2.
+ *                          100b - Compare first in CCU0 and then in CCU1. Use TBU_CNT0.
+ *                          101b - Compare first in CCU0 and then in CCU1. Use TBU_CNT1 or
+ *                                 TBU_CNT2.
+ *                          110b - Compare first in CCU0 and then in CCU1. Use TBU_CNT0 in
+ *                                 CCU0 and TBU_CNT1 or TBU_CNT2 in CCU1.
+ *                          111b - Cancel pending compare events.
+ *                      SOMP Mode
+ *                          TMCB[1:0]: Reserved
+ *                          TMCB[2]: PCM mode enable (only able with odd channel and UDMODE == 0 )
+ *                          0b - disabled
+ *                          1b - enabled
+ *                          TMCB[3]: SR0_TRIG, SR0 used for TOM_OUT_T (need RST_CCU0 == 0)
+ *                          0b - SR0 is used as a shadow register for register CM0.
+ *                          1b - SR0 is not used as a shadow register for register CM0. SR0 is
+ *                               compared with CN0 and if both are equal, a trigger pulse is generated
+ *                               at output TOM_OUT_T
+ *                          TMCB[4]: Reserved
+ *                      SOMS Mode
+ *                          TMCB[0]: Shift direction
+ *                          0b - Right shift of data is started from bit CM1[0].
+ *                          1b - Left shift of data is started from bit CM1[23].
+ *                          TMCB[2:1]: Reserved
+ *                          TMCB[3]: Double shift output
+ *                          0b - CM1 is used as a 24-bit shift register.
+ *                          1b - CM1 is split into two 12-bit shift register.
+ *                          TMCB[4]: Reserved
+ *                      SOMB Mode
+ *                          TMCB[1:0]: Signal level control
+ *                          00b - No signal level change at output .
+ *                          01b - Set output signal level to 1 when CTRL[SL] = 0 else output
+ *                                signal level to 0.
+ *                          10b - Set output signal level to 0 when CTRL[SL] = 0 else output
+ *                                signal level to 1.
+ *                          11b - Toggle output signal level
+ *                          TMCB[4:2]: Compare strategy
+ *                          000b - Reserved. Has no effect.
+ *                          001b - Reserved. Has no effect.
+ *                          010b - Compare in CCU0 only against TBU_CNT0.
+ *                          011b - Compare in CCU1 only against TBU_CNT1 or TBU_CNT2.
+ *                          100b - Compare first in CCU0 and then in CCU1. Use TBU_CNT0.
+ *                          101b - Compare first in CCU0 and then in CCU1. Use TBU_CNT1 or
+ *                                 TBU_CNT2.
+ *                          110b - Compare first in CCU0 and then in CCU1. Use TBU_CNT0 in
+ *                                 CCU0 and TBU_CNT1 or TBU_CNT2 in CCU1.
+ *                          111b - Cancel pending comparisons 
+ *
+ * 
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_SetTomModeCtrl(EFTU_TOM_Type * const pTOM, uint8_t u8Channel, uint8_t u8TomModeCtrl)
+{
+	pTOM->Channel[u8Channel].CH_CTRL = (pTOM->Channel[u8Channel].CH_CTRL & (~(uint32_t)EFTU_TOM_CHn_CTRL_TMCB_MASK))
+										|  EFTU_TOM_CHn_CTRL_TMCB(u8TomModeCtrl);
+}
+
+/**
+ * @brief Enable Extended Update Mode
+ * 
+ *        SOMI Mode: Reserved
+ *        SOMC Mode
+ *            0b - No extended update of CM0 and CM1 via AFCB
+ *            1b - Extended update mode in case of compare strategy 'serve last':
+ *                 CM1 after CCU0 compare match possible via AFCB.
+ *        SOMP Mode: Reserved
+ *        SOMS Mode: Reserved
+ *        SOMB Mode
+ *            0b - No extended update of CM0 and CM1 via AFCB
+ *            1b - Extended update mode in case of compare strategy 'serve last':
+ *                 CM1 after CCU0 compare match possible via AFCB.
+ * @param pTOM Pointer to the EFTU_TOM module, used to access the module's registers
+ * @param u8Channel The channel number to configure, specifying which channel to enable the extended update mode for
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_EnableExtendUpdateMode(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->Channel[u8Channel].CH_CTRL |= EFTU_TOM_CHn_CTRL_EUPM_MASK;
+}
+
+/**
+ * @brief Disable Extended Update Mode
+ * 
+ *        SOMI Mode: Reserved
+ *        SOMC Mode
+ *            0b - No extended update of CM0 and CM1 via AFCB
+ *            1b - Extended update mode in case of compare strategy 'serve last':
+ *                 CM1 after CCU0 compare match possible via AFCB.
+ *        SOMP Mode: Reserved
+ *        SOMS Mode: Reserved
+ *        SOMB Mode
+ *            0b - No extended update of CM0 and CM1 via AFCB
+ *            1b - Extended update mode in case of compare strategy 'serve last':
+ *                 CM1 after CCU0 compare match possible via AFCB.
+ * 
+ * @param pTOM Pointer to the EFTU_TOM module, used to access the module's registers
+ * @param u8Channel The channel number to configure, specifying which channel to disable the extended update mode for
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_DisableExtendUpdateMode(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->Channel[u8Channel].CH_CTRL &= ~EFTU_TOM_CHn_CTRL_EUPM_MASK;
+}
+
+/**
+ * @brief Set the initial signal level for an EFTU TOM channel
+ * 
+ * @param pTOM Pointer to the base address of the EFTU TOM module
+ * @param u8Channel The channel number to be configured
+ * @param eInitialSignalLevel The initial signal level as an enumerated value
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_SetInitialSignalLevel(EFTU_TOM_Type * const pTOM, uint8_t u8Channel, EFTU_TOM_SignalLevelType eInitialSignalLevel)
+{
+	pTOM->Channel[u8Channel].CH_CTRL = (pTOM->Channel[u8Channel].CH_CTRL & (~(uint32_t)EFTU_TOM_CHn_CTRL_SL_MASK))
+										| EFTU_TOM_CHn_CTRL_SL(eInitialSignalLevel);
+}
+
+/**
+ * @brief Set the clock source for an EFTU TOM channel
+ * @note It has different usage for different TOM channel modes.
+ * 
+ * @param pTOM Pointer to the EFTU TOM module
+ * @param u8Channel The channel number in the TOM module
+ * @param u8ClockSrc The clock source value to be set
+ *                      -> SOMI Mode: Reserved
+ *                      -> SOMC Mode: Reserved
+ *                      -> SOMP Mode
+ *                          0000b - After its first update from the shadow register CLK_SRC_SR,
+ *                                  CCM_CLK_RES[0] resolution is selected
+ *                          0001b - After its first update from the shadow register CLK_SRC_SR,
+ *                                  CCM_CLK_RES[1] resolution is selected
+ *                          0010b - After its first update from the shadow register CLK_SRC_SR,
+ *                                  CCM_CLK_RES[2] resolution is selected
+ *                          0011b - After its first update from the shadow register CLK_SRC_SR,
+ *                                  CCM_CLK_RES[3] resolution is selected
+ *                          0100b - After its first update from the shadow register CLK_SRC_SR,
+ *                                  CCM_CLK_RES[4] resolution is selected
+ *                          0101b - After its first update from the shadow register CLK_SRC_SR,
+ *                                  CCM_CLK_RES[5] resolution is selected
+ *                          0110b - After its first update from the shadow register CLK_SRC_SR,
+ *                                  CCM_CLK_RES[6] resolution is selected
+ *                          0111b - After its first update from the shadow register CLK_SRC_SR,
+ *                                  CCM_CLK_RES[7] resolution is selected
+ *                          1000b - Reserved
+ *                          1001b - Reserved
+ *                          1010b - Reserved
+ *                          1011b - Reserved
+ *                          1100b - Functional operation stopped, clock resolution tied to zero.
+ *                          1101b - Reserved
+ *                          1110b - Reserved
+ *                          1111b - Reserved
+ *                      -> SOMS Mode
+ *                          0000b - CCM_CLK_RES[0] resolution is selected
+ *                          0001b - CCM_CLK_RES[1] resolution is selected
+ *                          0010b - CCM_CLK_RES[2] resolution is selected
+ *                          0011b - CCM_CLK_RES[3] resolution is selected
+ *                          0100b - CCM_CLK_RES[4] resolution is selected
+ *                          0101b - CCM_CLK_RES[5] resolution is selected
+ *                          0110b - CCM_CLK_RES[6] resolution is selected
+ *                          0111b - CCM_CLK_RES[7] resolution is selected
+ *                          1000b - Reserved
+ *                          1001b - Reserved
+ *                          1010b - Reserved
+ *                          1011b - Reserved
+ *                          1100b - Functional operation stopped, clock resolution tied to zero.
+ *                          1101b - Reserved
+ *                          1110b - Reserved
+ *                          1111b - Reserved
+ *                      -> SOMB Mode: Reserved
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_SetClockSource(EFTU_TOM_Type * const pTOM, uint8_t u8Channel, uint8_t u8ClockSrc)
+{
+	pTOM->Channel[u8Channel].CH_CTRL = (pTOM->Channel[u8Channel].CH_CTRL & (~(uint32_t)EFTU_TOM_CHn_CTRL_CLK_SRC_MASK))
+										| EFTU_TOM_CHn_CTRL_CLK_SRC(u8ClockSrc);
+}
+
+/**
+ * @brief Set the trigger pulse type for a specific channel of the EFTU_TOM module
+ * 
+ * @param pTOM Pointer to the base address of the EFTU_TOM module, used to access the module's registers
+ * @param u8Channel The channel number to configure
+ * @param eTrigPulse The trigger pulse type, an enumerated value representing different trigger pulse configurations
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_SetTriggerPulse(EFTU_TOM_Type * const pTOM, uint8_t u8Channel, EFTU_TOM_TriggerPulseType eTrigPulse)
+{
+	pTOM->Channel[u8Channel].CH_CTRL = (pTOM->Channel[u8Channel].CH_CTRL & (~(uint32_t)EFTU_TOM_CHn_CTRL_TRIG_PULSE_MASK))
+										| EFTU_TOM_CHn_CTRL_TRIG_PULSE(eTrigPulse);
+}
+
+/**
+ * @brief Set the up-down mode for an EFTU TOM channel
+ * 
+ * @param pTOM Pointer to the EFTU TOM module
+ * @param u8Channel Channel number specifying which channel to configure
+ * @param eUpDownMode Desired up-down mode, of type EFTU_TOM_UpDownModeType
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_SetUpDownMode(EFTU_TOM_Type * const pTOM, uint8_t u8Channel, EFTU_TOM_UpDownModeType eUpDownMode)
+{
+	pTOM->Channel[u8Channel].CH_CTRL = (pTOM->Channel[u8Channel].CH_CTRL & (~(uint32_t)EFTU_TOM_CHn_CTRL_UDMODE_MASK))
+										| EFTU_TOM_CHn_CTRL_UDMODE(eUpDownMode);
+}
+
+/**
+ * @brief Set the CCU0 reset source for a specific channel.
+ * 
+ * @param pTOM Pointer to the base address of the EFTU TOM module, used to access the module's registers.
+ * @param u8Channel The channel number to be configured, determining which channel's settings will be changed.
+ * @param eResetSource The type of CCU0 reset source, an enumeration value that determines the conditions under which CCU0 is reset.
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_SetCCU0ResetSource(EFTU_TOM_Type * const pTOM, uint8_t u8Channel, EFTU_TOM_CCO0ResetSourceType eResetSource)
+{
+	pTOM->Channel[u8Channel].CH_CTRL = (pTOM->Channel[u8Channel].CH_CTRL & (~(uint32_t)EFTU_TOM_CHn_CTRL_RST_CCU0_MASK))
+										| EFTU_TOM_CHn_CTRL_RST_CCU0(eResetSource);
+}
+
+/**
+ * @brief Enable trigger of one-shot pulse by trigger signal.
+ *
+ * This function enables the one-shot pulse mode by setting the corresponding bit in the channel control register.
+ * In this mode, the channel will generate a single pulse after a trigger event.
+ *
+ * @param pTOM Pointer to the base address of the EFTU TOM module
+ * @param u8Channel The channel number to configure
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_EnableOneShotPulse(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->Channel[u8Channel].CH_CTRL |= EFTU_TOM_CHn_CTRL_OSM_TRIG_MASK;
+}
+
+/**
+ * @brief Disable trigger of one-shot pulse by trigger signal.
+ *
+ * This function enables the one-shot pulse mode by setting the corresponding bit in the channel control register.
+ * In this mode, the channel will generate a single pulse after a trigger event.
+ *
+ * @param pTOM Pointer to the base address of the EFTU TOM module
+ * @param u8Channel The channel number to configure
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_DisableOneShotPulse(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->Channel[u8Channel].CH_CTRL &= ~EFTU_TOM_CHn_CTRL_OSM_TRIG_MASK;
+}
+
+/**
+ * @brief Set the trigger output selection for an EFTU TOM channel
+ * 
+ * @param pTOM Pointer to the base address of the EFTU TOM module
+ * @param u8Channel The channel number to be configured
+ * @param eSelection The trigger output selection type
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_SetTriggerOut(EFTU_TOM_Type * const pTOM, uint8_t u8Channel, EFTU_TOM_TrigOutSelectionType eSelection)
+{
+	pTOM->Channel[u8Channel].CH_CTRL = (pTOM->Channel[u8Channel].CH_CTRL & (~(uint32_t)EFTU_TOM_CHn_CTRL_TRIGOUT_MASK))
+										| EFTU_TOM_CHn_CTRL_TRIGOUT(eSelection);
+}
+
+#if (EFTU_HRPWM_SUPPORT == STD_ON)
+
+/**
+ * @brief Allow HRPWM_MUX counter to following channel
+ * @note Only TOM0 of EFTU0 has this bit.
+ * 
+ * @param pTOM Base address pointer of the EFTU_TOM peripheral to access its registers
+ * @param u8Channel The channel number to operate on
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_EnableHRPWMMux(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->Channel[u8Channel].CH_CTRL |= EFTU_TOM_CHn_CTRL_HRPWM_MUX_MASK;
+}
+
+/**
+ * @brief Disable HRPWM_MUX counter to following channel
+ * @note Only TOM0 of EFTU0 has this bit.
+ * 
+ * @param pTOM Base address pointer of the EFTU_TOM peripheral to access its registers
+ * @param u8Channel The channel number to operate on
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_DisableHRPWMMux(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->Channel[u8Channel].CH_CTRL &= ~EFTU_TOM_CHn_CTRL_HRPWM_MUX_MASK;
+}
+#endif
+/**
+ * @brief Select EXT_TRIGIN as trigger signal
+ * 
+ * if RST_CCU0=1 or OSM_TRIG=1, external trigger is selected as
+ * trigger to reset CN0 or to start single pulse generation
+ * 
+ * @param pTOM Pointer to the EFTU_TOM peripheral base address
+ * @param u8Channel Channel number specifying which channel will have the external trigger source enabled
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_EnableTrigInUseExt(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->Channel[u8Channel].CH_CTRL |= EFTU_TOM_CHn_CTRL_TRIG_IN_USE_EXT_MASK;
+}
+
+/**
+ * @brief Select EXT_TRIGIN as trigger signal
+ * 
+ *  if RST_CCU0=1 or OSM_TRIG=1, internal trigger is selected as
+ *  trigger to reset CN0 or to start single pulse generation.
+ * 
+ * @param pTOM Pointer to the EFTU_TOM peripheral base address
+ * @param u8Channel Channel number specifying which channel will have the external trigger source enabled
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_DisableTrigInUseExt(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->Channel[u8Channel].CH_CTRL &= ~EFTU_TOM_CHn_CTRL_TRIG_IN_USE_EXT_MASK;
+}
+
+/**
+ * @brief Select EXT_TRIGIN as potential output signal TOM_CH_TRIGOUT of
+ *        TOM channel N when TRIG_OUT == 0.
+ * 
+ *  Bypass external trigger in (from the preceding channel) to trigger
+ *  out (to the following channel)
+ * 
+ * @param pTOM Pointer to the EFTU_TOM peripheral base address
+ * @param u8Channel Channel number specifying which channel will have the external trigger source enabled
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_EnableTrigOutUseExt(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->Channel[u8Channel].CH_CTRL |= EFTU_TOM_CHn_CTRL_TRIG_OUT_USE_EXT_MASK;
+}
+
+/**
+ * @brief Select EXT_TRIGIN as potential output signal TOM_CH_TRIGOUT of
+ *        TOM channel N when TRIG_OUT == 0.
+ * 
+ *  Bypass internal trigger in (from the preceding channel) to trigger
+ *  out (to the following channel)
+ * 
+ * @param pTOM Pointer to the EFTU_TOM peripheral base address
+ * @param u8Channel Channel number specifying which channel will have the external trigger source enabled
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_DisableTrigOutUseExt(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->Channel[u8Channel].CH_CTRL &= ~EFTU_TOM_CHn_CTRL_TRIG_OUT_USE_EXT_MASK;
+}
+
+/**
+ * @brief Set the external forced update signal for an EFTU TOM channel
+ * @note It has different usage for different TOM channel modes.
+ *
+ * @param pTOM Base address pointer of the EFTU TOM module, used to access the TOM module registers
+ * @param u8Channel Channel number of the EFTU TOM, used to select the channel to configure
+ * @param u8ExtForcedUpdate Value of the external forced update signal to be written to the channel control register
+ *                          -> SOMI Mode: Reserved
+ *                              0b - use signal from TGC to force update
+ *                              1b - use external trigger to force update
+ *                          -> SOMC Mode: Reserved
+ *                          -> SOMP Mode:
+ *                              0b - use signal from TGC to force update
+ *                              1b - use external trigger to force update
+ *                          -> SOMS Mode: Reserved
+ *                              0b - use signal from TGC to force update
+ *                              1b - use external trigger to force update
+ *                          -> SOMB Mode: Reserved
+ *                              0b - use signal from TGC to force update
+ *                              1b - use external trigger to force update
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_SetExtForcedUpdate(EFTU_TOM_Type * const pTOM, uint8_t u8Channel, uint8_t u8ExtForcedUpdate)
+{
+	pTOM->Channel[u8Channel].CH_CTRL = (pTOM->Channel[u8Channel].CH_CTRL & (~(uint32_t)EFTU_TOM_CHn_CTRL_EXT_FUPD_MASK)) | EFTU_TOM_CHn_CTRL_EXT_FUPD(u8ExtForcedUpdate);
+}
+
+/**
+ * @brief Select the time base value for the EFTU TOM module
+ * 
+ * @param pTOM Base address pointer of the EFTU TOM module
+ * @param u8Channel Channel number indicating which TOM channel to configure
+ * @param eTimeBaseSel Enum type indicating the time base value to select
+ */
+
+LOCAL_INLINE void EFTU_TOM_HWA_SelectTimeBaseValue(EFTU_TOM_Type * const pTOM, uint8_t u8Channel, EFTU_TOM_TBValueSelectionType eTimeBaseSel)
+{
+	pTOM->Channel[u8Channel].CH_CTRL = (pTOM->Channel[u8Channel].CH_CTRL & (~(uint32_t)EFTU_TOM_CHn_CTRL_TB12_SEL_MASK))
+										| EFTU_TOM_CHn_CTRL_TB12_SEL(eTimeBaseSel);
+}
+
+/**
+ * @brief Set the shadow initial signal level for an EFTU TOM channel
+ * 
+ * @param pTOM Pointer to the base address of the EFTU TOM module
+ * @param u8Channel The channel number to be configured
+ * @param eInitialSignalLevel The initial signal level as an enumerated value
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_SetShadowInitialSignalLevel(EFTU_TOM_Type * const pTOM, uint8_t u8Channel, EFTU_TOM_SignalLevelType eInitialSignalLevel)
+{
+	pTOM->Channel[u8Channel].CH_CTRL_SR = (pTOM->Channel[u8Channel].CH_CTRL_SR & (~(uint32_t)EFTU_TOM_CHn_CTRL_SR_SL_SR_MASK))
+											| EFTU_TOM_CHn_CTRL_SR_SL_SR(eInitialSignalLevel);
+}
+
+/**
+ * @brief Set the shadow clock source for an EFTU TOM channel
+ * @note It has different usage for different TOM channel modes.
+ * 
+ * @param pTOM Pointer to the EFTU TOM module
+ * @param u8Channel The channel number in the TOM module
+ * @param u8ClockSrc The clock source value to be set
+ *                      -> SOMI Mode: Reserved
+ *                      -> SOMC Mode: Reserved
+ *                      -> SOMP Mode
+ *                          0000b - After its first update from the shadow register CLK_SRC_SR,
+ *                                  CCM_CLK_RES[0] resolution is selected
+ *                          0001b - After its first update from the shadow register CLK_SRC_SR,
+ *                                  CCM_CLK_RES[1] resolution is selected
+ *                          0010b - After its first update from the shadow register CLK_SRC_SR,
+ *                                  CCM_CLK_RES[2] resolution is selected
+ *                          0011b - After its first update from the shadow register CLK_SRC_SR,
+ *                                  CCM_CLK_RES[3] resolution is selected
+ *                          0100b - After its first update from the shadow register CLK_SRC_SR,
+ *                                  CCM_CLK_RES[4] resolution is selected
+ *                          0101b - After its first update from the shadow register CLK_SRC_SR,
+ *                                  CCM_CLK_RES[5] resolution is selected
+ *                          0110b - After its first update from the shadow register CLK_SRC_SR,
+ *                                  CCM_CLK_RES[6] resolution is selected
+ *                          0111b - After its first update from the shadow register CLK_SRC_SR,
+ *                                  CCM_CLK_RES[7] resolution is selected
+ *                          1000b - Reserved
+ *                          1001b - Reserved
+ *                          1010b - Reserved
+ *                          1011b - Reserved
+ *                          1100b - Functional operation stopped, clock resolution tied to zero.
+ *                          1101b - Reserved
+ *                          1110b - Reserved
+ *                          1111b - Reserved
+ *                      -> SOMS Mode
+ *                          0000b - CCM_CLK_RES[0] resolution is selected
+ *                          0001b - CCM_CLK_RES[1] resolution is selected
+ *                          0010b - CCM_CLK_RES[2] resolution is selected
+ *                          0011b - CCM_CLK_RES[3] resolution is selected
+ *                          0100b - CCM_CLK_RES[4] resolution is selected
+ *                          0101b - CCM_CLK_RES[5] resolution is selected
+ *                          0110b - CCM_CLK_RES[6] resolution is selected
+ *                          0111b - CCM_CLK_RES[7] resolution is selected
+ *                          1000b - Reserved
+ *                          1001b - Reserved
+ *                          1010b - Reserved
+ *                          1011b - Reserved
+ *                          1100b - Functional operation stopped, clock resolution tied to zero.
+ *                          1101b - Reserved
+ *                          1110b - Reserved
+ *                          1111b - Reserved
+ *                      -> SOMB Mode: Reserved
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_SetShadowClockSource(EFTU_TOM_Type * const pTOM, uint8_t u8Channel, uint8_t u8ClockSrc)
+{
+	pTOM->Channel[u8Channel].CH_CTRL_SR = (pTOM->Channel[u8Channel].CH_CTRL_SR & (~(uint32_t)EFTU_TOM_CHn_CTRL_SR_CLK_SRC_SR_MASK))
+										| EFTU_TOM_CHn_CTRL_SR_CLK_SRC_SR(u8ClockSrc);
+}
+
+
+#if defined(HRPWM_INSTANCE_COUNT) && (HRPWM_INSTANCE_COUNT > 0U)
+/**
+ * @brief Set TOM high resolution support for a specific channel in the EFTU_TOM module
+ *
+ * @param pTOM Base address pointer of the EFTU_TOM module, used to access the module's registers
+ * @param u8Channel The channel number to configure, determines which CH_CTRL2 register to modify
+ * @param bSupport A boolean value indicating whether to enable HRPWM support. True to enable, False to disable
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_SetHRPWMSupport(EFTU_TOM_Type * const pTOM, uint8_t u8Channel, bool bSupport)
+{
+	pTOM->Channel[u8Channel].CH_CTRL2 = 	(pTOM->Channel[u8Channel].CH_CTRL2 & ~(EFTU_TOM_CHn_CTRL2_HRPWM_MASK))
+										| 	EFTU_TOM_CHn_CTRL2_HRPWM(bSupport);
+}
+#endif
+/**
+ * @brief Get the output level of an EFTU TOM channel
+ *
+ * @param pTOM Pointer to the base address of the EFTU TOM module, used to access the module's registers
+ * @param u8Channel The channel number to read the output level from
+ * @return uint8_t The current output level of the specified channel, 0 for low level, 1 for high level
+ */
+LOCAL_INLINE uint8_t EFTU_TOM_HWA_GetOutputLevel(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+    return (uint8_t)(pTOM->Channel[u8Channel].CH_STAT & EFTU_TOM_CHn_STAT_OL_MASK);
+}
+
+/**
+ * @brief Get the CCU match status
+ * 
+ * @param pTOM Base address pointer of the EFTU TOM module, used to access the module's registers
+ * @param u8Channel Channel number, specifying the particular channel to query
+ * @return uint8_t The CCU match status value
+ */
+LOCAL_INLINE uint8_t EFTU_TOM_HWA_GetCcuMatch(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	return (uint8_t)((pTOM->Channel[u8Channel].CH_STAT  & EFTU_TOM_CHn_STAT_CCU_MATCH_MASK) >> EFTU_TOM_CHn_STAT_CCU_MATCH_SHIFT);
+}
+
+/**
+ * @brief Get the One-shot Mode Retrigger Failure Flag
+ * 
+ * @param pTOM Base address pointer of the EFTU TOM module, used to access the module's registers
+ * @param u8Channel Channel number, specifying the particular channel to query
+ * @return uint8_t The One-shot Mode Retrigger Failure Flag
+ */
+LOCAL_INLINE uint8_t EFUT_TOM_HWA_GetOSMRetrigFailed(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	return (uint8_t)((pTOM->Channel[u8Channel].CH_STAT  & EFTU_TOM_CHn_STAT_OSM_RTF_MASK) >> EFTU_TOM_CHn_STAT_OSM_RTF_SHIFT);
+}
+
+/**
+ * Clear OSM Retrigger Failed Status
+ *
+ * @param pTOM Pointer to the EFTU_TOM_Type structure, representing the base address of the TOM module
+ * @param u8Channel Channel number (uint8_t) specifying the channel whose status needs to be cleared
+ */
+LOCAL_INLINE void EFUT_TOM_HWA_ClearOSMRetrigFailed(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->Channel[u8Channel].CH_STAT  = EFTU_TOM_CHn_STAT_OSM_RTF_MASK;
+}
+
+/**
+ * @brief Get the current value of the CCU0 counter
+ *
+ * @param pTOM Base address pointer of the EFTU_TOM module, used to access the module's registers
+ * @param u8Channel Channel number, used to select the specific counter channel
+ * @return uint32_t The current value of the CCU0 counter
+ */
+LOCAL_INLINE uint32_t EFTU_TOM_HWA_GetCCU0Counter(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	return pTOM->Channel[u8Channel].CH_CN0 & EFTU_TOM_CHn_CN0_CN0_MASK;
+}
+
+/**
+ * @brief Set the current count value of the CCU0 counter
+ * 
+ * @param pTOM Base address pointer of the EFTU_TOM peripheral, used to access the peripheral's registers
+ * @param u8Channel Channel number, specifying which channel's counter needs to be set
+ * @param u32Value The count value to be set, this value will be written to the counter register
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_SetCCU0Counter(EFTU_TOM_Type * const pTOM, uint8_t u8Channel, uint32_t u32Value)
+{
+	pTOM->Channel[u8Channel].CH_CN0 = u32Value & EFTU_TOM_CHn_CN0_CN0_MASK;
+}
+
+/**
+ * @brief Set the CCU0 compare value
+ * 
+ * @param pTOM Base address pointer of the EFTU TOM module, used to access the module's registers
+ * @param u8Channel Channel number, indicating the channel for which the compare value needs to be set
+ * @param u32Value Compare value, the value to be set in the compare register
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_SetCCU0Compare(EFTU_TOM_Type * const pTOM, uint8_t u8Channel, uint32_t u32Value)
+{
+	pTOM->Channel[u8Channel].CH_CM0 = u32Value & EFTU_TOM_CHn_CM0_CM0_MASK;
+}
+
+/**
+ * @brief Set the value of Shadow Register 0 for a specific channel in the EFTU_TOM module
+ * 
+ * @param pTOM Base address pointer of the EFTU_TOM module, used to access the module's registers
+ * @param u8Channel Channel number of the EFTU_TOM module, used to select the specific channel to operate on
+ * @param u32Value Value to be set in the Shadow Register 0, which determines the compare or capture behavior of the channel
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_SetShadowValue0(EFTU_TOM_Type * const pTOM, uint8_t u8Channel, uint32_t u32Value)
+{
+	pTOM->Channel[u8Channel].CH_SR0 = u32Value & EFTU_TOM_CHn_SR0_SR0_MASK;
+}
+
+/**
+ * @brief Set TOM CCU1 Compare Register
+ *  
+ * @param pTOM Pointer to the base address of the EFTU_TOM module, used to access the module's registers
+ * @param u8Channel Channel number, which determines the specific CCU1 counter of the channel
+ * @param u32Value The counter value to be set, this is a 32-bit value
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_SetCCU1Counter(EFTU_TOM_Type * const pTOM, uint8_t u8Channel, uint32_t u32Value)
+{
+	pTOM->Channel[u8Channel].CH_CM1 = u32Value & EFTU_TOM_CHn_CM1_CM1_MASK;
+}
+
+/**
+ * @brief Set the value of Shadow Register 1 for a specific channel in the EFTU_TOM module
+ * 
+ * @param pTOM Base address pointer of the EFTU_TOM module, used to access the module's registers
+ * @param u8Channel Channel number of the EFTU_TOM module, used to select the specific channel to operate on
+ * @param u32Value Value to be set in the Shadow Register 1, which determines the compare or capture behavior of the channel
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_SetShadowValue1(EFTU_TOM_Type * const pTOM, uint8_t u8Channel, uint32_t u32Value)
+{
+	pTOM->Channel[u8Channel].CH_SR1 = u32Value & EFTU_TOM_CHn_SR1_SR1_MASK;
+}
+
+/**
+ * @brief Get the interrupt flag for a specific channel of the EFTU TOM module.
+ *
+ * @param pTOM Base address pointer to the EFTU TOM module registers.
+ * @param u8Channel The channel number to select the specific channel interrupt status.
+ * @return uint32_t The interrupt status flag of the selected channel.
+ */
+LOCAL_INLINE uint32_t EFTU_TOM_HWA_GetInterruptFlag(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	return pTOM->Channel[u8Channel].CH_IRQ_ST;
+}
+
+/**
+ * @brief Clear the interrupt flag for a specific EFTU TOM channel
+ * 
+ * @param pTOM Pointer to the EFTU_TOM peripheral structure, used to access and modify the peripheral registers
+ * @param u8Channel The channel number of the EFTU TOM, specifying the exact channel whose interrupt flag needs to be cleared
+ * @param u32Flag The interrupt flag to be cleared, written to the interrupt status register to clear the flag
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_ClearInterruptFlag(EFTU_TOM_Type * const pTOM, uint8_t u8Channel, uint32_t u32Flag)
+{
+	pTOM->Channel[u8Channel].CH_IRQ_ST = u32Flag;
+}
+
+/**
+ * @brief Enable CCU0 Interrupt
+ * 
+ * This function enables the CCU0 interrupt by setting the corresponding interrupt enable bit for a specific channel.
+ * 
+ * @param pTOM Base address pointer of the EFTU_TOM peripheral to access its registers
+ * @param u8Channel The channel number for which the CCU0 interrupt is to be enabled
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_EnableCCU0Interrupt(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->Channel[u8Channel].CH_IRQ_EN |= EFTU_TOM_CHn_IRQ_EN_CCU0_TC_IRQ_EN_MASK;
+}
+
+/**
+ * @brief Disable CCU0 Interrupt
+ * 
+ * This function enables the CCU0 interrupt by setting the corresponding interrupt enable bit for a specific channel.
+ * 
+ * @param pTOM Base address pointer of the EFTU_TOM peripheral to access its registers
+ * @param u8Channel The channel number for which the CCU0 interrupt is to be disable
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_DisableCCU0Interrupt(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->Channel[u8Channel].CH_IRQ_EN &= ~EFTU_TOM_CHn_IRQ_EN_CCU0_TC_IRQ_EN_MASK;
+}
+
+/**
+ * @brief Enable CCU1 Interrupt
+ * 
+ * This function enables the CCU1 interrupt by setting the corresponding interrupt enable bit for a specific channel.
+ * 
+ * @param pTOM Base address pointer of the EFTU_TOM peripheral to access its registers
+ * @param u8Channel The channel number for which the CCU1 interrupt is to be enabled
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_EnableCCU1Interrupt(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->Channel[u8Channel].CH_IRQ_EN |= EFTU_TOM_CHn_IRQ_EN_CCU1_TC_IRQ_EN_MASK;
+}
+
+/**
+ * @brief Disable CCU1 Interrupt
+ * 
+ * This function enables the CCU1 interrupt by setting the corresponding interrupt enable bit for a specific channel.
+ * 
+ * @param pTOM Base address pointer of the EFTU_TOM peripheral to access its registers
+ * @param u8Channel The channel number for which the CCU1 interrupt is to be disable
+ */
+LOCAL_INLINE void EFTU_TOM_HWA_DisableCCU1Interrupt(EFTU_TOM_Type * const pTOM, uint8_t u8Channel)
+{
+	pTOM->Channel[u8Channel].CH_IRQ_EN &= ~EFTU_TOM_CHn_IRQ_EN_CCU1_TC_IRQ_EN_MASK;
+}
+
+/** @}*/
+
+#endif  /* EFTU_INSTANCE_COUNT > 0U */
+
+#endif  /* _HWA_EFTU_TOM_H_ */

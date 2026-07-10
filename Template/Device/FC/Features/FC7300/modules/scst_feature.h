@@ -1,0 +1,8 @@
+#ifndef _DEVICE_FEATURES_FC7300_SCST_COMMON_H_
+#define _DEVICE_FEATURES_FC7300_SCST_COMMON_H_
+
+/************ SCST Features **************/
+
+#define M7ST_INTTEST_SUPPORT
+
+#endif /* _DEVICE_FEATURES_FC7300_SCST_COMMON_H_ */

@@ -1,0 +1,17 @@
+# Local caches
+__pycache__/
+*.py[cod]
+
+# Eclipse/CDT build outputs
+Debug*/
+Release*/
+*.elf
+*.map
+*.o
+*.d
+*.lst
+*.su
+
+# Temporary files
+tmp/
+*.log

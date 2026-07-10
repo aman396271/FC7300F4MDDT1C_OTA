@@ -1,0 +1,9 @@
+#ifndef _DEVICE_FEATURES_FC7240_FLASH_COMMON_H_
+#define _DEVICE_FEATURES_FC7240_FLASH_COMMON_H_
+
+/************ FLASH Features **************/
+
+
+
+
+#endif /* _DEVICE_FEATURES_FC7240_FLASH_COMMON_H_ */

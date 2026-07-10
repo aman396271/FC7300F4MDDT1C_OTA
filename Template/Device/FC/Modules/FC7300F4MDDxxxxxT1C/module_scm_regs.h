@@ -1,0 +1,2248 @@
+#ifndef _MODULE_SCM_gmbhdijq22_REGS_H_SCM_H_
+#define _MODULE_SCM_gmbhdijq22_REGS_H_SCM_H_
+
+/* ----------------------------------------------------------------------------
+   -- SCM Peripheral Access Layer
+   ---------------------------------------------------------------------------- */
+
+/*!
+ * @addtogroup SCM_Peripheral_Access_Layer SCM Peripheral Access Layer
+ * @{
+ */
+
+/** SCM - Size of Registers Arrays */
+
+/** SCM - Register Layout Typedef */
+#define SCM_INT_ROUTER_COUNT 151
+
+typedef struct {
+
+  __I  uint32_t UIDL                          ; /* Unique Identification Register 0, offset: 0x0 */
+  __I  uint32_t UIDML                         ; /* Unique Identification Register 1, offset: 0x4 */
+  __I  uint32_t UIDMH                         ; /* Unique Identification Register 2, offset: 0x8 */
+  __I  uint32_t UIDH                          ; /* Unique Identification Register 3, offset: 0xC */
+  __I  uint32_t PARTID0                       ; /* PART ID Register, offset: 0x10 */
+       uint8_t  RESERVED_0[4];
+  __I  uint32_t CHIPCFG0                      ; /* Chip Configuration Register 0, offset: 0x18 */
+  __I  uint32_t CHIPCFG1                      ; /* Chip Configuration Register 1, offset: 0x1C */
+  __IO uint32_t MAMECCEN0                     ; /* MAM ECC Enable Register 0, offset: 0x20 */
+  __IO uint32_t MAMECCEN1                     ; /* MAM ECC Enable Register 1, offset: 0x24 */
+  __IO uint32_t CPU0ECCEN                     ; /* CPU0 ECC Enable Register, offset: 0x28 */
+  __IO uint32_t CPU0VTOR                      ; /* CPU0 Vector Table Register, offset: 0x2C */
+  __IO uint32_t CPU1ECCEN                     ; /* CPU1 ECC Enable Register, offset: 0x30 */
+  __IO uint32_t CPU1VTOR                      ; /* CPU1 Vector Table Register, offset: 0x34 */
+       uint8_t  RESERVED_1[8];
+  __IO uint32_t CORE_HOLD                     ; /* Core Hold Register, offset: 0x40 */
+  __IO uint32_t SRAM_CTRL                     ; /* SRAM Control Register, offset: 0x44 */
+       uint8_t  RESERVED_2[4];
+  __IO uint32_t ROMCFG                        ; /* ROM Configuration Register, offset: 0x4C */
+  __IO uint32_t FCSPI_ROUTING                 ; /* FCSPI Routing Register, offset: 0x50 */
+  __IO uint32_t FCUART_ROUTING0               ; /* FCUART Routing Register 0, offset: 0x54 */
+       uint8_t  RESERVED_3[4];
+  __IO uint32_t ENET_CTRL                     ; /* ENET Control Register, offset: 0x5C */
+  __IO uint32_t ADC_ROUTING                   ; /* ADC Routing Register, offset: 0x60 */
+  __IO uint32_t FTU_ROUTING                   ; /* FTU Routing Register, offset: 0x64 */
+  __IO uint32_t FTU_GTBC                      ; /* FTU Global Time Base Control Register, offset: 0x68 */
+  __IO uint32_t FTU_SYNC                      ; /* FTU SYNC Register, offset: 0x6C */
+  __IO uint32_t DEBUG_TRACE                   ; /* Debug Trace Register, offset: 0x70 */
+  __IO uint32_t SOCMISC                       ; /* SOCMISC Register, offset: 0x74 */
+       uint8_t  RESERVED_4[8];
+  __I  uint32_t CCM0_STATUS                   ; /* CCM0 Status Register, offset: 0x80 */
+  __I  uint32_t CCM1_STATUS                   ; /* CCM1 Status Register, offset: 0x84 */
+       uint8_t  RESERVED_5[4];
+  __I  uint32_t ENET_STATUS                   ; /* ENET Status Register, offset: 0x8C */
+       uint8_t  RESERVED_6[4];
+  __IO uint32_t FLEXCAN_ROUTING               ; /* FLEXCAN Routing Register, offset: 0x94 */
+  __IO uint32_t MSC0_ROUTING                  ; /* MSC0 Routing Register, offset: 0x98 */
+       uint8_t  RESERVED_7[4];
+  __IO uint32_t PERI_CLKDIV                   ; /* PERI CLKDIV Register, offset: 0xA0 */
+       uint8_t  RESERVED_8[4];
+  __IO uint32_t ISM_ROUTING                   ; /* ISM Routing Register, offset: 0xA8 */
+  __IO uint32_t FTU_FLT_EN                    ; /* FTU Fault Enable Register, offset: 0xAC */
+  __IO uint32_t MATRIX_STATUS0                ; /* Matrix Status Register 0, offset: 0xB0 */
+  __IO uint32_t MATRIX_STATUS1                ; /* Matrix Status Register 1, offset: 0xB4 */
+  __IO uint32_t MATRIX_STATUS2                ; /* Matrix Status Register 2, offset: 0xB8 */
+  __IO uint32_t MATRIX_STATUS3                ; /* Matrix Status Register 3, offset: 0xBC */
+       uint8_t  RESERVED_9[4];
+  __IO uint32_t MATRIX_STATUS5                ; /* Matrix Status Register 5, offset: 0xC4 */
+  __IO uint32_t MATRIX_ID_STATUS0             ; /* Matrix Master ID Status Register 0, offset: 0xC8 */
+  __IO uint32_t MATRIX_STATUS6                ; /* Matrix Status Register 6, offset: 0xCC */
+  __IO uint32_t MATRIX_STATUS7                ; /* Matrix Status Register 7, offset: 0xD0 */
+  __IO uint32_t MATRIX_STATUS8                ; /* Matrix Status Register 8, offset: 0xD4 */
+       uint8_t  RESERVED_10[4];
+  __IO uint32_t MATRIX_ID_STATUS1             ; /* Matrix ID Status Register 1, offset: 0xDC */
+  __IO uint32_t CPU0_TXRX_EN                  ; /* CPU0 TXRX Enable Register, offset: 0xE0 */
+  __IO uint32_t CPU1_TXRX_EN                  ; /* CPU1 TXRX Enable Register, offset: 0xE4 */
+       uint8_t  RESERVED_11[12];
+  __IO uint32_t FTU_GTBEM                     ; /* FTU Global Time Base Enable Mask Register, offset: 0xF4 */
+  __IO uint32_t EFTU_CFG                      ; /* EFTU Configuration Register, offset: 0xF8 */
+       uint8_t  RESERVED_12[4];
+  __IO uint32_t SYSAP_MDO                     ; /* SYSAP MDO Register, offset: 0x100 */
+  __I  uint32_t SYSAP_MDI                     ; /* SYSAP MDI Register, offset: 0x104 */
+  __I  uint32_t SYSAP_CTRL                    ; /* SYSAP Control Register, offset: 0x108 */
+  __IO uint32_t FLEXHSM_CFG                   ; /* FLEXHSM Configuration Register, offset: 0x10C */
+  __IO uint32_t FLEXHSM_PCC                   ; /* FLEXHSM PCC Register, offset: 0x110 */
+  __I  uint32_t FLEXHSM_STATUS                ; /* FLEXHSM STATUS Register, offset: 0x114 */
+  __I  uint32_t MDO_FLAG                      ; /* Mailbox Data Output Flag Register, offset: 0x118 */
+       uint8_t  RESERVED_13[8];
+  __I  uint32_t MASTER_HALT_ACK               ; /* Master Halt ACK Register, offset: 0x124 */
+       uint8_t  RESERVED_14[4];
+  __I  uint32_t CHIPCFG2                      ; /* Chip Configuration Register 2, offset: 0x12C */
+       uint8_t  RESERVED_15[12];
+  __IO uint32_t CRYPTO_PCC                    ; /* Crypto PCC Register, offset: 0x13C */
+       uint8_t  RESERVED_16[4];
+  __IO uint32_t ADC_CFG                       ; /* ADC Configuration Register, offset: 0x144 */
+       uint8_t  RESERVED_17[4];
+  __IO uint32_t ADC_ROUTING2                  ; /* ADC Routing Register 2, offset: 0x14C */
+  __IO uint32_t SDADC_ROUTING                 ; /* SDADC Routing Register, offset: 0x150 */
+  __IO uint32_t TSTMP_LOCK                    ; /* TSTMP Lock Register, offset: 0x154 */
+  __IO uint32_t TSTMP_RES0                    ; /* TSTMP Result Register 0, offset: 0x158 */
+  __I  uint32_t ADC_GROUP0_RES0               ; /* ADC0 Result Register, offset: 0x15C */
+  __I  uint32_t ADC_GROUP0_RES1               ; /* ADC1 Result Register, offset: 0x160 */
+       uint8_t  RESERVED_18[4];
+  __IO uint32_t TSTMP_RES1                    ; /* TSTMP Result Register 1, offset: 0x168 */
+  __I  uint32_t ADC_GROUP1_RES0               ; /* ADC_GROUP1_RES0, offset: 0x16C */
+  __I  uint32_t ADC_GROUP1_RES1               ; /* ADC_GROUP1_RES1, offset: 0x170 */
+       uint8_t  RESERVED_19[4];
+  __IO uint32_t TSTMP_RES2                    ; /* TSTMP Result Register 2, offset: 0x178 */
+  __I  uint32_t SDADC0_RES0                   ; /* SDADC0 Result Register 0, offset: 0x17C */
+  __I  uint32_t SDADC0_RES1                   ; /* SDADC0 Result Register 1, offset: 0x180 */
+       uint8_t  RESERVED_20[120];
+  __IO uint32_t INT_ROUTER_NMI                ; /* NMI Interrupt Router Register, offset: 0x1FC */
+  __IO uint32_t INT_ROUTER[SCM_INT_ROUTER_COUNT]; /* NVIC Interrupt Router Register, offset: 0x200 */
+       uint8_t  RESERVED_21[932];
+  __IO uint32_t CRCCSR                        ; /* CRC Control Status Register, offset: 0x800 */
+  __I  uint32_t CRCRES                        ; /* CRC Result Register, offset: 0x804 */
+
+} SCM_Type, *SCM_MemMapPtr;
+
+
+/* SCM - Peripheral instance base addresses */
+/** Peripheral SCM base address */
+#define SCM_BASE                                 (0x40072000u)
+/** Peripheral SCM base pointer */
+#define SCM                                      ((SCM_Type *)SCM_BASE)
+// need fill by yourself
+///** Number of interrupt vector arrays for the SCM module. */
+//#define SCM_IRQS_ARR_COUNT                       (1u)
+///** Number of interrupt channels for the SCM module. */
+//#define SCM_IRQS_CH_COUNT                        (1u)
+///** Interrupt vectors for the SCM peripheral type */
+//#define SCM_IRQS                                 {SCM_IRQn}
+
+
+/* ----------------------------------------------------------------------------
+   -- SCM Register Masks
+   ---------------------------------------------------------------------------- */
+
+/*!
+ * @addtogroup SCM_Register_Masks SCM Register Masks
+ * @{
+ */
+
+/* UIDL Bit Fields */
+#define SCM_UIDL_UIDL_MASK             0xFFFFFFFFu
+#define SCM_UIDL_UIDL_SHIFT            0u
+#define SCM_UIDL_UIDL_WIDTH            32u
+#define SCM_UIDL_UIDL(x)               (((uint32_t)(((uint32_t)(x))<<SCM_UIDL_UIDL_SHIFT))&SCM_UIDL_UIDL_MASK)
+/* UIDL Reg Mask */
+#define SCM_UIDL_MASK                  0xFFFFFFFFu
+
+/* UIDML Bit Fields */
+#define SCM_UIDML_UIDML_MASK           0xFFFFFFFFu
+#define SCM_UIDML_UIDML_SHIFT          0u
+#define SCM_UIDML_UIDML_WIDTH          32u
+#define SCM_UIDML_UIDML(x)             (((uint32_t)(((uint32_t)(x))<<SCM_UIDML_UIDML_SHIFT))&SCM_UIDML_UIDML_MASK)
+/* UIDML Reg Mask */
+#define SCM_UIDML_MASK                 0xFFFFFFFFu
+
+/* UIDMH Bit Fields */
+#define SCM_UIDMH_UDMH_MASK            0xFFFFFFFFu
+#define SCM_UIDMH_UDMH_SHIFT           0u
+#define SCM_UIDMH_UDMH_WIDTH           32u
+#define SCM_UIDMH_UDMH(x)              (((uint32_t)(((uint32_t)(x))<<SCM_UIDMH_UDMH_SHIFT))&SCM_UIDMH_UDMH_MASK)
+/* UIDMH Reg Mask */
+#define SCM_UIDMH_MASK                 0xFFFFFFFFu
+
+/* UIDH Bit Fields */
+#define SCM_UIDH_UIDH_MASK             0xFFFFFFFFu
+#define SCM_UIDH_UIDH_SHIFT            0u
+#define SCM_UIDH_UIDH_WIDTH            32u
+#define SCM_UIDH_UIDH(x)               (((uint32_t)(((uint32_t)(x))<<SCM_UIDH_UIDH_SHIFT))&SCM_UIDH_UIDH_MASK)
+/* UIDH Reg Mask */
+#define SCM_UIDH_MASK                  0xFFFFFFFFu
+
+/* PARTID0 Bit Fields */
+#define SCM_PARTID0_FAM_ID_MASK        0xFF0u
+#define SCM_PARTID0_FAM_ID_SHIFT       4u
+#define SCM_PARTID0_FAM_ID_WIDTH       8u
+#define SCM_PARTID0_FAM_ID(x)          (((uint32_t)(((uint32_t)(x))<<SCM_PARTID0_FAM_ID_SHIFT))&SCM_PARTID0_FAM_ID_MASK)
+#define SCM_PARTID0_REVID_MASK         0xFu
+#define SCM_PARTID0_REVID_SHIFT        0u
+#define SCM_PARTID0_REVID_WIDTH        4u
+#define SCM_PARTID0_REVID(x)           (((uint32_t)(((uint32_t)(x))<<SCM_PARTID0_REVID_SHIFT))&SCM_PARTID0_REVID_MASK)
+/* PARTID0 Reg Mask */
+#define SCM_PARTID0_MASK               0x00000FFFu
+
+/* CHIPCFG0 Bit Fields */
+#define SCM_CHIPCFG0_CPU1_LOCKSTEP_EN_MASK 0x80000000u
+#define SCM_CHIPCFG0_CPU1_LOCKSTEP_EN_SHIFT 31u
+#define SCM_CHIPCFG0_CPU1_LOCKSTEP_EN_WIDTH 1u
+#define SCM_CHIPCFG0_CPU1_LOCKSTEP_EN(x) (((uint32_t)(((uint32_t)(x))<<SCM_CHIPCFG0_CPU1_LOCKSTEP_EN_SHIFT))&SCM_CHIPCFG0_CPU1_LOCKSTEP_EN_MASK)
+#define SCM_CHIPCFG0_CPU0_LOCKSTEP_EN_MASK 0x40000000u
+#define SCM_CHIPCFG0_CPU0_LOCKSTEP_EN_SHIFT 30u
+#define SCM_CHIPCFG0_CPU0_LOCKSTEP_EN_WIDTH 1u
+#define SCM_CHIPCFG0_CPU0_LOCKSTEP_EN(x) (((uint32_t)(((uint32_t)(x))<<SCM_CHIPCFG0_CPU0_LOCKSTEP_EN_SHIFT))&SCM_CHIPCFG0_CPU0_LOCKSTEP_EN_MASK)
+#define SCM_CHIPCFG0_ENET_MASK         0x200u
+#define SCM_CHIPCFG0_ENET_SHIFT        9u
+#define SCM_CHIPCFG0_ENET_WIDTH        1u
+#define SCM_CHIPCFG0_ENET(x)           (((uint32_t)(((uint32_t)(x))<<SCM_CHIPCFG0_ENET_SHIFT))&SCM_CHIPCFG0_ENET_MASK)
+#define SCM_CHIPCFG0_CAN_FD_MASK       0x100u
+#define SCM_CHIPCFG0_CAN_FD_SHIFT      8u
+#define SCM_CHIPCFG0_CAN_FD_WIDTH      1u
+#define SCM_CHIPCFG0_CAN_FD(x)         (((uint32_t)(((uint32_t)(x))<<SCM_CHIPCFG0_CAN_FD_SHIFT))&SCM_CHIPCFG0_CAN_FD_MASK)
+/* CHIPCFG0 Reg Mask */
+#define SCM_CHIPCFG0_MASK              0xC0000300u
+
+/* CHIPCFG1 Bit Fields */
+#define SCM_CHIPCFG1_PACKAGE_SIZE_MASK 0xF000u
+#define SCM_CHIPCFG1_PACKAGE_SIZE_SHIFT 12u
+#define SCM_CHIPCFG1_PACKAGE_SIZE_WIDTH 4u
+#define SCM_CHIPCFG1_PACKAGE_SIZE(x)   (((uint32_t)(((uint32_t)(x))<<SCM_CHIPCFG1_PACKAGE_SIZE_SHIFT))&SCM_CHIPCFG1_PACKAGE_SIZE_MASK)
+#define SCM_CHIPCFG1_CPU1_EN_MASK      0x2u
+#define SCM_CHIPCFG1_CPU1_EN_SHIFT     1u
+#define SCM_CHIPCFG1_CPU1_EN_WIDTH     1u
+#define SCM_CHIPCFG1_CPU1_EN(x)        (((uint32_t)(((uint32_t)(x))<<SCM_CHIPCFG1_CPU1_EN_SHIFT))&SCM_CHIPCFG1_CPU1_EN_MASK)
+/* CHIPCFG1 Reg Mask */
+#define SCM_CHIPCFG1_MASK              0x0000F002u
+
+/* MAMECCEN0 Bit Fields */
+#define SCM_MAMECCEN0_WPB_LOCK_MASK    0x80000000u
+#define SCM_MAMECCEN0_WPB_LOCK_SHIFT   31u
+#define SCM_MAMECCEN0_WPB_LOCK_WIDTH   1u
+#define SCM_MAMECCEN0_WPB_LOCK(x)      (((uint32_t)(((uint32_t)(x))<<SCM_MAMECCEN0_WPB_LOCK_SHIFT))&SCM_MAMECCEN0_WPB_LOCK_MASK)
+#define SCM_MAMECCEN0_WPB_MASK         0x70000000u
+#define SCM_MAMECCEN0_WPB_SHIFT        28u
+#define SCM_MAMECCEN0_WPB_WIDTH        3u
+#define SCM_MAMECCEN0_WPB(x)           (((uint32_t)(((uint32_t)(x))<<SCM_MAMECCEN0_WPB_SHIFT))&SCM_MAMECCEN0_WPB_MASK)
+#define SCM_MAMECCEN0_SRAM2_ECC_MASK   0x4000000u
+#define SCM_MAMECCEN0_SRAM2_ECC_SHIFT  26u
+#define SCM_MAMECCEN0_SRAM2_ECC_WIDTH  1u
+#define SCM_MAMECCEN0_SRAM2_ECC(x)     (((uint32_t)(((uint32_t)(x))<<SCM_MAMECCEN0_SRAM2_ECC_SHIFT))&SCM_MAMECCEN0_SRAM2_ECC_MASK)
+#define SCM_MAMECCEN0_SRAM1_ECC_MASK   0x1000000u
+#define SCM_MAMECCEN0_SRAM1_ECC_SHIFT  24u
+#define SCM_MAMECCEN0_SRAM1_ECC_WIDTH  1u
+#define SCM_MAMECCEN0_SRAM1_ECC(x)     (((uint32_t)(((uint32_t)(x))<<SCM_MAMECCEN0_SRAM1_ECC_SHIFT))&SCM_MAMECCEN0_SRAM1_ECC_MASK)
+#define SCM_MAMECCEN0_SRAM0_ECC_MASK   0x400000u
+#define SCM_MAMECCEN0_SRAM0_ECC_SHIFT  22u
+#define SCM_MAMECCEN0_SRAM0_ECC_WIDTH  1u
+#define SCM_MAMECCEN0_SRAM0_ECC(x)     (((uint32_t)(((uint32_t)(x))<<SCM_MAMECCEN0_SRAM0_ECC_SHIFT))&SCM_MAMECCEN0_SRAM0_ECC_MASK)
+#define SCM_MAMECCEN0_MAM1_S2_ECC_MASK 0x300000u
+#define SCM_MAMECCEN0_MAM1_S2_ECC_SHIFT 20u
+#define SCM_MAMECCEN0_MAM1_S2_ECC_WIDTH 2u
+#define SCM_MAMECCEN0_MAM1_S2_ECC(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MAMECCEN0_MAM1_S2_ECC_SHIFT))&SCM_MAMECCEN0_MAM1_S2_ECC_MASK)
+#define SCM_MAMECCEN0_MAM1_S1_ECC_MASK 0xC0000u
+#define SCM_MAMECCEN0_MAM1_S1_ECC_SHIFT 18u
+#define SCM_MAMECCEN0_MAM1_S1_ECC_WIDTH 2u
+#define SCM_MAMECCEN0_MAM1_S1_ECC(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MAMECCEN0_MAM1_S1_ECC_SHIFT))&SCM_MAMECCEN0_MAM1_S1_ECC_MASK)
+#define SCM_MAMECCEN0_MAM1_S0_ECC_MASK 0x30000u
+#define SCM_MAMECCEN0_MAM1_S0_ECC_SHIFT 16u
+#define SCM_MAMECCEN0_MAM1_S0_ECC_WIDTH 2u
+#define SCM_MAMECCEN0_MAM1_S0_ECC(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MAMECCEN0_MAM1_S0_ECC_SHIFT))&SCM_MAMECCEN0_MAM1_S0_ECC_MASK)
+#define SCM_MAMECCEN0_MAM0_S7_ECC_MASK 0xC000u
+#define SCM_MAMECCEN0_MAM0_S7_ECC_SHIFT 14u
+#define SCM_MAMECCEN0_MAM0_S7_ECC_WIDTH 2u
+#define SCM_MAMECCEN0_MAM0_S7_ECC(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MAMECCEN0_MAM0_S7_ECC_SHIFT))&SCM_MAMECCEN0_MAM0_S7_ECC_MASK)
+#define SCM_MAMECCEN0_MAM0_S6_ECC_MASK 0x3000u
+#define SCM_MAMECCEN0_MAM0_S6_ECC_SHIFT 12u
+#define SCM_MAMECCEN0_MAM0_S6_ECC_WIDTH 2u
+#define SCM_MAMECCEN0_MAM0_S6_ECC(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MAMECCEN0_MAM0_S6_ECC_SHIFT))&SCM_MAMECCEN0_MAM0_S6_ECC_MASK)
+#define SCM_MAMECCEN0_MAM0_S5_ECC_MASK 0xC00u
+#define SCM_MAMECCEN0_MAM0_S5_ECC_SHIFT 10u
+#define SCM_MAMECCEN0_MAM0_S5_ECC_WIDTH 2u
+#define SCM_MAMECCEN0_MAM0_S5_ECC(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MAMECCEN0_MAM0_S5_ECC_SHIFT))&SCM_MAMECCEN0_MAM0_S5_ECC_MASK)
+#define SCM_MAMECCEN0_MAM0_S4_ECC_MASK 0x300u
+#define SCM_MAMECCEN0_MAM0_S4_ECC_SHIFT 8u
+#define SCM_MAMECCEN0_MAM0_S4_ECC_WIDTH 2u
+#define SCM_MAMECCEN0_MAM0_S4_ECC(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MAMECCEN0_MAM0_S4_ECC_SHIFT))&SCM_MAMECCEN0_MAM0_S4_ECC_MASK)
+#define SCM_MAMECCEN0_MAM0_S3_ECC_MASK 0xC0u
+#define SCM_MAMECCEN0_MAM0_S3_ECC_SHIFT 6u
+#define SCM_MAMECCEN0_MAM0_S3_ECC_WIDTH 2u
+#define SCM_MAMECCEN0_MAM0_S3_ECC(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MAMECCEN0_MAM0_S3_ECC_SHIFT))&SCM_MAMECCEN0_MAM0_S3_ECC_MASK)
+#define SCM_MAMECCEN0_MAM0_S1_ECC_MASK 0xCu
+#define SCM_MAMECCEN0_MAM0_S1_ECC_SHIFT 2u
+#define SCM_MAMECCEN0_MAM0_S1_ECC_WIDTH 2u
+#define SCM_MAMECCEN0_MAM0_S1_ECC(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MAMECCEN0_MAM0_S1_ECC_SHIFT))&SCM_MAMECCEN0_MAM0_S1_ECC_MASK)
+#define SCM_MAMECCEN0_MAM0_S0_ECC_MASK 0x3u
+#define SCM_MAMECCEN0_MAM0_S0_ECC_SHIFT 0u
+#define SCM_MAMECCEN0_MAM0_S0_ECC_WIDTH 2u
+#define SCM_MAMECCEN0_MAM0_S0_ECC(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MAMECCEN0_MAM0_S0_ECC_SHIFT))&SCM_MAMECCEN0_MAM0_S0_ECC_MASK)
+/* MAMECCEN0 Reg Mask */
+#define SCM_MAMECCEN0_MASK             0xF57FFFCFu
+
+/* MAMECCEN1 Bit Fields */
+#define SCM_MAMECCEN1_WPB_LOCK_MASK    0x80000000u
+#define SCM_MAMECCEN1_WPB_LOCK_SHIFT   31u
+#define SCM_MAMECCEN1_WPB_LOCK_WIDTH   1u
+#define SCM_MAMECCEN1_WPB_LOCK(x)      (((uint32_t)(((uint32_t)(x))<<SCM_MAMECCEN1_WPB_LOCK_SHIFT))&SCM_MAMECCEN1_WPB_LOCK_MASK)
+#define SCM_MAMECCEN1_WPB_MASK         0x70000000u
+#define SCM_MAMECCEN1_WPB_SHIFT        28u
+#define SCM_MAMECCEN1_WPB_WIDTH        3u
+#define SCM_MAMECCEN1_WPB(x)           (((uint32_t)(((uint32_t)(x))<<SCM_MAMECCEN1_WPB_SHIFT))&SCM_MAMECCEN1_WPB_MASK)
+#define SCM_MAMECCEN1_MAM1_S3_ECC_MASK 0x300000u
+#define SCM_MAMECCEN1_MAM1_S3_ECC_SHIFT 20u
+#define SCM_MAMECCEN1_MAM1_S3_ECC_WIDTH 2u
+#define SCM_MAMECCEN1_MAM1_S3_ECC(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MAMECCEN1_MAM1_S3_ECC_SHIFT))&SCM_MAMECCEN1_MAM1_S3_ECC_MASK)
+#define SCM_MAMECCEN1_MAM0_S8_ECC_MASK 0xC000u
+#define SCM_MAMECCEN1_MAM0_S8_ECC_SHIFT 14u
+#define SCM_MAMECCEN1_MAM0_S8_ECC_WIDTH 2u
+#define SCM_MAMECCEN1_MAM0_S8_ECC(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MAMECCEN1_MAM0_S8_ECC_SHIFT))&SCM_MAMECCEN1_MAM0_S8_ECC_MASK)
+#define SCM_MAMECCEN1_FLEXHSM_IRAM_ECC_MASK 0x3000u
+#define SCM_MAMECCEN1_FLEXHSM_IRAM_ECC_SHIFT 12u
+#define SCM_MAMECCEN1_FLEXHSM_IRAM_ECC_WIDTH 2u
+#define SCM_MAMECCEN1_FLEXHSM_IRAM_ECC(x) (((uint32_t)(((uint32_t)(x))<<SCM_MAMECCEN1_FLEXHSM_IRAM_ECC_SHIFT))&SCM_MAMECCEN1_FLEXHSM_IRAM_ECC_MASK)
+#define SCM_MAMECCEN1_FLEXHSM_DRAM_ECC_MASK 0xC00u
+#define SCM_MAMECCEN1_FLEXHSM_DRAM_ECC_SHIFT 10u
+#define SCM_MAMECCEN1_FLEXHSM_DRAM_ECC_WIDTH 2u
+#define SCM_MAMECCEN1_FLEXHSM_DRAM_ECC(x) (((uint32_t)(((uint32_t)(x))<<SCM_MAMECCEN1_FLEXHSM_DRAM_ECC_SHIFT))&SCM_MAMECCEN1_FLEXHSM_DRAM_ECC_MASK)
+#define SCM_MAMECCEN1_DMA0_CFG_ECC_MASK 0x100u
+#define SCM_MAMECCEN1_DMA0_CFG_ECC_SHIFT 8u
+#define SCM_MAMECCEN1_DMA0_CFG_ECC_WIDTH 1u
+#define SCM_MAMECCEN1_DMA0_CFG_ECC(x)  (((uint32_t)(((uint32_t)(x))<<SCM_MAMECCEN1_DMA0_CFG_ECC_SHIFT))&SCM_MAMECCEN1_DMA0_CFG_ECC_MASK)
+#define SCM_MAMECCEN1_DMA0_ECC_MASK    0x30u
+#define SCM_MAMECCEN1_DMA0_ECC_SHIFT   4u
+#define SCM_MAMECCEN1_DMA0_ECC_WIDTH   2u
+#define SCM_MAMECCEN1_DMA0_ECC(x)      (((uint32_t)(((uint32_t)(x))<<SCM_MAMECCEN1_DMA0_ECC_SHIFT))&SCM_MAMECCEN1_DMA0_ECC_MASK)
+#define SCM_MAMECCEN1_ENET_ECC_MASK    0xCu
+#define SCM_MAMECCEN1_ENET_ECC_SHIFT   2u
+#define SCM_MAMECCEN1_ENET_ECC_WIDTH   2u
+#define SCM_MAMECCEN1_ENET_ECC(x)      (((uint32_t)(((uint32_t)(x))<<SCM_MAMECCEN1_ENET_ECC_SHIFT))&SCM_MAMECCEN1_ENET_ECC_MASK)
+#define SCM_MAMECCEN1_FLEXHSM_ECC_MASK 0x3u
+#define SCM_MAMECCEN1_FLEXHSM_ECC_SHIFT 0u
+#define SCM_MAMECCEN1_FLEXHSM_ECC_WIDTH 2u
+#define SCM_MAMECCEN1_FLEXHSM_ECC(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MAMECCEN1_FLEXHSM_ECC_SHIFT))&SCM_MAMECCEN1_FLEXHSM_ECC_MASK)
+/* MAMECCEN1 Reg Mask */
+#define SCM_MAMECCEN1_MASK             0xF030FD3Fu
+
+/* CPU0ECCEN Bit Fields */
+#define SCM_CPU0ECCEN_WPB_LOCK_MASK    0x80000000u
+#define SCM_CPU0ECCEN_WPB_LOCK_SHIFT   31u
+#define SCM_CPU0ECCEN_WPB_LOCK_WIDTH   1u
+#define SCM_CPU0ECCEN_WPB_LOCK(x)      (((uint32_t)(((uint32_t)(x))<<SCM_CPU0ECCEN_WPB_LOCK_SHIFT))&SCM_CPU0ECCEN_WPB_LOCK_MASK)
+#define SCM_CPU0ECCEN_WPB_MASK         0x70000000u
+#define SCM_CPU0ECCEN_WPB_SHIFT        28u
+#define SCM_CPU0ECCEN_WPB_WIDTH        3u
+#define SCM_CPU0ECCEN_WPB(x)           (((uint32_t)(((uint32_t)(x))<<SCM_CPU0ECCEN_WPB_SHIFT))&SCM_CPU0ECCEN_WPB_MASK)
+#define SCM_CPU0ECCEN_CPU0_ITCM_ECC_MASK 0xC00u
+#define SCM_CPU0ECCEN_CPU0_ITCM_ECC_SHIFT 10u
+#define SCM_CPU0ECCEN_CPU0_ITCM_ECC_WIDTH 2u
+#define SCM_CPU0ECCEN_CPU0_ITCM_ECC(x) (((uint32_t)(((uint32_t)(x))<<SCM_CPU0ECCEN_CPU0_ITCM_ECC_SHIFT))&SCM_CPU0ECCEN_CPU0_ITCM_ECC_MASK)
+#define SCM_CPU0ECCEN_CPU0_DTCM1_ECC_MASK 0x300u
+#define SCM_CPU0ECCEN_CPU0_DTCM1_ECC_SHIFT 8u
+#define SCM_CPU0ECCEN_CPU0_DTCM1_ECC_WIDTH 2u
+#define SCM_CPU0ECCEN_CPU0_DTCM1_ECC(x) (((uint32_t)(((uint32_t)(x))<<SCM_CPU0ECCEN_CPU0_DTCM1_ECC_SHIFT))&SCM_CPU0ECCEN_CPU0_DTCM1_ECC_MASK)
+#define SCM_CPU0ECCEN_CPU0_DTCM0_ECC_MASK 0xC0u
+#define SCM_CPU0ECCEN_CPU0_DTCM0_ECC_SHIFT 6u
+#define SCM_CPU0ECCEN_CPU0_DTCM0_ECC_WIDTH 2u
+#define SCM_CPU0ECCEN_CPU0_DTCM0_ECC(x) (((uint32_t)(((uint32_t)(x))<<SCM_CPU0ECCEN_CPU0_DTCM0_ECC_SHIFT))&SCM_CPU0ECCEN_CPU0_DTCM0_ECC_MASK)
+#define SCM_CPU0ECCEN_CPU0_AHBP_ECC_MASK 0xCu
+#define SCM_CPU0ECCEN_CPU0_AHBP_ECC_SHIFT 2u
+#define SCM_CPU0ECCEN_CPU0_AHBP_ECC_WIDTH 2u
+#define SCM_CPU0ECCEN_CPU0_AHBP_ECC(x) (((uint32_t)(((uint32_t)(x))<<SCM_CPU0ECCEN_CPU0_AHBP_ECC_SHIFT))&SCM_CPU0ECCEN_CPU0_AHBP_ECC_MASK)
+#define SCM_CPU0ECCEN_CPU0_AHBM_ECC_MASK 0x3u
+#define SCM_CPU0ECCEN_CPU0_AHBM_ECC_SHIFT 0u
+#define SCM_CPU0ECCEN_CPU0_AHBM_ECC_WIDTH 2u
+#define SCM_CPU0ECCEN_CPU0_AHBM_ECC(x) (((uint32_t)(((uint32_t)(x))<<SCM_CPU0ECCEN_CPU0_AHBM_ECC_SHIFT))&SCM_CPU0ECCEN_CPU0_AHBM_ECC_MASK)
+/* CPU0ECCEN Reg Mask */
+#define SCM_CPU0ECCEN_MASK             0xF0000FCFu
+
+/* CPU0VTOR Bit Fields */
+#define SCM_CPU0VTOR_CPU0_INIT_VECTOR_MASK 0xFFFFFF8u
+#define SCM_CPU0VTOR_CPU0_INIT_VECTOR_SHIFT 3u
+#define SCM_CPU0VTOR_CPU0_INIT_VECTOR_WIDTH 25u
+#define SCM_CPU0VTOR_CPU0_INIT_VECTOR(x) (((uint32_t)(((uint32_t)(x))<<SCM_CPU0VTOR_CPU0_INIT_VECTOR_SHIFT))&SCM_CPU0VTOR_CPU0_INIT_VECTOR_MASK)
+/* CPU0VTOR Reg Mask */
+#define SCM_CPU0VTOR_MASK              0x0FFFFFF8u
+
+/* CPU1ECCEN Bit Fields */
+#define SCM_CPU1ECCEN_WPB_LOCK_MASK    0x80000000u
+#define SCM_CPU1ECCEN_WPB_LOCK_SHIFT   31u
+#define SCM_CPU1ECCEN_WPB_LOCK_WIDTH   1u
+#define SCM_CPU1ECCEN_WPB_LOCK(x)      (((uint32_t)(((uint32_t)(x))<<SCM_CPU1ECCEN_WPB_LOCK_SHIFT))&SCM_CPU1ECCEN_WPB_LOCK_MASK)
+#define SCM_CPU1ECCEN_WPB_MASK         0x70000000u
+#define SCM_CPU1ECCEN_WPB_SHIFT        28u
+#define SCM_CPU1ECCEN_WPB_WIDTH        3u
+#define SCM_CPU1ECCEN_WPB(x)           (((uint32_t)(((uint32_t)(x))<<SCM_CPU1ECCEN_WPB_SHIFT))&SCM_CPU1ECCEN_WPB_MASK)
+#define SCM_CPU1ECCEN_CPU1_ITCM_ECC_MASK 0xC00u
+#define SCM_CPU1ECCEN_CPU1_ITCM_ECC_SHIFT 10u
+#define SCM_CPU1ECCEN_CPU1_ITCM_ECC_WIDTH 2u
+#define SCM_CPU1ECCEN_CPU1_ITCM_ECC(x) (((uint32_t)(((uint32_t)(x))<<SCM_CPU1ECCEN_CPU1_ITCM_ECC_SHIFT))&SCM_CPU1ECCEN_CPU1_ITCM_ECC_MASK)
+#define SCM_CPU1ECCEN_CPU1_DTCM1_ECC_MASK 0x300u
+#define SCM_CPU1ECCEN_CPU1_DTCM1_ECC_SHIFT 8u
+#define SCM_CPU1ECCEN_CPU1_DTCM1_ECC_WIDTH 2u
+#define SCM_CPU1ECCEN_CPU1_DTCM1_ECC(x) (((uint32_t)(((uint32_t)(x))<<SCM_CPU1ECCEN_CPU1_DTCM1_ECC_SHIFT))&SCM_CPU1ECCEN_CPU1_DTCM1_ECC_MASK)
+#define SCM_CPU1ECCEN_CPU1_DTCM0_ECC_MASK 0xC0u
+#define SCM_CPU1ECCEN_CPU1_DTCM0_ECC_SHIFT 6u
+#define SCM_CPU1ECCEN_CPU1_DTCM0_ECC_WIDTH 2u
+#define SCM_CPU1ECCEN_CPU1_DTCM0_ECC(x) (((uint32_t)(((uint32_t)(x))<<SCM_CPU1ECCEN_CPU1_DTCM0_ECC_SHIFT))&SCM_CPU1ECCEN_CPU1_DTCM0_ECC_MASK)
+#define SCM_CPU1ECCEN_CPU1_AHBP_ECC_MASK 0xCu
+#define SCM_CPU1ECCEN_CPU1_AHBP_ECC_SHIFT 2u
+#define SCM_CPU1ECCEN_CPU1_AHBP_ECC_WIDTH 2u
+#define SCM_CPU1ECCEN_CPU1_AHBP_ECC(x) (((uint32_t)(((uint32_t)(x))<<SCM_CPU1ECCEN_CPU1_AHBP_ECC_SHIFT))&SCM_CPU1ECCEN_CPU1_AHBP_ECC_MASK)
+#define SCM_CPU1ECCEN_CPU1_AHBM_ECC_MASK 0x3u
+#define SCM_CPU1ECCEN_CPU1_AHBM_ECC_SHIFT 0u
+#define SCM_CPU1ECCEN_CPU1_AHBM_ECC_WIDTH 2u
+#define SCM_CPU1ECCEN_CPU1_AHBM_ECC(x) (((uint32_t)(((uint32_t)(x))<<SCM_CPU1ECCEN_CPU1_AHBM_ECC_SHIFT))&SCM_CPU1ECCEN_CPU1_AHBM_ECC_MASK)
+/* CPU1ECCEN Reg Mask */
+#define SCM_CPU1ECCEN_MASK             0xF0000FCFu
+
+/* CPU1VTOR Bit Fields */
+#define SCM_CPU1VTOR_WPB_LOCK_MASK     0x80000000u
+#define SCM_CPU1VTOR_WPB_LOCK_SHIFT    31u
+#define SCM_CPU1VTOR_WPB_LOCK_WIDTH    1u
+#define SCM_CPU1VTOR_WPB_LOCK(x)       (((uint32_t)(((uint32_t)(x))<<SCM_CPU1VTOR_WPB_LOCK_SHIFT))&SCM_CPU1VTOR_WPB_LOCK_MASK)
+#define SCM_CPU1VTOR_WPB_MASK          0x70000000u
+#define SCM_CPU1VTOR_WPB_SHIFT         28u
+#define SCM_CPU1VTOR_WPB_WIDTH         3u
+#define SCM_CPU1VTOR_WPB(x)            (((uint32_t)(((uint32_t)(x))<<SCM_CPU1VTOR_WPB_SHIFT))&SCM_CPU1VTOR_WPB_MASK)
+#define SCM_CPU1VTOR_CPU1_INIT_VECTOR_MASK 0xFFFFFF8u
+#define SCM_CPU1VTOR_CPU1_INIT_VECTOR_SHIFT 3u
+#define SCM_CPU1VTOR_CPU1_INIT_VECTOR_WIDTH 25u
+#define SCM_CPU1VTOR_CPU1_INIT_VECTOR(x) (((uint32_t)(((uint32_t)(x))<<SCM_CPU1VTOR_CPU1_INIT_VECTOR_SHIFT))&SCM_CPU1VTOR_CPU1_INIT_VECTOR_MASK)
+/* CPU1VTOR Reg Mask */
+#define SCM_CPU1VTOR_MASK              0xFFFFFFF8u
+
+/* CORE_HOLD Bit Fields */
+#define SCM_CORE_HOLD_WPB_LOCK_MASK    0x80000000u
+#define SCM_CORE_HOLD_WPB_LOCK_SHIFT   31u
+#define SCM_CORE_HOLD_WPB_LOCK_WIDTH   1u
+#define SCM_CORE_HOLD_WPB_LOCK(x)      (((uint32_t)(((uint32_t)(x))<<SCM_CORE_HOLD_WPB_LOCK_SHIFT))&SCM_CORE_HOLD_WPB_LOCK_MASK)
+#define SCM_CORE_HOLD_WPB_MASK         0x70000000u
+#define SCM_CORE_HOLD_WPB_SHIFT        28u
+#define SCM_CORE_HOLD_WPB_WIDTH        3u
+#define SCM_CORE_HOLD_WPB(x)           (((uint32_t)(((uint32_t)(x))<<SCM_CORE_HOLD_WPB_SHIFT))&SCM_CORE_HOLD_WPB_MASK)
+#define SCM_CORE_HOLD_TCM1_CLK_EN_MASK 0x20000u
+#define SCM_CORE_HOLD_TCM1_CLK_EN_SHIFT 17u
+#define SCM_CORE_HOLD_TCM1_CLK_EN_WIDTH 1u
+#define SCM_CORE_HOLD_TCM1_CLK_EN(x)   (((uint32_t)(((uint32_t)(x))<<SCM_CORE_HOLD_TCM1_CLK_EN_SHIFT))&SCM_CORE_HOLD_TCM1_CLK_EN_MASK)
+#define SCM_CORE_HOLD_CPU1_CORE_HOLD_MASK 0x2u
+#define SCM_CORE_HOLD_CPU1_CORE_HOLD_SHIFT 1u
+#define SCM_CORE_HOLD_CPU1_CORE_HOLD_WIDTH 1u
+#define SCM_CORE_HOLD_CPU1_CORE_HOLD(x) (((uint32_t)(((uint32_t)(x))<<SCM_CORE_HOLD_CPU1_CORE_HOLD_SHIFT))&SCM_CORE_HOLD_CPU1_CORE_HOLD_MASK)
+/* CORE_HOLD Reg Mask */
+#define SCM_CORE_HOLD_MASK             0xF0020002u
+
+/* SRAM_CTRL Bit Fields */
+#define SCM_SRAM_CTRL_SRAM2_CTRL_EDC_MASK 0x40000u
+#define SCM_SRAM_CTRL_SRAM2_CTRL_EDC_SHIFT 18u
+#define SCM_SRAM_CTRL_SRAM2_CTRL_EDC_WIDTH 1u
+#define SCM_SRAM_CTRL_SRAM2_CTRL_EDC(x) (((uint32_t)(((uint32_t)(x))<<SCM_SRAM_CTRL_SRAM2_CTRL_EDC_SHIFT))&SCM_SRAM_CTRL_SRAM2_CTRL_EDC_MASK)
+#define SCM_SRAM_CTRL_SRAM1_CTRL_EDC_MASK 0x20000u
+#define SCM_SRAM_CTRL_SRAM1_CTRL_EDC_SHIFT 17u
+#define SCM_SRAM_CTRL_SRAM1_CTRL_EDC_WIDTH 1u
+#define SCM_SRAM_CTRL_SRAM1_CTRL_EDC(x) (((uint32_t)(((uint32_t)(x))<<SCM_SRAM_CTRL_SRAM1_CTRL_EDC_SHIFT))&SCM_SRAM_CTRL_SRAM1_CTRL_EDC_MASK)
+#define SCM_SRAM_CTRL_SRAM0_CTRL_EDC_MASK 0x10000u
+#define SCM_SRAM_CTRL_SRAM0_CTRL_EDC_SHIFT 16u
+#define SCM_SRAM_CTRL_SRAM0_CTRL_EDC_WIDTH 1u
+#define SCM_SRAM_CTRL_SRAM0_CTRL_EDC(x) (((uint32_t)(((uint32_t)(x))<<SCM_SRAM_CTRL_SRAM0_CTRL_EDC_SHIFT))&SCM_SRAM_CTRL_SRAM0_CTRL_EDC_MASK)
+/* SRAM_CTRL Reg Mask */
+#define SCM_SRAM_CTRL_MASK             0x00070000u
+
+/* ROMCFG Bit Fields */
+#define SCM_ROMCFG_HSMROM_PGEN_MASK    0x80000000u
+#define SCM_ROMCFG_HSMROM_PGEN_SHIFT   31u
+#define SCM_ROMCFG_HSMROM_PGEN_WIDTH   1u
+#define SCM_ROMCFG_HSMROM_PGEN(x)      (((uint32_t)(((uint32_t)(x))<<SCM_ROMCFG_HSMROM_PGEN_SHIFT))&SCM_ROMCFG_HSMROM_PGEN_MASK)
+#define SCM_ROMCFG_SYSROM_PGEN_MASK    0x40000000u
+#define SCM_ROMCFG_SYSROM_PGEN_SHIFT   30u
+#define SCM_ROMCFG_SYSROM_PGEN_WIDTH   1u
+#define SCM_ROMCFG_SYSROM_PGEN(x)      (((uint32_t)(((uint32_t)(x))<<SCM_ROMCFG_SYSROM_PGEN_SHIFT))&SCM_ROMCFG_SYSROM_PGEN_MASK)
+#define SCM_ROMCFG_LOCK_MASK           0x1u
+#define SCM_ROMCFG_LOCK_SHIFT          0u
+#define SCM_ROMCFG_LOCK_WIDTH          1u
+#define SCM_ROMCFG_LOCK(x)             (((uint32_t)(((uint32_t)(x))<<SCM_ROMCFG_LOCK_SHIFT))&SCM_ROMCFG_LOCK_MASK)
+/* ROMCFG Reg Mask */
+#define SCM_ROMCFG_MASK                0xC0000001u
+
+/* FCSPI_ROUTING Bit Fields */
+#define SCM_FCSPI_ROUTING_SPI5_ROUTING_MASK 0x700000u
+#define SCM_FCSPI_ROUTING_SPI5_ROUTING_SHIFT 20u
+#define SCM_FCSPI_ROUTING_SPI5_ROUTING_WIDTH 3u
+#define SCM_FCSPI_ROUTING_SPI5_ROUTING(x) (((uint32_t)(((uint32_t)(x))<<SCM_FCSPI_ROUTING_SPI5_ROUTING_SHIFT))&SCM_FCSPI_ROUTING_SPI5_ROUTING_MASK)
+#define SCM_FCSPI_ROUTING_SPI4_ROUTING_MASK 0x70000u
+#define SCM_FCSPI_ROUTING_SPI4_ROUTING_SHIFT 16u
+#define SCM_FCSPI_ROUTING_SPI4_ROUTING_WIDTH 3u
+#define SCM_FCSPI_ROUTING_SPI4_ROUTING(x) (((uint32_t)(((uint32_t)(x))<<SCM_FCSPI_ROUTING_SPI4_ROUTING_SHIFT))&SCM_FCSPI_ROUTING_SPI4_ROUTING_MASK)
+#define SCM_FCSPI_ROUTING_SPI3_ROUTING_MASK 0x7000u
+#define SCM_FCSPI_ROUTING_SPI3_ROUTING_SHIFT 12u
+#define SCM_FCSPI_ROUTING_SPI3_ROUTING_WIDTH 3u
+#define SCM_FCSPI_ROUTING_SPI3_ROUTING(x) (((uint32_t)(((uint32_t)(x))<<SCM_FCSPI_ROUTING_SPI3_ROUTING_SHIFT))&SCM_FCSPI_ROUTING_SPI3_ROUTING_MASK)
+#define SCM_FCSPI_ROUTING_SPI2_ROUTING_MASK 0x700u
+#define SCM_FCSPI_ROUTING_SPI2_ROUTING_SHIFT 8u
+#define SCM_FCSPI_ROUTING_SPI2_ROUTING_WIDTH 3u
+#define SCM_FCSPI_ROUTING_SPI2_ROUTING(x) (((uint32_t)(((uint32_t)(x))<<SCM_FCSPI_ROUTING_SPI2_ROUTING_SHIFT))&SCM_FCSPI_ROUTING_SPI2_ROUTING_MASK)
+#define SCM_FCSPI_ROUTING_SPI1_ROUTING_MASK 0x70u
+#define SCM_FCSPI_ROUTING_SPI1_ROUTING_SHIFT 4u
+#define SCM_FCSPI_ROUTING_SPI1_ROUTING_WIDTH 3u
+#define SCM_FCSPI_ROUTING_SPI1_ROUTING(x) (((uint32_t)(((uint32_t)(x))<<SCM_FCSPI_ROUTING_SPI1_ROUTING_SHIFT))&SCM_FCSPI_ROUTING_SPI1_ROUTING_MASK)
+#define SCM_FCSPI_ROUTING_SPI0_ROUTING_MASK 0x7u
+#define SCM_FCSPI_ROUTING_SPI0_ROUTING_SHIFT 0u
+#define SCM_FCSPI_ROUTING_SPI0_ROUTING_WIDTH 3u
+#define SCM_FCSPI_ROUTING_SPI0_ROUTING(x) (((uint32_t)(((uint32_t)(x))<<SCM_FCSPI_ROUTING_SPI0_ROUTING_SHIFT))&SCM_FCSPI_ROUTING_SPI0_ROUTING_MASK)
+/* FCSPI_ROUTING Reg Mask */
+#define SCM_FCSPI_ROUTING_MASK         0x00777777u
+
+/* FCUART_ROUTING0 Bit Fields */
+#define SCM_FCUART_ROUTING0_UART7_ROUTING_MASK 0xF0000000u
+#define SCM_FCUART_ROUTING0_UART7_ROUTING_SHIFT 28u
+#define SCM_FCUART_ROUTING0_UART7_ROUTING_WIDTH 4u
+#define SCM_FCUART_ROUTING0_UART7_ROUTING(x) (((uint32_t)(((uint32_t)(x))<<SCM_FCUART_ROUTING0_UART7_ROUTING_SHIFT))&SCM_FCUART_ROUTING0_UART7_ROUTING_MASK)
+#define SCM_FCUART_ROUTING0_UART6_ROUTING_MASK 0xF000000u
+#define SCM_FCUART_ROUTING0_UART6_ROUTING_SHIFT 24u
+#define SCM_FCUART_ROUTING0_UART6_ROUTING_WIDTH 4u
+#define SCM_FCUART_ROUTING0_UART6_ROUTING(x) (((uint32_t)(((uint32_t)(x))<<SCM_FCUART_ROUTING0_UART6_ROUTING_SHIFT))&SCM_FCUART_ROUTING0_UART6_ROUTING_MASK)
+#define SCM_FCUART_ROUTING0_UART5_ROUTING_MASK 0xF00000u
+#define SCM_FCUART_ROUTING0_UART5_ROUTING_SHIFT 20u
+#define SCM_FCUART_ROUTING0_UART5_ROUTING_WIDTH 4u
+#define SCM_FCUART_ROUTING0_UART5_ROUTING(x) (((uint32_t)(((uint32_t)(x))<<SCM_FCUART_ROUTING0_UART5_ROUTING_SHIFT))&SCM_FCUART_ROUTING0_UART5_ROUTING_MASK)
+#define SCM_FCUART_ROUTING0_UART4_ROUTING_MASK 0xF0000u
+#define SCM_FCUART_ROUTING0_UART4_ROUTING_SHIFT 16u
+#define SCM_FCUART_ROUTING0_UART4_ROUTING_WIDTH 4u
+#define SCM_FCUART_ROUTING0_UART4_ROUTING(x) (((uint32_t)(((uint32_t)(x))<<SCM_FCUART_ROUTING0_UART4_ROUTING_SHIFT))&SCM_FCUART_ROUTING0_UART4_ROUTING_MASK)
+#define SCM_FCUART_ROUTING0_UART3_ROUTING_MASK 0xF000u
+#define SCM_FCUART_ROUTING0_UART3_ROUTING_SHIFT 12u
+#define SCM_FCUART_ROUTING0_UART3_ROUTING_WIDTH 4u
+#define SCM_FCUART_ROUTING0_UART3_ROUTING(x) (((uint32_t)(((uint32_t)(x))<<SCM_FCUART_ROUTING0_UART3_ROUTING_SHIFT))&SCM_FCUART_ROUTING0_UART3_ROUTING_MASK)
+#define SCM_FCUART_ROUTING0_UART2_ROUTING_MASK 0xF00u
+#define SCM_FCUART_ROUTING0_UART2_ROUTING_SHIFT 8u
+#define SCM_FCUART_ROUTING0_UART2_ROUTING_WIDTH 4u
+#define SCM_FCUART_ROUTING0_UART2_ROUTING(x) (((uint32_t)(((uint32_t)(x))<<SCM_FCUART_ROUTING0_UART2_ROUTING_SHIFT))&SCM_FCUART_ROUTING0_UART2_ROUTING_MASK)
+#define SCM_FCUART_ROUTING0_UART1_ROUTING_MASK 0xF0u
+#define SCM_FCUART_ROUTING0_UART1_ROUTING_SHIFT 4u
+#define SCM_FCUART_ROUTING0_UART1_ROUTING_WIDTH 4u
+#define SCM_FCUART_ROUTING0_UART1_ROUTING(x) (((uint32_t)(((uint32_t)(x))<<SCM_FCUART_ROUTING0_UART1_ROUTING_SHIFT))&SCM_FCUART_ROUTING0_UART1_ROUTING_MASK)
+#define SCM_FCUART_ROUTING0_UART0_ROUTING_MASK 0xFu
+#define SCM_FCUART_ROUTING0_UART0_ROUTING_SHIFT 0u
+#define SCM_FCUART_ROUTING0_UART0_ROUTING_WIDTH 4u
+#define SCM_FCUART_ROUTING0_UART0_ROUTING(x) (((uint32_t)(((uint32_t)(x))<<SCM_FCUART_ROUTING0_UART0_ROUTING_SHIFT))&SCM_FCUART_ROUTING0_UART0_ROUTING_MASK)
+/* FCUART_ROUTING0 Reg Mask */
+#define SCM_FCUART_ROUTING0_MASK       0xFFFFFFFFu
+
+/* ENET_CTRL Bit Fields */
+#define SCM_ENET_CTRL_WPB_LOCK_MASK    0x80000000u
+#define SCM_ENET_CTRL_WPB_LOCK_SHIFT   31u
+#define SCM_ENET_CTRL_WPB_LOCK_WIDTH   1u
+#define SCM_ENET_CTRL_WPB_LOCK(x)      (((uint32_t)(((uint32_t)(x))<<SCM_ENET_CTRL_WPB_LOCK_SHIFT))&SCM_ENET_CTRL_WPB_LOCK_MASK)
+#define SCM_ENET_CTRL_WPB_MASK         0x70000000u
+#define SCM_ENET_CTRL_WPB_SHIFT        28u
+#define SCM_ENET_CTRL_WPB_WIDTH        3u
+#define SCM_ENET_CTRL_WPB(x)           (((uint32_t)(((uint32_t)(x))<<SCM_ENET_CTRL_WPB_SHIFT))&SCM_ENET_CTRL_WPB_MASK)
+#define SCM_ENET_CTRL_ENET_TXCLK_SEL_MASK 0x3000000u
+#define SCM_ENET_CTRL_ENET_TXCLK_SEL_SHIFT 24u
+#define SCM_ENET_CTRL_ENET_TXCLK_SEL_WIDTH 2u
+#define SCM_ENET_CTRL_ENET_TXCLK_SEL(x) (((uint32_t)(((uint32_t)(x))<<SCM_ENET_CTRL_ENET_TXCLK_SEL_SHIFT))&SCM_ENET_CTRL_ENET_TXCLK_SEL_MASK)
+#define SCM_ENET_CTRL_ENET_TIMER_OBE_MASK 0xF00000u
+#define SCM_ENET_CTRL_ENET_TIMER_OBE_SHIFT 20u
+#define SCM_ENET_CTRL_ENET_TIMER_OBE_WIDTH 4u
+#define SCM_ENET_CTRL_ENET_TIMER_OBE(x) (((uint32_t)(((uint32_t)(x))<<SCM_ENET_CTRL_ENET_TIMER_OBE_SHIFT))&SCM_ENET_CTRL_ENET_TIMER_OBE_MASK)
+#define SCM_ENET_CTRL_ENET_CLK_SWRST_MASK 0x10000u
+#define SCM_ENET_CTRL_ENET_CLK_SWRST_SHIFT 16u
+#define SCM_ENET_CTRL_ENET_CLK_SWRST_WIDTH 1u
+#define SCM_ENET_CTRL_ENET_CLK_SWRST(x) (((uint32_t)(((uint32_t)(x))<<SCM_ENET_CTRL_ENET_CLK_SWRST_SHIFT))&SCM_ENET_CTRL_ENET_CLK_SWRST_MASK)
+#define SCM_ENET_CTRL_MII_TX_CLK_OBE_MASK 0x800u
+#define SCM_ENET_CTRL_MII_TX_CLK_OBE_SHIFT 11u
+#define SCM_ENET_CTRL_MII_TX_CLK_OBE_WIDTH 1u
+#define SCM_ENET_CTRL_MII_TX_CLK_OBE(x) (((uint32_t)(((uint32_t)(x))<<SCM_ENET_CTRL_MII_TX_CLK_OBE_SHIFT))&SCM_ENET_CTRL_MII_TX_CLK_OBE_MASK)
+#define SCM_ENET_CTRL_PHY_SEL_MASK     0xE0u
+#define SCM_ENET_CTRL_PHY_SEL_SHIFT    5u
+#define SCM_ENET_CTRL_PHY_SEL_WIDTH    3u
+#define SCM_ENET_CTRL_PHY_SEL(x)       (((uint32_t)(((uint32_t)(x))<<SCM_ENET_CTRL_PHY_SEL_SHIFT))&SCM_ENET_CTRL_PHY_SEL_MASK)
+#define SCM_ENET_CTRL_PTPCLK_SEL_MASK  0xCu
+#define SCM_ENET_CTRL_PTPCLK_SEL_SHIFT 2u
+#define SCM_ENET_CTRL_PTPCLK_SEL_WIDTH 2u
+#define SCM_ENET_CTRL_PTPCLK_SEL(x)    (((uint32_t)(((uint32_t)(x))<<SCM_ENET_CTRL_PTPCLK_SEL_SHIFT))&SCM_ENET_CTRL_PTPCLK_SEL_MASK)
+#define SCM_ENET_CTRL_RMII_5M_MASK     0x2u
+#define SCM_ENET_CTRL_RMII_5M_SHIFT    1u
+#define SCM_ENET_CTRL_RMII_5M_WIDTH    1u
+#define SCM_ENET_CTRL_RMII_5M(x)       (((uint32_t)(((uint32_t)(x))<<SCM_ENET_CTRL_RMII_5M_SHIFT))&SCM_ENET_CTRL_RMII_5M_MASK)
+/* ENET_CTRL Reg Mask */
+#define SCM_ENET_CTRL_MASK             0xF3F108EEu
+
+/* ADC_ROUTING Bit Fields */
+#define SCM_ADC_ROUTING_PTIMER23LOOP_0_MASK 0x80000000u
+#define SCM_ADC_ROUTING_PTIMER23LOOP_0_SHIFT 31u
+#define SCM_ADC_ROUTING_PTIMER23LOOP_0_WIDTH 1u
+#define SCM_ADC_ROUTING_PTIMER23LOOP_0(x) (((uint32_t)(((uint32_t)(x))<<SCM_ADC_ROUTING_PTIMER23LOOP_0_SHIFT))&SCM_ADC_ROUTING_PTIMER23LOOP_0_MASK)
+#define SCM_ADC_ROUTING_ADC3_TRGSEL_MASK 0x40000000u
+#define SCM_ADC_ROUTING_ADC3_TRGSEL_SHIFT 30u
+#define SCM_ADC_ROUTING_ADC3_TRGSEL_WIDTH 1u
+#define SCM_ADC_ROUTING_ADC3_TRGSEL(x) (((uint32_t)(((uint32_t)(x))<<SCM_ADC_ROUTING_ADC3_TRGSEL_SHIFT))&SCM_ADC_ROUTING_ADC3_TRGSEL_MASK)
+#define SCM_ADC_ROUTING_ADC3_PRETRGSEL_MASK 0x30000000u
+#define SCM_ADC_ROUTING_ADC3_PRETRGSEL_SHIFT 28u
+#define SCM_ADC_ROUTING_ADC3_PRETRGSEL_WIDTH 2u
+#define SCM_ADC_ROUTING_ADC3_PRETRGSEL(x) (((uint32_t)(((uint32_t)(x))<<SCM_ADC_ROUTING_ADC3_PRETRGSEL_SHIFT))&SCM_ADC_ROUTING_ADC3_PRETRGSEL_MASK)
+#define SCM_ADC_ROUTING_PTIMER23LOOP_1_MASK 0x8000000u
+#define SCM_ADC_ROUTING_PTIMER23LOOP_1_SHIFT 27u
+#define SCM_ADC_ROUTING_PTIMER23LOOP_1_WIDTH 1u
+#define SCM_ADC_ROUTING_PTIMER23LOOP_1(x) (((uint32_t)(((uint32_t)(x))<<SCM_ADC_ROUTING_PTIMER23LOOP_1_SHIFT))&SCM_ADC_ROUTING_PTIMER23LOOP_1_MASK)
+#define SCM_ADC_ROUTING_ADC3_PRETRG_MASK 0x7000000u
+#define SCM_ADC_ROUTING_ADC3_PRETRG_SHIFT 24u
+#define SCM_ADC_ROUTING_ADC3_PRETRG_WIDTH 3u
+#define SCM_ADC_ROUTING_ADC3_PRETRG(x) (((uint32_t)(((uint32_t)(x))<<SCM_ADC_ROUTING_ADC3_PRETRG_SHIFT))&SCM_ADC_ROUTING_ADC3_PRETRG_MASK)
+#define SCM_ADC_ROUTING_PTIMER23LOOP_2_MASK 0x800000u
+#define SCM_ADC_ROUTING_PTIMER23LOOP_2_SHIFT 23u
+#define SCM_ADC_ROUTING_PTIMER23LOOP_2_WIDTH 1u
+#define SCM_ADC_ROUTING_PTIMER23LOOP_2(x) (((uint32_t)(((uint32_t)(x))<<SCM_ADC_ROUTING_PTIMER23LOOP_2_SHIFT))&SCM_ADC_ROUTING_PTIMER23LOOP_2_MASK)
+#define SCM_ADC_ROUTING_ADC2_TRGSEL_MASK 0x400000u
+#define SCM_ADC_ROUTING_ADC2_TRGSEL_SHIFT 22u
+#define SCM_ADC_ROUTING_ADC2_TRGSEL_WIDTH 1u
+#define SCM_ADC_ROUTING_ADC2_TRGSEL(x) (((uint32_t)(((uint32_t)(x))<<SCM_ADC_ROUTING_ADC2_TRGSEL_SHIFT))&SCM_ADC_ROUTING_ADC2_TRGSEL_MASK)
+#define SCM_ADC_ROUTING_ADC2_PRETRGSEL_MASK 0x300000u
+#define SCM_ADC_ROUTING_ADC2_PRETRGSEL_SHIFT 20u
+#define SCM_ADC_ROUTING_ADC2_PRETRGSEL_WIDTH 2u
+#define SCM_ADC_ROUTING_ADC2_PRETRGSEL(x) (((uint32_t)(((uint32_t)(x))<<SCM_ADC_ROUTING_ADC2_PRETRGSEL_SHIFT))&SCM_ADC_ROUTING_ADC2_PRETRGSEL_MASK)
+#define SCM_ADC_ROUTING_ADC2_PRETRG_MASK 0x70000u
+#define SCM_ADC_ROUTING_ADC2_PRETRG_SHIFT 16u
+#define SCM_ADC_ROUTING_ADC2_PRETRG_WIDTH 3u
+#define SCM_ADC_ROUTING_ADC2_PRETRG(x) (((uint32_t)(((uint32_t)(x))<<SCM_ADC_ROUTING_ADC2_PRETRG_SHIFT))&SCM_ADC_ROUTING_ADC2_PRETRG_MASK)
+#define SCM_ADC_ROUTING_PTIMER01LOOP_0_MASK 0x8000u
+#define SCM_ADC_ROUTING_PTIMER01LOOP_0_SHIFT 15u
+#define SCM_ADC_ROUTING_PTIMER01LOOP_0_WIDTH 1u
+#define SCM_ADC_ROUTING_PTIMER01LOOP_0(x) (((uint32_t)(((uint32_t)(x))<<SCM_ADC_ROUTING_PTIMER01LOOP_0_SHIFT))&SCM_ADC_ROUTING_PTIMER01LOOP_0_MASK)
+#define SCM_ADC_ROUTING_ADC1_TRGSEL_MASK 0x4000u
+#define SCM_ADC_ROUTING_ADC1_TRGSEL_SHIFT 14u
+#define SCM_ADC_ROUTING_ADC1_TRGSEL_WIDTH 1u
+#define SCM_ADC_ROUTING_ADC1_TRGSEL(x) (((uint32_t)(((uint32_t)(x))<<SCM_ADC_ROUTING_ADC1_TRGSEL_SHIFT))&SCM_ADC_ROUTING_ADC1_TRGSEL_MASK)
+#define SCM_ADC_ROUTING_ADC1_PRETRGSEL_MASK 0x3000u
+#define SCM_ADC_ROUTING_ADC1_PRETRGSEL_SHIFT 12u
+#define SCM_ADC_ROUTING_ADC1_PRETRGSEL_WIDTH 2u
+#define SCM_ADC_ROUTING_ADC1_PRETRGSEL(x) (((uint32_t)(((uint32_t)(x))<<SCM_ADC_ROUTING_ADC1_PRETRGSEL_SHIFT))&SCM_ADC_ROUTING_ADC1_PRETRGSEL_MASK)
+#define SCM_ADC_ROUTING_PTIMER01LOOP_1_MASK 0x800u
+#define SCM_ADC_ROUTING_PTIMER01LOOP_1_SHIFT 11u
+#define SCM_ADC_ROUTING_PTIMER01LOOP_1_WIDTH 1u
+#define SCM_ADC_ROUTING_PTIMER01LOOP_1(x) (((uint32_t)(((uint32_t)(x))<<SCM_ADC_ROUTING_PTIMER01LOOP_1_SHIFT))&SCM_ADC_ROUTING_PTIMER01LOOP_1_MASK)
+#define SCM_ADC_ROUTING_ADC1_PRETRG_MASK 0x700u
+#define SCM_ADC_ROUTING_ADC1_PRETRG_SHIFT 8u
+#define SCM_ADC_ROUTING_ADC1_PRETRG_WIDTH 3u
+#define SCM_ADC_ROUTING_ADC1_PRETRG(x) (((uint32_t)(((uint32_t)(x))<<SCM_ADC_ROUTING_ADC1_PRETRG_SHIFT))&SCM_ADC_ROUTING_ADC1_PRETRG_MASK)
+#define SCM_ADC_ROUTING_PTIMER01LOOP_2_MASK 0x80u
+#define SCM_ADC_ROUTING_PTIMER01LOOP_2_SHIFT 7u
+#define SCM_ADC_ROUTING_PTIMER01LOOP_2_WIDTH 1u
+#define SCM_ADC_ROUTING_PTIMER01LOOP_2(x) (((uint32_t)(((uint32_t)(x))<<SCM_ADC_ROUTING_PTIMER01LOOP_2_SHIFT))&SCM_ADC_ROUTING_PTIMER01LOOP_2_MASK)
+#define SCM_ADC_ROUTING_ADC0_TRGSEL_MASK 0x40u
+#define SCM_ADC_ROUTING_ADC0_TRGSEL_SHIFT 6u
+#define SCM_ADC_ROUTING_ADC0_TRGSEL_WIDTH 1u
+#define SCM_ADC_ROUTING_ADC0_TRGSEL(x) (((uint32_t)(((uint32_t)(x))<<SCM_ADC_ROUTING_ADC0_TRGSEL_SHIFT))&SCM_ADC_ROUTING_ADC0_TRGSEL_MASK)
+#define SCM_ADC_ROUTING_ADC0_PRETRGSEL_MASK 0x30u
+#define SCM_ADC_ROUTING_ADC0_PRETRGSEL_SHIFT 4u
+#define SCM_ADC_ROUTING_ADC0_PRETRGSEL_WIDTH 2u
+#define SCM_ADC_ROUTING_ADC0_PRETRGSEL(x) (((uint32_t)(((uint32_t)(x))<<SCM_ADC_ROUTING_ADC0_PRETRGSEL_SHIFT))&SCM_ADC_ROUTING_ADC0_PRETRGSEL_MASK)
+#define SCM_ADC_ROUTING_ADC0_PRETRG_MASK 0x7u
+#define SCM_ADC_ROUTING_ADC0_PRETRG_SHIFT 0u
+#define SCM_ADC_ROUTING_ADC0_PRETRG_WIDTH 3u
+#define SCM_ADC_ROUTING_ADC0_PRETRG(x) (((uint32_t)(((uint32_t)(x))<<SCM_ADC_ROUTING_ADC0_PRETRG_SHIFT))&SCM_ADC_ROUTING_ADC0_PRETRG_MASK)
+/* ADC_ROUTING Reg Mask */
+#define SCM_ADC_ROUTING_MASK           0xFFF7FFF7u
+
+/* FTU_ROUTING Bit Fields */
+#define SCM_FTU_ROUTING_FTU3_OUTSEL_MASK 0xFF000000u
+#define SCM_FTU_ROUTING_FTU3_OUTSEL_SHIFT 24u
+#define SCM_FTU_ROUTING_FTU3_OUTSEL_WIDTH 8u
+#define SCM_FTU_ROUTING_FTU3_OUTSEL(x) (((uint32_t)(((uint32_t)(x))<<SCM_FTU_ROUTING_FTU3_OUTSEL_SHIFT))&SCM_FTU_ROUTING_FTU3_OUTSEL_MASK)
+#define SCM_FTU_ROUTING_FTU0_OUTSEL_MASK 0xFF0000u
+#define SCM_FTU_ROUTING_FTU0_OUTSEL_SHIFT 16u
+#define SCM_FTU_ROUTING_FTU0_OUTSEL_WIDTH 8u
+#define SCM_FTU_ROUTING_FTU0_OUTSEL(x) (((uint32_t)(((uint32_t)(x))<<SCM_FTU_ROUTING_FTU0_OUTSEL_SHIFT))&SCM_FTU_ROUTING_FTU0_OUTSEL_MASK)
+#define SCM_FTU_ROUTING_FTU3_CH0SEL_MASK 0x4000u
+#define SCM_FTU_ROUTING_FTU3_CH0SEL_SHIFT 14u
+#define SCM_FTU_ROUTING_FTU3_CH0SEL_WIDTH 1u
+#define SCM_FTU_ROUTING_FTU3_CH0SEL(x) (((uint32_t)(((uint32_t)(x))<<SCM_FTU_ROUTING_FTU3_CH0SEL_SHIFT))&SCM_FTU_ROUTING_FTU3_CH0SEL_MASK)
+#define SCM_FTU_ROUTING_FTU2_CH1SEL_MASK 0x400u
+#define SCM_FTU_ROUTING_FTU2_CH1SEL_SHIFT 10u
+#define SCM_FTU_ROUTING_FTU2_CH1SEL_WIDTH 1u
+#define SCM_FTU_ROUTING_FTU2_CH1SEL(x) (((uint32_t)(((uint32_t)(x))<<SCM_FTU_ROUTING_FTU2_CH1SEL_SHIFT))&SCM_FTU_ROUTING_FTU2_CH1SEL_MASK)
+#define SCM_FTU_ROUTING_FTU2_CH0SEL_MASK 0x300u
+#define SCM_FTU_ROUTING_FTU2_CH0SEL_SHIFT 8u
+#define SCM_FTU_ROUTING_FTU2_CH0SEL_WIDTH 2u
+#define SCM_FTU_ROUTING_FTU2_CH0SEL(x) (((uint32_t)(((uint32_t)(x))<<SCM_FTU_ROUTING_FTU2_CH0SEL_SHIFT))&SCM_FTU_ROUTING_FTU2_CH0SEL_MASK)
+#define SCM_FTU_ROUTING_FTU1_CH0SEL_MASK 0x30u
+#define SCM_FTU_ROUTING_FTU1_CH0SEL_SHIFT 4u
+#define SCM_FTU_ROUTING_FTU1_CH0SEL_WIDTH 2u
+#define SCM_FTU_ROUTING_FTU1_CH0SEL(x) (((uint32_t)(((uint32_t)(x))<<SCM_FTU_ROUTING_FTU1_CH0SEL_SHIFT))&SCM_FTU_ROUTING_FTU1_CH0SEL_MASK)
+#define SCM_FTU_ROUTING_LOCK_MASK      0x1u
+#define SCM_FTU_ROUTING_LOCK_SHIFT     0u
+#define SCM_FTU_ROUTING_LOCK_WIDTH     1u
+#define SCM_FTU_ROUTING_LOCK(x)        (((uint32_t)(((uint32_t)(x))<<SCM_FTU_ROUTING_LOCK_SHIFT))&SCM_FTU_ROUTING_LOCK_MASK)
+/* FTU_ROUTING Reg Mask */
+#define SCM_FTU_ROUTING_MASK           0xFFFF4731u
+
+/* FTU_GTBC Bit Fields */
+#define SCM_FTU_GTBC_EFTU0_GTBC_MASK   0x3000000u
+#define SCM_FTU_GTBC_EFTU0_GTBC_SHIFT  24u
+#define SCM_FTU_GTBC_EFTU0_GTBC_WIDTH  2u
+#define SCM_FTU_GTBC_EFTU0_GTBC(x)     (((uint32_t)(((uint32_t)(x))<<SCM_FTU_GTBC_EFTU0_GTBC_SHIFT))&SCM_FTU_GTBC_EFTU0_GTBC_MASK)
+#define SCM_FTU_GTBC_FTU7_GTBC_MASK    0x800000u
+#define SCM_FTU_GTBC_FTU7_GTBC_SHIFT   23u
+#define SCM_FTU_GTBC_FTU7_GTBC_WIDTH   1u
+#define SCM_FTU_GTBC_FTU7_GTBC(x)      (((uint32_t)(((uint32_t)(x))<<SCM_FTU_GTBC_FTU7_GTBC_SHIFT))&SCM_FTU_GTBC_FTU7_GTBC_MASK)
+#define SCM_FTU_GTBC_FTU6_GTBC_MASK    0x400000u
+#define SCM_FTU_GTBC_FTU6_GTBC_SHIFT   22u
+#define SCM_FTU_GTBC_FTU6_GTBC_WIDTH   1u
+#define SCM_FTU_GTBC_FTU6_GTBC(x)      (((uint32_t)(((uint32_t)(x))<<SCM_FTU_GTBC_FTU6_GTBC_SHIFT))&SCM_FTU_GTBC_FTU6_GTBC_MASK)
+#define SCM_FTU_GTBC_FTU5_GTBC_MASK    0x200000u
+#define SCM_FTU_GTBC_FTU5_GTBC_SHIFT   21u
+#define SCM_FTU_GTBC_FTU5_GTBC_WIDTH   1u
+#define SCM_FTU_GTBC_FTU5_GTBC(x)      (((uint32_t)(((uint32_t)(x))<<SCM_FTU_GTBC_FTU5_GTBC_SHIFT))&SCM_FTU_GTBC_FTU5_GTBC_MASK)
+#define SCM_FTU_GTBC_FTU4_GTBC_MASK    0x100000u
+#define SCM_FTU_GTBC_FTU4_GTBC_SHIFT   20u
+#define SCM_FTU_GTBC_FTU4_GTBC_WIDTH   1u
+#define SCM_FTU_GTBC_FTU4_GTBC(x)      (((uint32_t)(((uint32_t)(x))<<SCM_FTU_GTBC_FTU4_GTBC_SHIFT))&SCM_FTU_GTBC_FTU4_GTBC_MASK)
+#define SCM_FTU_GTBC_FTU3_GTBC_MASK    0x80000u
+#define SCM_FTU_GTBC_FTU3_GTBC_SHIFT   19u
+#define SCM_FTU_GTBC_FTU3_GTBC_WIDTH   1u
+#define SCM_FTU_GTBC_FTU3_GTBC(x)      (((uint32_t)(((uint32_t)(x))<<SCM_FTU_GTBC_FTU3_GTBC_SHIFT))&SCM_FTU_GTBC_FTU3_GTBC_MASK)
+#define SCM_FTU_GTBC_FTU2_GTBC_MASK    0x40000u
+#define SCM_FTU_GTBC_FTU2_GTBC_SHIFT   18u
+#define SCM_FTU_GTBC_FTU2_GTBC_WIDTH   1u
+#define SCM_FTU_GTBC_FTU2_GTBC(x)      (((uint32_t)(((uint32_t)(x))<<SCM_FTU_GTBC_FTU2_GTBC_SHIFT))&SCM_FTU_GTBC_FTU2_GTBC_MASK)
+#define SCM_FTU_GTBC_FTU1_GTBC_MASK    0x20000u
+#define SCM_FTU_GTBC_FTU1_GTBC_SHIFT   17u
+#define SCM_FTU_GTBC_FTU1_GTBC_WIDTH   1u
+#define SCM_FTU_GTBC_FTU1_GTBC(x)      (((uint32_t)(((uint32_t)(x))<<SCM_FTU_GTBC_FTU1_GTBC_SHIFT))&SCM_FTU_GTBC_FTU1_GTBC_MASK)
+#define SCM_FTU_GTBC_FTU0_GTBC_MASK    0x10000u
+#define SCM_FTU_GTBC_FTU0_GTBC_SHIFT   16u
+#define SCM_FTU_GTBC_FTU0_GTBC_WIDTH   1u
+#define SCM_FTU_GTBC_FTU0_GTBC(x)      (((uint32_t)(((uint32_t)(x))<<SCM_FTU_GTBC_FTU0_GTBC_SHIFT))&SCM_FTU_GTBC_FTU0_GTBC_MASK)
+#define SCM_FTU_GTBC_LOCK_MASK         0x1u
+#define SCM_FTU_GTBC_LOCK_SHIFT        0u
+#define SCM_FTU_GTBC_LOCK_WIDTH        1u
+#define SCM_FTU_GTBC_LOCK(x)           (((uint32_t)(((uint32_t)(x))<<SCM_FTU_GTBC_LOCK_SHIFT))&SCM_FTU_GTBC_LOCK_MASK)
+/* FTU_GTBC Reg Mask */
+#define SCM_FTU_GTBC_MASK              0x03FF0001u
+
+/* FTU_SYNC Bit Fields */
+#define SCM_FTU_SYNC_FTU7SYNC_MASK     0x4000u
+#define SCM_FTU_SYNC_FTU7SYNC_SHIFT    14u
+#define SCM_FTU_SYNC_FTU7SYNC_WIDTH    1u
+#define SCM_FTU_SYNC_FTU7SYNC(x)       (((uint32_t)(((uint32_t)(x))<<SCM_FTU_SYNC_FTU7SYNC_SHIFT))&SCM_FTU_SYNC_FTU7SYNC_MASK)
+#define SCM_FTU_SYNC_FTU6SYNC_MASK     0x1000u
+#define SCM_FTU_SYNC_FTU6SYNC_SHIFT    12u
+#define SCM_FTU_SYNC_FTU6SYNC_WIDTH    1u
+#define SCM_FTU_SYNC_FTU6SYNC(x)       (((uint32_t)(((uint32_t)(x))<<SCM_FTU_SYNC_FTU6SYNC_SHIFT))&SCM_FTU_SYNC_FTU6SYNC_MASK)
+#define SCM_FTU_SYNC_FTU5SYNC_MASK     0x400u
+#define SCM_FTU_SYNC_FTU5SYNC_SHIFT    10u
+#define SCM_FTU_SYNC_FTU5SYNC_WIDTH    1u
+#define SCM_FTU_SYNC_FTU5SYNC(x)       (((uint32_t)(((uint32_t)(x))<<SCM_FTU_SYNC_FTU5SYNC_SHIFT))&SCM_FTU_SYNC_FTU5SYNC_MASK)
+#define SCM_FTU_SYNC_FTU4SYNC_MASK     0x100u
+#define SCM_FTU_SYNC_FTU4SYNC_SHIFT    8u
+#define SCM_FTU_SYNC_FTU4SYNC_WIDTH    1u
+#define SCM_FTU_SYNC_FTU4SYNC(x)       (((uint32_t)(((uint32_t)(x))<<SCM_FTU_SYNC_FTU4SYNC_SHIFT))&SCM_FTU_SYNC_FTU4SYNC_MASK)
+#define SCM_FTU_SYNC_FTU3SYNC_MASK     0x40u
+#define SCM_FTU_SYNC_FTU3SYNC_SHIFT    6u
+#define SCM_FTU_SYNC_FTU3SYNC_WIDTH    1u
+#define SCM_FTU_SYNC_FTU3SYNC(x)       (((uint32_t)(((uint32_t)(x))<<SCM_FTU_SYNC_FTU3SYNC_SHIFT))&SCM_FTU_SYNC_FTU3SYNC_MASK)
+#define SCM_FTU_SYNC_FTU2SYNC_MASK     0x10u
+#define SCM_FTU_SYNC_FTU2SYNC_SHIFT    4u
+#define SCM_FTU_SYNC_FTU2SYNC_WIDTH    1u
+#define SCM_FTU_SYNC_FTU2SYNC(x)       (((uint32_t)(((uint32_t)(x))<<SCM_FTU_SYNC_FTU2SYNC_SHIFT))&SCM_FTU_SYNC_FTU2SYNC_MASK)
+#define SCM_FTU_SYNC_FTU1SYNC_MASK     0x4u
+#define SCM_FTU_SYNC_FTU1SYNC_SHIFT    2u
+#define SCM_FTU_SYNC_FTU1SYNC_WIDTH    1u
+#define SCM_FTU_SYNC_FTU1SYNC(x)       (((uint32_t)(((uint32_t)(x))<<SCM_FTU_SYNC_FTU1SYNC_SHIFT))&SCM_FTU_SYNC_FTU1SYNC_MASK)
+#define SCM_FTU_SYNC_FTU0SYNC_MASK     0x1u
+#define SCM_FTU_SYNC_FTU0SYNC_SHIFT    0u
+#define SCM_FTU_SYNC_FTU0SYNC_WIDTH    1u
+#define SCM_FTU_SYNC_FTU0SYNC(x)       (((uint32_t)(((uint32_t)(x))<<SCM_FTU_SYNC_FTU0SYNC_SHIFT))&SCM_FTU_SYNC_FTU0SYNC_MASK)
+/* FTU_SYNC Reg Mask */
+#define SCM_FTU_SYNC_MASK              0x00005555u
+
+/* DEBUG_TRACE Bit Fields */
+#define SCM_DEBUG_TRACE_DEBUG_ATCLK_EN_MASK 0x80000000u
+#define SCM_DEBUG_TRACE_DEBUG_ATCLK_EN_SHIFT 31u
+#define SCM_DEBUG_TRACE_DEBUG_ATCLK_EN_WIDTH 1u
+#define SCM_DEBUG_TRACE_DEBUG_ATCLK_EN(x) (((uint32_t)(((uint32_t)(x))<<SCM_DEBUG_TRACE_DEBUG_ATCLK_EN_SHIFT))&SCM_DEBUG_TRACE_DEBUG_ATCLK_EN_MASK)
+#define SCM_DEBUG_TRACE_TRACECLK_DIV_MASK 0xF0u
+#define SCM_DEBUG_TRACE_TRACECLK_DIV_SHIFT 4u
+#define SCM_DEBUG_TRACE_TRACECLK_DIV_WIDTH 4u
+#define SCM_DEBUG_TRACE_TRACECLK_DIV(x) (((uint32_t)(((uint32_t)(x))<<SCM_DEBUG_TRACE_TRACECLK_DIV_SHIFT))&SCM_DEBUG_TRACE_TRACECLK_DIV_MASK)
+#define SCM_DEBUG_TRACE_TRACECLK_SEL_MASK 0x8u
+#define SCM_DEBUG_TRACE_TRACECLK_SEL_SHIFT 3u
+#define SCM_DEBUG_TRACE_TRACECLK_SEL_WIDTH 1u
+#define SCM_DEBUG_TRACE_TRACECLK_SEL(x) (((uint32_t)(((uint32_t)(x))<<SCM_DEBUG_TRACE_TRACECLK_SEL_SHIFT))&SCM_DEBUG_TRACE_TRACECLK_SEL_MASK)
+#define SCM_DEBUG_TRACE_TRACECLK_EN_MASK 0x4u
+#define SCM_DEBUG_TRACE_TRACECLK_EN_SHIFT 2u
+#define SCM_DEBUG_TRACE_TRACECLK_EN_WIDTH 1u
+#define SCM_DEBUG_TRACE_TRACECLK_EN(x) (((uint32_t)(((uint32_t)(x))<<SCM_DEBUG_TRACE_TRACECLK_EN_SHIFT))&SCM_DEBUG_TRACE_TRACECLK_EN_MASK)
+#define SCM_DEBUG_TRACE_LOCK_MASK      0x1u
+#define SCM_DEBUG_TRACE_LOCK_SHIFT     0u
+#define SCM_DEBUG_TRACE_LOCK_WIDTH     1u
+#define SCM_DEBUG_TRACE_LOCK(x)        (((uint32_t)(((uint32_t)(x))<<SCM_DEBUG_TRACE_LOCK_SHIFT))&SCM_DEBUG_TRACE_LOCK_MASK)
+/* DEBUG_TRACE Reg Mask */
+#define SCM_DEBUG_TRACE_MASK           0x800000FDu
+
+/* SOCMISC Bit Fields */
+#define SCM_SOCMISC_WPB_LOCK_MASK      0x80000000u
+#define SCM_SOCMISC_WPB_LOCK_SHIFT     31u
+#define SCM_SOCMISC_WPB_LOCK_WIDTH     1u
+#define SCM_SOCMISC_WPB_LOCK(x)        (((uint32_t)(((uint32_t)(x))<<SCM_SOCMISC_WPB_LOCK_SHIFT))&SCM_SOCMISC_WPB_LOCK_MASK)
+#define SCM_SOCMISC_WPB_MASK           0x70000000u
+#define SCM_SOCMISC_WPB_SHIFT          28u
+#define SCM_SOCMISC_WPB_WIDTH          3u
+#define SCM_SOCMISC_WPB(x)             (((uint32_t)(((uint32_t)(x))<<SCM_SOCMISC_WPB_SHIFT))&SCM_SOCMISC_WPB_MASK)
+#define SCM_SOCMISC_SW_TRIG_MASK       0xFFu
+#define SCM_SOCMISC_SW_TRIG_SHIFT      0u
+#define SCM_SOCMISC_SW_TRIG_WIDTH      8u
+#define SCM_SOCMISC_SW_TRIG(x)         (((uint32_t)(((uint32_t)(x))<<SCM_SOCMISC_SW_TRIG_SHIFT))&SCM_SOCMISC_SW_TRIG_MASK)
+/* SOCMISC Reg Mask */
+#define SCM_SOCMISC_MASK               0xF00000FFu
+
+/* CCM0_STATUS Bit Fields */
+#define SCM_CCM0_STATUS_CPU0_ABORT_IN_LP_MASK 0x100u
+#define SCM_CCM0_STATUS_CPU0_ABORT_IN_LP_SHIFT 8u
+#define SCM_CCM0_STATUS_CPU0_ABORT_IN_LP_WIDTH 1u
+#define SCM_CCM0_STATUS_CPU0_ABORT_IN_LP(x) (((uint32_t)(((uint32_t)(x))<<SCM_CCM0_STATUS_CPU0_ABORT_IN_LP_SHIFT))&SCM_CCM0_STATUS_CPU0_ABORT_IN_LP_MASK)
+#define SCM_CCM0_STATUS_CPU0_STOP_SLOW_SLAVE_MASK 0x80u
+#define SCM_CCM0_STATUS_CPU0_STOP_SLOW_SLAVE_SHIFT 7u
+#define SCM_CCM0_STATUS_CPU0_STOP_SLOW_SLAVE_WIDTH 1u
+#define SCM_CCM0_STATUS_CPU0_STOP_SLOW_SLAVE(x) (((uint32_t)(((uint32_t)(x))<<SCM_CCM0_STATUS_CPU0_STOP_SLOW_SLAVE_SHIFT))&SCM_CCM0_STATUS_CPU0_STOP_SLOW_SLAVE_MASK)
+#define SCM_CCM0_STATUS_CPU0_STOP_BUS_SLAVE_MASK 0x40u
+#define SCM_CCM0_STATUS_CPU0_STOP_BUS_SLAVE_SHIFT 6u
+#define SCM_CCM0_STATUS_CPU0_STOP_BUS_SLAVE_WIDTH 1u
+#define SCM_CCM0_STATUS_CPU0_STOP_BUS_SLAVE(x) (((uint32_t)(((uint32_t)(x))<<SCM_CCM0_STATUS_CPU0_STOP_BUS_SLAVE_SHIFT))&SCM_CCM0_STATUS_CPU0_STOP_BUS_SLAVE_MASK)
+#define SCM_CCM0_STATUS_CPU0_STOP_SYS_SLAVE_MASK 0x20u
+#define SCM_CCM0_STATUS_CPU0_STOP_SYS_SLAVE_SHIFT 5u
+#define SCM_CCM0_STATUS_CPU0_STOP_SYS_SLAVE_WIDTH 1u
+#define SCM_CCM0_STATUS_CPU0_STOP_SYS_SLAVE(x) (((uint32_t)(((uint32_t)(x))<<SCM_CCM0_STATUS_CPU0_STOP_SYS_SLAVE_SHIFT))&SCM_CCM0_STATUS_CPU0_STOP_SYS_SLAVE_MASK)
+#define SCM_CCM0_STATUS_CPU0_STOP_MASTER_MASK 0x10u
+#define SCM_CCM0_STATUS_CPU0_STOP_MASTER_SHIFT 4u
+#define SCM_CCM0_STATUS_CPU0_STOP_MASTER_WIDTH 1u
+#define SCM_CCM0_STATUS_CPU0_STOP_MASTER(x) (((uint32_t)(((uint32_t)(x))<<SCM_CCM0_STATUS_CPU0_STOP_MASTER_SHIFT))&SCM_CCM0_STATUS_CPU0_STOP_MASTER_MASK)
+#define SCM_CCM0_STATUS_CPU0_DEEPSLEEPING_MASK 0x2u
+#define SCM_CCM0_STATUS_CPU0_DEEPSLEEPING_SHIFT 1u
+#define SCM_CCM0_STATUS_CPU0_DEEPSLEEPING_WIDTH 1u
+#define SCM_CCM0_STATUS_CPU0_DEEPSLEEPING(x) (((uint32_t)(((uint32_t)(x))<<SCM_CCM0_STATUS_CPU0_DEEPSLEEPING_SHIFT))&SCM_CCM0_STATUS_CPU0_DEEPSLEEPING_MASK)
+#define SCM_CCM0_STATUS_CPU0_SLEEPING_MASK 0x1u
+#define SCM_CCM0_STATUS_CPU0_SLEEPING_SHIFT 0u
+#define SCM_CCM0_STATUS_CPU0_SLEEPING_WIDTH 1u
+#define SCM_CCM0_STATUS_CPU0_SLEEPING(x) (((uint32_t)(((uint32_t)(x))<<SCM_CCM0_STATUS_CPU0_SLEEPING_SHIFT))&SCM_CCM0_STATUS_CPU0_SLEEPING_MASK)
+/* CCM0_STATUS Reg Mask */
+#define SCM_CCM0_STATUS_MASK           0x000001F3u
+
+/* CCM1_STATUS Bit Fields */
+#define SCM_CCM1_STATUS_CPU1_ABORT_IN_LP_MASK 0x100u
+#define SCM_CCM1_STATUS_CPU1_ABORT_IN_LP_SHIFT 8u
+#define SCM_CCM1_STATUS_CPU1_ABORT_IN_LP_WIDTH 1u
+#define SCM_CCM1_STATUS_CPU1_ABORT_IN_LP(x) (((uint32_t)(((uint32_t)(x))<<SCM_CCM1_STATUS_CPU1_ABORT_IN_LP_SHIFT))&SCM_CCM1_STATUS_CPU1_ABORT_IN_LP_MASK)
+#define SCM_CCM1_STATUS_CPU1_STOP_SLOW_SLAVE_MASK 0x80u
+#define SCM_CCM1_STATUS_CPU1_STOP_SLOW_SLAVE_SHIFT 7u
+#define SCM_CCM1_STATUS_CPU1_STOP_SLOW_SLAVE_WIDTH 1u
+#define SCM_CCM1_STATUS_CPU1_STOP_SLOW_SLAVE(x) (((uint32_t)(((uint32_t)(x))<<SCM_CCM1_STATUS_CPU1_STOP_SLOW_SLAVE_SHIFT))&SCM_CCM1_STATUS_CPU1_STOP_SLOW_SLAVE_MASK)
+#define SCM_CCM1_STATUS_CPU1_STOP_BUS_SLAVE_MASK 0x40u
+#define SCM_CCM1_STATUS_CPU1_STOP_BUS_SLAVE_SHIFT 6u
+#define SCM_CCM1_STATUS_CPU1_STOP_BUS_SLAVE_WIDTH 1u
+#define SCM_CCM1_STATUS_CPU1_STOP_BUS_SLAVE(x) (((uint32_t)(((uint32_t)(x))<<SCM_CCM1_STATUS_CPU1_STOP_BUS_SLAVE_SHIFT))&SCM_CCM1_STATUS_CPU1_STOP_BUS_SLAVE_MASK)
+#define SCM_CCM1_STATUS_CPU1_STOP_SYS_SLAVE_MASK 0x20u
+#define SCM_CCM1_STATUS_CPU1_STOP_SYS_SLAVE_SHIFT 5u
+#define SCM_CCM1_STATUS_CPU1_STOP_SYS_SLAVE_WIDTH 1u
+#define SCM_CCM1_STATUS_CPU1_STOP_SYS_SLAVE(x) (((uint32_t)(((uint32_t)(x))<<SCM_CCM1_STATUS_CPU1_STOP_SYS_SLAVE_SHIFT))&SCM_CCM1_STATUS_CPU1_STOP_SYS_SLAVE_MASK)
+#define SCM_CCM1_STATUS_CPU1_STOP_MASTER_MASK 0x10u
+#define SCM_CCM1_STATUS_CPU1_STOP_MASTER_SHIFT 4u
+#define SCM_CCM1_STATUS_CPU1_STOP_MASTER_WIDTH 1u
+#define SCM_CCM1_STATUS_CPU1_STOP_MASTER(x) (((uint32_t)(((uint32_t)(x))<<SCM_CCM1_STATUS_CPU1_STOP_MASTER_SHIFT))&SCM_CCM1_STATUS_CPU1_STOP_MASTER_MASK)
+#define SCM_CCM1_STATUS_CPU1_DEEPSLEEPING_MASK 0x2u
+#define SCM_CCM1_STATUS_CPU1_DEEPSLEEPING_SHIFT 1u
+#define SCM_CCM1_STATUS_CPU1_DEEPSLEEPING_WIDTH 1u
+#define SCM_CCM1_STATUS_CPU1_DEEPSLEEPING(x) (((uint32_t)(((uint32_t)(x))<<SCM_CCM1_STATUS_CPU1_DEEPSLEEPING_SHIFT))&SCM_CCM1_STATUS_CPU1_DEEPSLEEPING_MASK)
+#define SCM_CCM1_STATUS_CPU1_SLEEPING_MASK 0x1u
+#define SCM_CCM1_STATUS_CPU1_SLEEPING_SHIFT 0u
+#define SCM_CCM1_STATUS_CPU1_SLEEPING_WIDTH 1u
+#define SCM_CCM1_STATUS_CPU1_SLEEPING(x) (((uint32_t)(((uint32_t)(x))<<SCM_CCM1_STATUS_CPU1_SLEEPING_SHIFT))&SCM_CCM1_STATUS_CPU1_SLEEPING_MASK)
+/* CCM1_STATUS Reg Mask */
+#define SCM_CCM1_STATUS_MASK           0x000001F3u
+
+/* ENET_STATUS Bit Fields */
+#define SCM_ENET_STATUS_ENET_CHID_MASK 0x3u
+#define SCM_ENET_STATUS_ENET_CHID_SHIFT 0u
+#define SCM_ENET_STATUS_ENET_CHID_WIDTH 2u
+#define SCM_ENET_STATUS_ENET_CHID(x)   (((uint32_t)(((uint32_t)(x))<<SCM_ENET_STATUS_ENET_CHID_SHIFT))&SCM_ENET_STATUS_ENET_CHID_MASK)
+/* ENET_STATUS Reg Mask */
+#define SCM_ENET_STATUS_MASK           0x00000003u
+
+/* FLEXCAN_ROUTING Bit Fields */
+#define SCM_FLEXCAN_ROUTING_FLEXCAN_TRIGGER_MASK_MASK 0xFFFF0000u
+#define SCM_FLEXCAN_ROUTING_FLEXCAN_TRIGGER_MASK_SHIFT 16u
+#define SCM_FLEXCAN_ROUTING_FLEXCAN_TRIGGER_MASK_WIDTH 16u
+#define SCM_FLEXCAN_ROUTING_FLEXCAN_TRIGGER_MASK(x) (((uint32_t)(((uint32_t)(x))<<SCM_FLEXCAN_ROUTING_FLEXCAN_TRIGGER_MASK_SHIFT))&SCM_FLEXCAN_ROUTING_FLEXCAN_TRIGGER_MASK_MASK)
+#define SCM_FLEXCAN_ROUTING_FLEXCAN_FIX_EN_MASK 0x2u
+#define SCM_FLEXCAN_ROUTING_FLEXCAN_FIX_EN_SHIFT 1u
+#define SCM_FLEXCAN_ROUTING_FLEXCAN_FIX_EN_WIDTH 1u
+#define SCM_FLEXCAN_ROUTING_FLEXCAN_FIX_EN(x) (((uint32_t)(((uint32_t)(x))<<SCM_FLEXCAN_ROUTING_FLEXCAN_FIX_EN_SHIFT))&SCM_FLEXCAN_ROUTING_FLEXCAN_FIX_EN_MASK)
+#define SCM_FLEXCAN_ROUTING_LOCK_MASK  0x1u
+#define SCM_FLEXCAN_ROUTING_LOCK_SHIFT 0u
+#define SCM_FLEXCAN_ROUTING_LOCK_WIDTH 1u
+#define SCM_FLEXCAN_ROUTING_LOCK(x)    (((uint32_t)(((uint32_t)(x))<<SCM_FLEXCAN_ROUTING_LOCK_SHIFT))&SCM_FLEXCAN_ROUTING_LOCK_MASK)
+/* FLEXCAN_ROUTING Reg Mask */
+#define SCM_FLEXCAN_ROUTING_MASK       0xFFFF0003u
+
+/* MSC0_ROUTING Bit Fields */
+#define SCM_MSC0_ROUTING_MSC0_31_24_SEL_MASK 0xF0000000u
+#define SCM_MSC0_ROUTING_MSC0_31_24_SEL_SHIFT 28u
+#define SCM_MSC0_ROUTING_MSC0_31_24_SEL_WIDTH 4u
+#define SCM_MSC0_ROUTING_MSC0_31_24_SEL(x) (((uint32_t)(((uint32_t)(x))<<SCM_MSC0_ROUTING_MSC0_31_24_SEL_SHIFT))&SCM_MSC0_ROUTING_MSC0_31_24_SEL_MASK)
+#define SCM_MSC0_ROUTING_MSC0_23_16_SEL_MASK 0xF000000u
+#define SCM_MSC0_ROUTING_MSC0_23_16_SEL_SHIFT 24u
+#define SCM_MSC0_ROUTING_MSC0_23_16_SEL_WIDTH 4u
+#define SCM_MSC0_ROUTING_MSC0_23_16_SEL(x) (((uint32_t)(((uint32_t)(x))<<SCM_MSC0_ROUTING_MSC0_23_16_SEL_SHIFT))&SCM_MSC0_ROUTING_MSC0_23_16_SEL_MASK)
+#define SCM_MSC0_ROUTING_MSC0_15_8_SEL_MASK 0xF00000u
+#define SCM_MSC0_ROUTING_MSC0_15_8_SEL_SHIFT 20u
+#define SCM_MSC0_ROUTING_MSC0_15_8_SEL_WIDTH 4u
+#define SCM_MSC0_ROUTING_MSC0_15_8_SEL(x) (((uint32_t)(((uint32_t)(x))<<SCM_MSC0_ROUTING_MSC0_15_8_SEL_SHIFT))&SCM_MSC0_ROUTING_MSC0_15_8_SEL_MASK)
+#define SCM_MSC0_ROUTING_MSC0_7_0_SEL_MASK 0xF0000u
+#define SCM_MSC0_ROUTING_MSC0_7_0_SEL_SHIFT 16u
+#define SCM_MSC0_ROUTING_MSC0_7_0_SEL_WIDTH 4u
+#define SCM_MSC0_ROUTING_MSC0_7_0_SEL(x) (((uint32_t)(((uint32_t)(x))<<SCM_MSC0_ROUTING_MSC0_7_0_SEL_SHIFT))&SCM_MSC0_ROUTING_MSC0_7_0_SEL_MASK)
+#define SCM_MSC0_ROUTING_LOCK_MASK     0x1u
+#define SCM_MSC0_ROUTING_LOCK_SHIFT    0u
+#define SCM_MSC0_ROUTING_LOCK_WIDTH    1u
+#define SCM_MSC0_ROUTING_LOCK(x)       (((uint32_t)(((uint32_t)(x))<<SCM_MSC0_ROUTING_LOCK_SHIFT))&SCM_MSC0_ROUTING_LOCK_MASK)
+/* MSC0_ROUTING Reg Mask */
+#define SCM_MSC0_ROUTING_MASK          0xFFFF0001u
+
+/* PERI_CLKDIV Bit Fields */
+#define SCM_PERI_CLKDIV_ENET_CLKDIV_MASK 0xF0u
+#define SCM_PERI_CLKDIV_ENET_CLKDIV_SHIFT 4u
+#define SCM_PERI_CLKDIV_ENET_CLKDIV_WIDTH 4u
+#define SCM_PERI_CLKDIV_ENET_CLKDIV(x) (((uint32_t)(((uint32_t)(x))<<SCM_PERI_CLKDIV_ENET_CLKDIV_SHIFT))&SCM_PERI_CLKDIV_ENET_CLKDIV_MASK)
+#define SCM_PERI_CLKDIV_ENET_CLKDIV_EN_MASK 0x8u
+#define SCM_PERI_CLKDIV_ENET_CLKDIV_EN_SHIFT 3u
+#define SCM_PERI_CLKDIV_ENET_CLKDIV_EN_WIDTH 1u
+#define SCM_PERI_CLKDIV_ENET_CLKDIV_EN(x) (((uint32_t)(((uint32_t)(x))<<SCM_PERI_CLKDIV_ENET_CLKDIV_EN_SHIFT))&SCM_PERI_CLKDIV_ENET_CLKDIV_EN_MASK)
+#define SCM_PERI_CLKDIV_ENET_CLK_SEL_MASK 0x4u
+#define SCM_PERI_CLKDIV_ENET_CLK_SEL_SHIFT 2u
+#define SCM_PERI_CLKDIV_ENET_CLK_SEL_WIDTH 1u
+#define SCM_PERI_CLKDIV_ENET_CLK_SEL(x) (((uint32_t)(((uint32_t)(x))<<SCM_PERI_CLKDIV_ENET_CLK_SEL_SHIFT))&SCM_PERI_CLKDIV_ENET_CLK_SEL_MASK)
+#define SCM_PERI_CLKDIV_LOCK_MASK      0x1u
+#define SCM_PERI_CLKDIV_LOCK_SHIFT     0u
+#define SCM_PERI_CLKDIV_LOCK_WIDTH     1u
+#define SCM_PERI_CLKDIV_LOCK(x)        (((uint32_t)(((uint32_t)(x))<<SCM_PERI_CLKDIV_LOCK_SHIFT))&SCM_PERI_CLKDIV_LOCK_MASK)
+/* PERI_CLKDIV Reg Mask */
+#define SCM_PERI_CLKDIV_MASK           0x000000FDu
+
+/* ISM_ROUTING Bit Fields */
+#define SCM_ISM_ROUTING_ISM_ROUT_FTU_D_MASK 0xF000u
+#define SCM_ISM_ROUTING_ISM_ROUT_FTU_D_SHIFT 12u
+#define SCM_ISM_ROUTING_ISM_ROUT_FTU_D_WIDTH 4u
+#define SCM_ISM_ROUTING_ISM_ROUT_FTU_D(x) (((uint32_t)(((uint32_t)(x))<<SCM_ISM_ROUTING_ISM_ROUT_FTU_D_SHIFT))&SCM_ISM_ROUTING_ISM_ROUT_FTU_D_MASK)
+#define SCM_ISM_ROUTING_ISM_ROUT_FTU_C_MASK 0xF00u
+#define SCM_ISM_ROUTING_ISM_ROUT_FTU_C_SHIFT 8u
+#define SCM_ISM_ROUTING_ISM_ROUT_FTU_C_WIDTH 4u
+#define SCM_ISM_ROUTING_ISM_ROUT_FTU_C(x) (((uint32_t)(((uint32_t)(x))<<SCM_ISM_ROUTING_ISM_ROUT_FTU_C_SHIFT))&SCM_ISM_ROUTING_ISM_ROUT_FTU_C_MASK)
+#define SCM_ISM_ROUTING_ISM_ROUT_FTU_B_MASK 0xF0u
+#define SCM_ISM_ROUTING_ISM_ROUT_FTU_B_SHIFT 4u
+#define SCM_ISM_ROUTING_ISM_ROUT_FTU_B_WIDTH 4u
+#define SCM_ISM_ROUTING_ISM_ROUT_FTU_B(x) (((uint32_t)(((uint32_t)(x))<<SCM_ISM_ROUTING_ISM_ROUT_FTU_B_SHIFT))&SCM_ISM_ROUTING_ISM_ROUT_FTU_B_MASK)
+#define SCM_ISM_ROUTING_ISM_ROUT_FTU_A_MASK 0xFu
+#define SCM_ISM_ROUTING_ISM_ROUT_FTU_A_SHIFT 0u
+#define SCM_ISM_ROUTING_ISM_ROUT_FTU_A_WIDTH 4u
+#define SCM_ISM_ROUTING_ISM_ROUT_FTU_A(x) (((uint32_t)(((uint32_t)(x))<<SCM_ISM_ROUTING_ISM_ROUT_FTU_A_SHIFT))&SCM_ISM_ROUTING_ISM_ROUT_FTU_A_MASK)
+/* ISM_ROUTING Reg Mask */
+#define SCM_ISM_ROUTING_MASK           0x0000FFFFu
+
+/* FTU_FLT_EN Bit Fields */
+#define SCM_FTU_FLT_EN_FTU_FLT21_MASK  0x200000u
+#define SCM_FTU_FLT_EN_FTU_FLT21_SHIFT 21u
+#define SCM_FTU_FLT_EN_FTU_FLT21_WIDTH 1u
+#define SCM_FTU_FLT_EN_FTU_FLT21(x)    (((uint32_t)(((uint32_t)(x))<<SCM_FTU_FLT_EN_FTU_FLT21_SHIFT))&SCM_FTU_FLT_EN_FTU_FLT21_MASK)
+#define SCM_FTU_FLT_EN_FTU_FLT20_MASK  0x100000u
+#define SCM_FTU_FLT_EN_FTU_FLT20_SHIFT 20u
+#define SCM_FTU_FLT_EN_FTU_FLT20_WIDTH 1u
+#define SCM_FTU_FLT_EN_FTU_FLT20(x)    (((uint32_t)(((uint32_t)(x))<<SCM_FTU_FLT_EN_FTU_FLT20_SHIFT))&SCM_FTU_FLT_EN_FTU_FLT20_MASK)
+#define SCM_FTU_FLT_EN_FTU_FLT19_MASK  0x80000u
+#define SCM_FTU_FLT_EN_FTU_FLT19_SHIFT 19u
+#define SCM_FTU_FLT_EN_FTU_FLT19_WIDTH 1u
+#define SCM_FTU_FLT_EN_FTU_FLT19(x)    (((uint32_t)(((uint32_t)(x))<<SCM_FTU_FLT_EN_FTU_FLT19_SHIFT))&SCM_FTU_FLT_EN_FTU_FLT19_MASK)
+#define SCM_FTU_FLT_EN_FTU_FLT18_MASK  0x40000u
+#define SCM_FTU_FLT_EN_FTU_FLT18_SHIFT 18u
+#define SCM_FTU_FLT_EN_FTU_FLT18_WIDTH 1u
+#define SCM_FTU_FLT_EN_FTU_FLT18(x)    (((uint32_t)(((uint32_t)(x))<<SCM_FTU_FLT_EN_FTU_FLT18_SHIFT))&SCM_FTU_FLT_EN_FTU_FLT18_MASK)
+#define SCM_FTU_FLT_EN_FTU_FLT17_MASK  0x20000u
+#define SCM_FTU_FLT_EN_FTU_FLT17_SHIFT 17u
+#define SCM_FTU_FLT_EN_FTU_FLT17_WIDTH 1u
+#define SCM_FTU_FLT_EN_FTU_FLT17(x)    (((uint32_t)(((uint32_t)(x))<<SCM_FTU_FLT_EN_FTU_FLT17_SHIFT))&SCM_FTU_FLT_EN_FTU_FLT17_MASK)
+#define SCM_FTU_FLT_EN_FTU_FLT16_MASK  0x10000u
+#define SCM_FTU_FLT_EN_FTU_FLT16_SHIFT 16u
+#define SCM_FTU_FLT_EN_FTU_FLT16_WIDTH 1u
+#define SCM_FTU_FLT_EN_FTU_FLT16(x)    (((uint32_t)(((uint32_t)(x))<<SCM_FTU_FLT_EN_FTU_FLT16_SHIFT))&SCM_FTU_FLT_EN_FTU_FLT16_MASK)
+#define SCM_FTU_FLT_EN_FTU_FLT15_MASK  0x8000u
+#define SCM_FTU_FLT_EN_FTU_FLT15_SHIFT 15u
+#define SCM_FTU_FLT_EN_FTU_FLT15_WIDTH 1u
+#define SCM_FTU_FLT_EN_FTU_FLT15(x)    (((uint32_t)(((uint32_t)(x))<<SCM_FTU_FLT_EN_FTU_FLT15_SHIFT))&SCM_FTU_FLT_EN_FTU_FLT15_MASK)
+#define SCM_FTU_FLT_EN_FTU_FLT14_MASK  0x4000u
+#define SCM_FTU_FLT_EN_FTU_FLT14_SHIFT 14u
+#define SCM_FTU_FLT_EN_FTU_FLT14_WIDTH 1u
+#define SCM_FTU_FLT_EN_FTU_FLT14(x)    (((uint32_t)(((uint32_t)(x))<<SCM_FTU_FLT_EN_FTU_FLT14_SHIFT))&SCM_FTU_FLT_EN_FTU_FLT14_MASK)
+#define SCM_FTU_FLT_EN_FTU_FLT13_MASK  0x2000u
+#define SCM_FTU_FLT_EN_FTU_FLT13_SHIFT 13u
+#define SCM_FTU_FLT_EN_FTU_FLT13_WIDTH 1u
+#define SCM_FTU_FLT_EN_FTU_FLT13(x)    (((uint32_t)(((uint32_t)(x))<<SCM_FTU_FLT_EN_FTU_FLT13_SHIFT))&SCM_FTU_FLT_EN_FTU_FLT13_MASK)
+#define SCM_FTU_FLT_EN_FTU_FLT12_MASK  0x1000u
+#define SCM_FTU_FLT_EN_FTU_FLT12_SHIFT 12u
+#define SCM_FTU_FLT_EN_FTU_FLT12_WIDTH 1u
+#define SCM_FTU_FLT_EN_FTU_FLT12(x)    (((uint32_t)(((uint32_t)(x))<<SCM_FTU_FLT_EN_FTU_FLT12_SHIFT))&SCM_FTU_FLT_EN_FTU_FLT12_MASK)
+#define SCM_FTU_FLT_EN_FTU_FLT11_MASK  0x800u
+#define SCM_FTU_FLT_EN_FTU_FLT11_SHIFT 11u
+#define SCM_FTU_FLT_EN_FTU_FLT11_WIDTH 1u
+#define SCM_FTU_FLT_EN_FTU_FLT11(x)    (((uint32_t)(((uint32_t)(x))<<SCM_FTU_FLT_EN_FTU_FLT11_SHIFT))&SCM_FTU_FLT_EN_FTU_FLT11_MASK)
+#define SCM_FTU_FLT_EN_FTU_FLT10_MASK  0x400u
+#define SCM_FTU_FLT_EN_FTU_FLT10_SHIFT 10u
+#define SCM_FTU_FLT_EN_FTU_FLT10_WIDTH 1u
+#define SCM_FTU_FLT_EN_FTU_FLT10(x)    (((uint32_t)(((uint32_t)(x))<<SCM_FTU_FLT_EN_FTU_FLT10_SHIFT))&SCM_FTU_FLT_EN_FTU_FLT10_MASK)
+#define SCM_FTU_FLT_EN_FTU_FLT9_MASK   0x200u
+#define SCM_FTU_FLT_EN_FTU_FLT9_SHIFT  9u
+#define SCM_FTU_FLT_EN_FTU_FLT9_WIDTH  1u
+#define SCM_FTU_FLT_EN_FTU_FLT9(x)     (((uint32_t)(((uint32_t)(x))<<SCM_FTU_FLT_EN_FTU_FLT9_SHIFT))&SCM_FTU_FLT_EN_FTU_FLT9_MASK)
+#define SCM_FTU_FLT_EN_FTU_FLT8_MASK   0x100u
+#define SCM_FTU_FLT_EN_FTU_FLT8_SHIFT  8u
+#define SCM_FTU_FLT_EN_FTU_FLT8_WIDTH  1u
+#define SCM_FTU_FLT_EN_FTU_FLT8(x)     (((uint32_t)(((uint32_t)(x))<<SCM_FTU_FLT_EN_FTU_FLT8_SHIFT))&SCM_FTU_FLT_EN_FTU_FLT8_MASK)
+#define SCM_FTU_FLT_EN_FTU_FLT7_MASK   0x80u
+#define SCM_FTU_FLT_EN_FTU_FLT7_SHIFT  7u
+#define SCM_FTU_FLT_EN_FTU_FLT7_WIDTH  1u
+#define SCM_FTU_FLT_EN_FTU_FLT7(x)     (((uint32_t)(((uint32_t)(x))<<SCM_FTU_FLT_EN_FTU_FLT7_SHIFT))&SCM_FTU_FLT_EN_FTU_FLT7_MASK)
+#define SCM_FTU_FLT_EN_FTU_FLT6_MASK   0x40u
+#define SCM_FTU_FLT_EN_FTU_FLT6_SHIFT  6u
+#define SCM_FTU_FLT_EN_FTU_FLT6_WIDTH  1u
+#define SCM_FTU_FLT_EN_FTU_FLT6(x)     (((uint32_t)(((uint32_t)(x))<<SCM_FTU_FLT_EN_FTU_FLT6_SHIFT))&SCM_FTU_FLT_EN_FTU_FLT6_MASK)
+#define SCM_FTU_FLT_EN_FTU_FLT5_MASK   0x20u
+#define SCM_FTU_FLT_EN_FTU_FLT5_SHIFT  5u
+#define SCM_FTU_FLT_EN_FTU_FLT5_WIDTH  1u
+#define SCM_FTU_FLT_EN_FTU_FLT5(x)     (((uint32_t)(((uint32_t)(x))<<SCM_FTU_FLT_EN_FTU_FLT5_SHIFT))&SCM_FTU_FLT_EN_FTU_FLT5_MASK)
+#define SCM_FTU_FLT_EN_FTU_FLT4_MASK   0x10u
+#define SCM_FTU_FLT_EN_FTU_FLT4_SHIFT  4u
+#define SCM_FTU_FLT_EN_FTU_FLT4_WIDTH  1u
+#define SCM_FTU_FLT_EN_FTU_FLT4(x)     (((uint32_t)(((uint32_t)(x))<<SCM_FTU_FLT_EN_FTU_FLT4_SHIFT))&SCM_FTU_FLT_EN_FTU_FLT4_MASK)
+#define SCM_FTU_FLT_EN_FTU_FLT3_MASK   0x8u
+#define SCM_FTU_FLT_EN_FTU_FLT3_SHIFT  3u
+#define SCM_FTU_FLT_EN_FTU_FLT3_WIDTH  1u
+#define SCM_FTU_FLT_EN_FTU_FLT3(x)     (((uint32_t)(((uint32_t)(x))<<SCM_FTU_FLT_EN_FTU_FLT3_SHIFT))&SCM_FTU_FLT_EN_FTU_FLT3_MASK)
+#define SCM_FTU_FLT_EN_FTU_FLT2_MASK   0x4u
+#define SCM_FTU_FLT_EN_FTU_FLT2_SHIFT  2u
+#define SCM_FTU_FLT_EN_FTU_FLT2_WIDTH  1u
+#define SCM_FTU_FLT_EN_FTU_FLT2(x)     (((uint32_t)(((uint32_t)(x))<<SCM_FTU_FLT_EN_FTU_FLT2_SHIFT))&SCM_FTU_FLT_EN_FTU_FLT2_MASK)
+#define SCM_FTU_FLT_EN_FTU_FLT1_MASK   0x2u
+#define SCM_FTU_FLT_EN_FTU_FLT1_SHIFT  1u
+#define SCM_FTU_FLT_EN_FTU_FLT1_WIDTH  1u
+#define SCM_FTU_FLT_EN_FTU_FLT1(x)     (((uint32_t)(((uint32_t)(x))<<SCM_FTU_FLT_EN_FTU_FLT1_SHIFT))&SCM_FTU_FLT_EN_FTU_FLT1_MASK)
+#define SCM_FTU_FLT_EN_FTU_FLT0_MASK   0x1u
+#define SCM_FTU_FLT_EN_FTU_FLT0_SHIFT  0u
+#define SCM_FTU_FLT_EN_FTU_FLT0_WIDTH  1u
+#define SCM_FTU_FLT_EN_FTU_FLT0(x)     (((uint32_t)(((uint32_t)(x))<<SCM_FTU_FLT_EN_FTU_FLT0_SHIFT))&SCM_FTU_FLT_EN_FTU_FLT0_MASK)
+/* FTU_FLT_EN Reg Mask */
+#define SCM_FTU_FLT_EN_MASK            0x003FFFFFu
+
+/* MATRIX_STATUS0 Bit Fields */
+#define SCM_MATRIX_STATUS0_MAM0_S7_M_MASK 0x80000000u
+#define SCM_MATRIX_STATUS0_MAM0_S7_M_SHIFT 31u
+#define SCM_MATRIX_STATUS0_MAM0_S7_M_WIDTH 1u
+#define SCM_MATRIX_STATUS0_MAM0_S7_M(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_MAM0_S7_M_SHIFT))&SCM_MATRIX_STATUS0_MAM0_S7_M_MASK)
+#define SCM_MATRIX_STATUS0_MAM0_S7_AT_MASK 0x40000000u
+#define SCM_MATRIX_STATUS0_MAM0_S7_AT_SHIFT 30u
+#define SCM_MATRIX_STATUS0_MAM0_S7_AT_WIDTH 1u
+#define SCM_MATRIX_STATUS0_MAM0_S7_AT(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_MAM0_S7_AT_SHIFT))&SCM_MATRIX_STATUS0_MAM0_S7_AT_MASK)
+#define SCM_MATRIX_STATUS0_MAM0_S7_D_MASK 0x20000000u
+#define SCM_MATRIX_STATUS0_MAM0_S7_D_SHIFT 29u
+#define SCM_MATRIX_STATUS0_MAM0_S7_D_WIDTH 1u
+#define SCM_MATRIX_STATUS0_MAM0_S7_D(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_MAM0_S7_D_SHIFT))&SCM_MATRIX_STATUS0_MAM0_S7_D_MASK)
+#define SCM_MATRIX_STATUS0_MAM0_S7_A_MASK 0x10000000u
+#define SCM_MATRIX_STATUS0_MAM0_S7_A_SHIFT 28u
+#define SCM_MATRIX_STATUS0_MAM0_S7_A_WIDTH 1u
+#define SCM_MATRIX_STATUS0_MAM0_S7_A(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_MAM0_S7_A_SHIFT))&SCM_MATRIX_STATUS0_MAM0_S7_A_MASK)
+#define SCM_MATRIX_STATUS0_MAM0_S6_M_MASK 0x8000000u
+#define SCM_MATRIX_STATUS0_MAM0_S6_M_SHIFT 27u
+#define SCM_MATRIX_STATUS0_MAM0_S6_M_WIDTH 1u
+#define SCM_MATRIX_STATUS0_MAM0_S6_M(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_MAM0_S6_M_SHIFT))&SCM_MATRIX_STATUS0_MAM0_S6_M_MASK)
+#define SCM_MATRIX_STATUS0_MAM0_S6_AT_MASK 0x4000000u
+#define SCM_MATRIX_STATUS0_MAM0_S6_AT_SHIFT 26u
+#define SCM_MATRIX_STATUS0_MAM0_S6_AT_WIDTH 1u
+#define SCM_MATRIX_STATUS0_MAM0_S6_AT(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_MAM0_S6_AT_SHIFT))&SCM_MATRIX_STATUS0_MAM0_S6_AT_MASK)
+#define SCM_MATRIX_STATUS0_MAM0_S6_D_MASK 0x2000000u
+#define SCM_MATRIX_STATUS0_MAM0_S6_D_SHIFT 25u
+#define SCM_MATRIX_STATUS0_MAM0_S6_D_WIDTH 1u
+#define SCM_MATRIX_STATUS0_MAM0_S6_D(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_MAM0_S6_D_SHIFT))&SCM_MATRIX_STATUS0_MAM0_S6_D_MASK)
+#define SCM_MATRIX_STATUS0_MAM0_S6_A_MASK 0x1000000u
+#define SCM_MATRIX_STATUS0_MAM0_S6_A_SHIFT 24u
+#define SCM_MATRIX_STATUS0_MAM0_S6_A_WIDTH 1u
+#define SCM_MATRIX_STATUS0_MAM0_S6_A(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_MAM0_S6_A_SHIFT))&SCM_MATRIX_STATUS0_MAM0_S6_A_MASK)
+#define SCM_MATRIX_STATUS0_MAM0_S5_M_MASK 0x800000u
+#define SCM_MATRIX_STATUS0_MAM0_S5_M_SHIFT 23u
+#define SCM_MATRIX_STATUS0_MAM0_S5_M_WIDTH 1u
+#define SCM_MATRIX_STATUS0_MAM0_S5_M(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_MAM0_S5_M_SHIFT))&SCM_MATRIX_STATUS0_MAM0_S5_M_MASK)
+#define SCM_MATRIX_STATUS0_MAM0_S5_AT_MASK 0x400000u
+#define SCM_MATRIX_STATUS0_MAM0_S5_AT_SHIFT 22u
+#define SCM_MATRIX_STATUS0_MAM0_S5_AT_WIDTH 1u
+#define SCM_MATRIX_STATUS0_MAM0_S5_AT(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_MAM0_S5_AT_SHIFT))&SCM_MATRIX_STATUS0_MAM0_S5_AT_MASK)
+#define SCM_MATRIX_STATUS0_MAM0_S5_D_MASK 0x200000u
+#define SCM_MATRIX_STATUS0_MAM0_S5_D_SHIFT 21u
+#define SCM_MATRIX_STATUS0_MAM0_S5_D_WIDTH 1u
+#define SCM_MATRIX_STATUS0_MAM0_S5_D(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_MAM0_S5_D_SHIFT))&SCM_MATRIX_STATUS0_MAM0_S5_D_MASK)
+#define SCM_MATRIX_STATUS0_MAM0_S5_A_MASK 0x100000u
+#define SCM_MATRIX_STATUS0_MAM0_S5_A_SHIFT 20u
+#define SCM_MATRIX_STATUS0_MAM0_S5_A_WIDTH 1u
+#define SCM_MATRIX_STATUS0_MAM0_S5_A(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_MAM0_S5_A_SHIFT))&SCM_MATRIX_STATUS0_MAM0_S5_A_MASK)
+#define SCM_MATRIX_STATUS0_MAM0_S4_M_MASK 0x80000u
+#define SCM_MATRIX_STATUS0_MAM0_S4_M_SHIFT 19u
+#define SCM_MATRIX_STATUS0_MAM0_S4_M_WIDTH 1u
+#define SCM_MATRIX_STATUS0_MAM0_S4_M(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_MAM0_S4_M_SHIFT))&SCM_MATRIX_STATUS0_MAM0_S4_M_MASK)
+#define SCM_MATRIX_STATUS0_MAM0_S4_AT_MASK 0x40000u
+#define SCM_MATRIX_STATUS0_MAM0_S4_AT_SHIFT 18u
+#define SCM_MATRIX_STATUS0_MAM0_S4_AT_WIDTH 1u
+#define SCM_MATRIX_STATUS0_MAM0_S4_AT(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_MAM0_S4_AT_SHIFT))&SCM_MATRIX_STATUS0_MAM0_S4_AT_MASK)
+#define SCM_MATRIX_STATUS0_MAM0_S4_D_MASK 0x20000u
+#define SCM_MATRIX_STATUS0_MAM0_S4_D_SHIFT 17u
+#define SCM_MATRIX_STATUS0_MAM0_S4_D_WIDTH 1u
+#define SCM_MATRIX_STATUS0_MAM0_S4_D(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_MAM0_S4_D_SHIFT))&SCM_MATRIX_STATUS0_MAM0_S4_D_MASK)
+#define SCM_MATRIX_STATUS0_MAM0_S4_A_MASK 0x10000u
+#define SCM_MATRIX_STATUS0_MAM0_S4_A_SHIFT 16u
+#define SCM_MATRIX_STATUS0_MAM0_S4_A_WIDTH 1u
+#define SCM_MATRIX_STATUS0_MAM0_S4_A(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_MAM0_S4_A_SHIFT))&SCM_MATRIX_STATUS0_MAM0_S4_A_MASK)
+#define SCM_MATRIX_STATUS0_MAM0_S3_M_MASK 0x8000u
+#define SCM_MATRIX_STATUS0_MAM0_S3_M_SHIFT 15u
+#define SCM_MATRIX_STATUS0_MAM0_S3_M_WIDTH 1u
+#define SCM_MATRIX_STATUS0_MAM0_S3_M(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_MAM0_S3_M_SHIFT))&SCM_MATRIX_STATUS0_MAM0_S3_M_MASK)
+#define SCM_MATRIX_STATUS0_MAM0_S3_AT_MASK 0x4000u
+#define SCM_MATRIX_STATUS0_MAM0_S3_AT_SHIFT 14u
+#define SCM_MATRIX_STATUS0_MAM0_S3_AT_WIDTH 1u
+#define SCM_MATRIX_STATUS0_MAM0_S3_AT(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_MAM0_S3_AT_SHIFT))&SCM_MATRIX_STATUS0_MAM0_S3_AT_MASK)
+#define SCM_MATRIX_STATUS0_MAM0_S3_D_MASK 0x2000u
+#define SCM_MATRIX_STATUS0_MAM0_S3_D_SHIFT 13u
+#define SCM_MATRIX_STATUS0_MAM0_S3_D_WIDTH 1u
+#define SCM_MATRIX_STATUS0_MAM0_S3_D(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_MAM0_S3_D_SHIFT))&SCM_MATRIX_STATUS0_MAM0_S3_D_MASK)
+#define SCM_MATRIX_STATUS0_MAM0_S3_A_MASK 0x1000u
+#define SCM_MATRIX_STATUS0_MAM0_S3_A_SHIFT 12u
+#define SCM_MATRIX_STATUS0_MAM0_S3_A_WIDTH 1u
+#define SCM_MATRIX_STATUS0_MAM0_S3_A(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_MAM0_S3_A_SHIFT))&SCM_MATRIX_STATUS0_MAM0_S3_A_MASK)
+#define SCM_MATRIX_STATUS0_MAM0_S1_M_MASK 0x80u
+#define SCM_MATRIX_STATUS0_MAM0_S1_M_SHIFT 7u
+#define SCM_MATRIX_STATUS0_MAM0_S1_M_WIDTH 1u
+#define SCM_MATRIX_STATUS0_MAM0_S1_M(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_MAM0_S1_M_SHIFT))&SCM_MATRIX_STATUS0_MAM0_S1_M_MASK)
+#define SCM_MATRIX_STATUS0_MAM0_S1_AT_MASK 0x40u
+#define SCM_MATRIX_STATUS0_MAM0_S1_AT_SHIFT 6u
+#define SCM_MATRIX_STATUS0_MAM0_S1_AT_WIDTH 1u
+#define SCM_MATRIX_STATUS0_MAM0_S1_AT(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_MAM0_S1_AT_SHIFT))&SCM_MATRIX_STATUS0_MAM0_S1_AT_MASK)
+#define SCM_MATRIX_STATUS0_MAM0_S1_D_MASK 0x20u
+#define SCM_MATRIX_STATUS0_MAM0_S1_D_SHIFT 5u
+#define SCM_MATRIX_STATUS0_MAM0_S1_D_WIDTH 1u
+#define SCM_MATRIX_STATUS0_MAM0_S1_D(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_MAM0_S1_D_SHIFT))&SCM_MATRIX_STATUS0_MAM0_S1_D_MASK)
+#define SCM_MATRIX_STATUS0_MAM0_S1_A_MASK 0x10u
+#define SCM_MATRIX_STATUS0_MAM0_S1_A_SHIFT 4u
+#define SCM_MATRIX_STATUS0_MAM0_S1_A_WIDTH 1u
+#define SCM_MATRIX_STATUS0_MAM0_S1_A(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_MAM0_S1_A_SHIFT))&SCM_MATRIX_STATUS0_MAM0_S1_A_MASK)
+#define SCM_MATRIX_STATUS0_ROM_M_MASK  0x8u
+#define SCM_MATRIX_STATUS0_ROM_M_SHIFT 3u
+#define SCM_MATRIX_STATUS0_ROM_M_WIDTH 1u
+#define SCM_MATRIX_STATUS0_ROM_M(x)    (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_ROM_M_SHIFT))&SCM_MATRIX_STATUS0_ROM_M_MASK)
+#define SCM_MATRIX_STATUS0_ROM_D_MASK  0x2u
+#define SCM_MATRIX_STATUS0_ROM_D_SHIFT 1u
+#define SCM_MATRIX_STATUS0_ROM_D_WIDTH 1u
+#define SCM_MATRIX_STATUS0_ROM_D(x)    (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_ROM_D_SHIFT))&SCM_MATRIX_STATUS0_ROM_D_MASK)
+#define SCM_MATRIX_STATUS0_ROM_A_MASK  0x1u
+#define SCM_MATRIX_STATUS0_ROM_A_SHIFT 0u
+#define SCM_MATRIX_STATUS0_ROM_A_WIDTH 1u
+#define SCM_MATRIX_STATUS0_ROM_A(x)    (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS0_ROM_A_SHIFT))&SCM_MATRIX_STATUS0_ROM_A_MASK)
+/* MATRIX_STATUS0 Reg Mask */
+#define SCM_MATRIX_STATUS0_MASK        0xFFFFF0FBu
+
+/* MATRIX_STATUS1 Bit Fields */
+#define SCM_MATRIX_STATUS1_DMA0_M_MASK 0x8000000u
+#define SCM_MATRIX_STATUS1_DMA0_M_SHIFT 27u
+#define SCM_MATRIX_STATUS1_DMA0_M_WIDTH 1u
+#define SCM_MATRIX_STATUS1_DMA0_M(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS1_DMA0_M_SHIFT))&SCM_MATRIX_STATUS1_DMA0_M_MASK)
+#define SCM_MATRIX_STATUS1_DMA0_D_MASK 0x2000000u
+#define SCM_MATRIX_STATUS1_DMA0_D_SHIFT 25u
+#define SCM_MATRIX_STATUS1_DMA0_D_WIDTH 1u
+#define SCM_MATRIX_STATUS1_DMA0_D(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS1_DMA0_D_SHIFT))&SCM_MATRIX_STATUS1_DMA0_D_MASK)
+#define SCM_MATRIX_STATUS1_DMA0_A_MASK 0x1000000u
+#define SCM_MATRIX_STATUS1_DMA0_A_SHIFT 24u
+#define SCM_MATRIX_STATUS1_DMA0_A_WIDTH 1u
+#define SCM_MATRIX_STATUS1_DMA0_A(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS1_DMA0_A_SHIFT))&SCM_MATRIX_STATUS1_DMA0_A_MASK)
+#define SCM_MATRIX_STATUS1_HSM_M_MASK  0x800000u
+#define SCM_MATRIX_STATUS1_HSM_M_SHIFT 23u
+#define SCM_MATRIX_STATUS1_HSM_M_WIDTH 1u
+#define SCM_MATRIX_STATUS1_HSM_M(x)    (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS1_HSM_M_SHIFT))&SCM_MATRIX_STATUS1_HSM_M_MASK)
+#define SCM_MATRIX_STATUS1_HSM_D_MASK  0x200000u
+#define SCM_MATRIX_STATUS1_HSM_D_SHIFT 21u
+#define SCM_MATRIX_STATUS1_HSM_D_WIDTH 1u
+#define SCM_MATRIX_STATUS1_HSM_D(x)    (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS1_HSM_D_SHIFT))&SCM_MATRIX_STATUS1_HSM_D_MASK)
+#define SCM_MATRIX_STATUS1_HSM_A_MASK  0x100000u
+#define SCM_MATRIX_STATUS1_HSM_A_SHIFT 20u
+#define SCM_MATRIX_STATUS1_HSM_A_WIDTH 1u
+#define SCM_MATRIX_STATUS1_HSM_A(x)    (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS1_HSM_A_SHIFT))&SCM_MATRIX_STATUS1_HSM_A_MASK)
+#define SCM_MATRIX_STATUS1_ENET_M_MASK 0x80000u
+#define SCM_MATRIX_STATUS1_ENET_M_SHIFT 19u
+#define SCM_MATRIX_STATUS1_ENET_M_WIDTH 1u
+#define SCM_MATRIX_STATUS1_ENET_M(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS1_ENET_M_SHIFT))&SCM_MATRIX_STATUS1_ENET_M_MASK)
+#define SCM_MATRIX_STATUS1_ENET_D_MASK 0x20000u
+#define SCM_MATRIX_STATUS1_ENET_D_SHIFT 17u
+#define SCM_MATRIX_STATUS1_ENET_D_WIDTH 1u
+#define SCM_MATRIX_STATUS1_ENET_D(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS1_ENET_D_SHIFT))&SCM_MATRIX_STATUS1_ENET_D_MASK)
+#define SCM_MATRIX_STATUS1_ENET_A_MASK 0x10000u
+#define SCM_MATRIX_STATUS1_ENET_A_SHIFT 16u
+#define SCM_MATRIX_STATUS1_ENET_A_WIDTH 1u
+#define SCM_MATRIX_STATUS1_ENET_A(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS1_ENET_A_SHIFT))&SCM_MATRIX_STATUS1_ENET_A_MASK)
+#define SCM_MATRIX_STATUS1_MAM1_S2_M_MASK 0x800u
+#define SCM_MATRIX_STATUS1_MAM1_S2_M_SHIFT 11u
+#define SCM_MATRIX_STATUS1_MAM1_S2_M_WIDTH 1u
+#define SCM_MATRIX_STATUS1_MAM1_S2_M(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS1_MAM1_S2_M_SHIFT))&SCM_MATRIX_STATUS1_MAM1_S2_M_MASK)
+#define SCM_MATRIX_STATUS1_MAM1_S2_AT_MASK 0x400u
+#define SCM_MATRIX_STATUS1_MAM1_S2_AT_SHIFT 10u
+#define SCM_MATRIX_STATUS1_MAM1_S2_AT_WIDTH 1u
+#define SCM_MATRIX_STATUS1_MAM1_S2_AT(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS1_MAM1_S2_AT_SHIFT))&SCM_MATRIX_STATUS1_MAM1_S2_AT_MASK)
+#define SCM_MATRIX_STATUS1_MAM1_S2_D_MASK 0x200u
+#define SCM_MATRIX_STATUS1_MAM1_S2_D_SHIFT 9u
+#define SCM_MATRIX_STATUS1_MAM1_S2_D_WIDTH 1u
+#define SCM_MATRIX_STATUS1_MAM1_S2_D(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS1_MAM1_S2_D_SHIFT))&SCM_MATRIX_STATUS1_MAM1_S2_D_MASK)
+#define SCM_MATRIX_STATUS1_MAM1_S2_A_MASK 0x100u
+#define SCM_MATRIX_STATUS1_MAM1_S2_A_SHIFT 8u
+#define SCM_MATRIX_STATUS1_MAM1_S2_A_WIDTH 1u
+#define SCM_MATRIX_STATUS1_MAM1_S2_A(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS1_MAM1_S2_A_SHIFT))&SCM_MATRIX_STATUS1_MAM1_S2_A_MASK)
+#define SCM_MATRIX_STATUS1_MAM1_S1_M_MASK 0x80u
+#define SCM_MATRIX_STATUS1_MAM1_S1_M_SHIFT 7u
+#define SCM_MATRIX_STATUS1_MAM1_S1_M_WIDTH 1u
+#define SCM_MATRIX_STATUS1_MAM1_S1_M(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS1_MAM1_S1_M_SHIFT))&SCM_MATRIX_STATUS1_MAM1_S1_M_MASK)
+#define SCM_MATRIX_STATUS1_MAM1_S1_AT_MASK 0x40u
+#define SCM_MATRIX_STATUS1_MAM1_S1_AT_SHIFT 6u
+#define SCM_MATRIX_STATUS1_MAM1_S1_AT_WIDTH 1u
+#define SCM_MATRIX_STATUS1_MAM1_S1_AT(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS1_MAM1_S1_AT_SHIFT))&SCM_MATRIX_STATUS1_MAM1_S1_AT_MASK)
+#define SCM_MATRIX_STATUS1_MAM1_S1_D_MASK 0x20u
+#define SCM_MATRIX_STATUS1_MAM1_S1_D_SHIFT 5u
+#define SCM_MATRIX_STATUS1_MAM1_S1_D_WIDTH 1u
+#define SCM_MATRIX_STATUS1_MAM1_S1_D(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS1_MAM1_S1_D_SHIFT))&SCM_MATRIX_STATUS1_MAM1_S1_D_MASK)
+#define SCM_MATRIX_STATUS1_MAM1_S1_A_MASK 0x10u
+#define SCM_MATRIX_STATUS1_MAM1_S1_A_SHIFT 4u
+#define SCM_MATRIX_STATUS1_MAM1_S1_A_WIDTH 1u
+#define SCM_MATRIX_STATUS1_MAM1_S1_A(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS1_MAM1_S1_A_SHIFT))&SCM_MATRIX_STATUS1_MAM1_S1_A_MASK)
+#define SCM_MATRIX_STATUS1_MAM1_S0_M_MASK 0x8u
+#define SCM_MATRIX_STATUS1_MAM1_S0_M_SHIFT 3u
+#define SCM_MATRIX_STATUS1_MAM1_S0_M_WIDTH 1u
+#define SCM_MATRIX_STATUS1_MAM1_S0_M(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS1_MAM1_S0_M_SHIFT))&SCM_MATRIX_STATUS1_MAM1_S0_M_MASK)
+#define SCM_MATRIX_STATUS1_MAM1_S0_AT_MASK 0x4u
+#define SCM_MATRIX_STATUS1_MAM1_S0_AT_SHIFT 2u
+#define SCM_MATRIX_STATUS1_MAM1_S0_AT_WIDTH 1u
+#define SCM_MATRIX_STATUS1_MAM1_S0_AT(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS1_MAM1_S0_AT_SHIFT))&SCM_MATRIX_STATUS1_MAM1_S0_AT_MASK)
+#define SCM_MATRIX_STATUS1_MAM1_S0_D_MASK 0x2u
+#define SCM_MATRIX_STATUS1_MAM1_S0_D_SHIFT 1u
+#define SCM_MATRIX_STATUS1_MAM1_S0_D_WIDTH 1u
+#define SCM_MATRIX_STATUS1_MAM1_S0_D(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS1_MAM1_S0_D_SHIFT))&SCM_MATRIX_STATUS1_MAM1_S0_D_MASK)
+#define SCM_MATRIX_STATUS1_MAM1_S0_A_MASK 0x1u
+#define SCM_MATRIX_STATUS1_MAM1_S0_A_SHIFT 0u
+#define SCM_MATRIX_STATUS1_MAM1_S0_A_WIDTH 1u
+#define SCM_MATRIX_STATUS1_MAM1_S0_A(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS1_MAM1_S0_A_SHIFT))&SCM_MATRIX_STATUS1_MAM1_S0_A_MASK)
+/* MATRIX_STATUS1 Reg Mask */
+#define SCM_MATRIX_STATUS1_MASK        0x0BBB0FFFu
+
+/* MATRIX_STATUS2 Bit Fields */
+#define SCM_MATRIX_STATUS2_C0_OVERLAY_MASK 0x80000000u
+#define SCM_MATRIX_STATUS2_C0_OVERLAY_SHIFT 31u
+#define SCM_MATRIX_STATUS2_C0_OVERLAY_WIDTH 1u
+#define SCM_MATRIX_STATUS2_C0_OVERLAY(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS2_C0_OVERLAY_SHIFT))&SCM_MATRIX_STATUS2_C0_OVERLAY_MASK)
+#define SCM_MATRIX_STATUS2_INTM0_MON_MASK 0x40000000u
+#define SCM_MATRIX_STATUS2_INTM0_MON_SHIFT 30u
+#define SCM_MATRIX_STATUS2_INTM0_MON_WIDTH 1u
+#define SCM_MATRIX_STATUS2_INTM0_MON(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS2_INTM0_MON_SHIFT))&SCM_MATRIX_STATUS2_INTM0_MON_MASK)
+#define SCM_MATRIX_STATUS2_C0_LOCKSTEP_MASK 0x20000000u
+#define SCM_MATRIX_STATUS2_C0_LOCKSTEP_SHIFT 29u
+#define SCM_MATRIX_STATUS2_C0_LOCKSTEP_WIDTH 1u
+#define SCM_MATRIX_STATUS2_C0_LOCKSTEP(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS2_C0_LOCKSTEP_SHIFT))&SCM_MATRIX_STATUS2_C0_LOCKSTEP_MASK)
+#define SCM_MATRIX_STATUS2_C0_DTCM1_A_MASK 0x10000000u
+#define SCM_MATRIX_STATUS2_C0_DTCM1_A_SHIFT 28u
+#define SCM_MATRIX_STATUS2_C0_DTCM1_A_WIDTH 1u
+#define SCM_MATRIX_STATUS2_C0_DTCM1_A(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS2_C0_DTCM1_A_SHIFT))&SCM_MATRIX_STATUS2_C0_DTCM1_A_MASK)
+#define SCM_MATRIX_STATUS2_C0_DTCM1_M_MASK 0x8000000u
+#define SCM_MATRIX_STATUS2_C0_DTCM1_M_SHIFT 27u
+#define SCM_MATRIX_STATUS2_C0_DTCM1_M_WIDTH 1u
+#define SCM_MATRIX_STATUS2_C0_DTCM1_M(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS2_C0_DTCM1_M_SHIFT))&SCM_MATRIX_STATUS2_C0_DTCM1_M_MASK)
+#define SCM_MATRIX_STATUS2_C0_DTCM1_S_MASK 0x4000000u
+#define SCM_MATRIX_STATUS2_C0_DTCM1_S_SHIFT 26u
+#define SCM_MATRIX_STATUS2_C0_DTCM1_S_WIDTH 1u
+#define SCM_MATRIX_STATUS2_C0_DTCM1_S(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS2_C0_DTCM1_S_SHIFT))&SCM_MATRIX_STATUS2_C0_DTCM1_S_MASK)
+#define SCM_MATRIX_STATUS2_C0_DTCM0_A_MASK 0x2000000u
+#define SCM_MATRIX_STATUS2_C0_DTCM0_A_SHIFT 25u
+#define SCM_MATRIX_STATUS2_C0_DTCM0_A_WIDTH 1u
+#define SCM_MATRIX_STATUS2_C0_DTCM0_A(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS2_C0_DTCM0_A_SHIFT))&SCM_MATRIX_STATUS2_C0_DTCM0_A_MASK)
+#define SCM_MATRIX_STATUS2_C0_DTCM0_M_MASK 0x1000000u
+#define SCM_MATRIX_STATUS2_C0_DTCM0_M_SHIFT 24u
+#define SCM_MATRIX_STATUS2_C0_DTCM0_M_WIDTH 1u
+#define SCM_MATRIX_STATUS2_C0_DTCM0_M(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS2_C0_DTCM0_M_SHIFT))&SCM_MATRIX_STATUS2_C0_DTCM0_M_MASK)
+#define SCM_MATRIX_STATUS2_C0_DTCM0_S_MASK 0x800000u
+#define SCM_MATRIX_STATUS2_C0_DTCM0_S_SHIFT 23u
+#define SCM_MATRIX_STATUS2_C0_DTCM0_S_WIDTH 1u
+#define SCM_MATRIX_STATUS2_C0_DTCM0_S(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS2_C0_DTCM0_S_SHIFT))&SCM_MATRIX_STATUS2_C0_DTCM0_S_MASK)
+#define SCM_MATRIX_STATUS2_C0_ITCM_A_MASK 0x400000u
+#define SCM_MATRIX_STATUS2_C0_ITCM_A_SHIFT 22u
+#define SCM_MATRIX_STATUS2_C0_ITCM_A_WIDTH 1u
+#define SCM_MATRIX_STATUS2_C0_ITCM_A(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS2_C0_ITCM_A_SHIFT))&SCM_MATRIX_STATUS2_C0_ITCM_A_MASK)
+#define SCM_MATRIX_STATUS2_C0_ITCM_M_MASK 0x200000u
+#define SCM_MATRIX_STATUS2_C0_ITCM_M_SHIFT 21u
+#define SCM_MATRIX_STATUS2_C0_ITCM_M_WIDTH 1u
+#define SCM_MATRIX_STATUS2_C0_ITCM_M(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS2_C0_ITCM_M_SHIFT))&SCM_MATRIX_STATUS2_C0_ITCM_M_MASK)
+#define SCM_MATRIX_STATUS2_C0_ITCM_S_MASK 0x100000u
+#define SCM_MATRIX_STATUS2_C0_ITCM_S_SHIFT 20u
+#define SCM_MATRIX_STATUS2_C0_ITCM_S_WIDTH 1u
+#define SCM_MATRIX_STATUS2_C0_ITCM_S(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS2_C0_ITCM_S_SHIFT))&SCM_MATRIX_STATUS2_C0_ITCM_S_MASK)
+#define SCM_MATRIX_STATUS2_C0_DCACHE_MASK 0x80000u
+#define SCM_MATRIX_STATUS2_C0_DCACHE_SHIFT 19u
+#define SCM_MATRIX_STATUS2_C0_DCACHE_WIDTH 1u
+#define SCM_MATRIX_STATUS2_C0_DCACHE(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS2_C0_DCACHE_SHIFT))&SCM_MATRIX_STATUS2_C0_DCACHE_MASK)
+#define SCM_MATRIX_STATUS2_C0_ICACHE_MASK 0x40000u
+#define SCM_MATRIX_STATUS2_C0_ICACHE_SHIFT 18u
+#define SCM_MATRIX_STATUS2_C0_ICACHE_WIDTH 1u
+#define SCM_MATRIX_STATUS2_C0_ICACHE(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS2_C0_ICACHE_SHIFT))&SCM_MATRIX_STATUS2_C0_ICACHE_MASK)
+#define SCM_MATRIX_STATUS2_C0_DTCM1_DEC_MASK 0x20000u
+#define SCM_MATRIX_STATUS2_C0_DTCM1_DEC_SHIFT 17u
+#define SCM_MATRIX_STATUS2_C0_DTCM1_DEC_WIDTH 1u
+#define SCM_MATRIX_STATUS2_C0_DTCM1_DEC(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS2_C0_DTCM1_DEC_SHIFT))&SCM_MATRIX_STATUS2_C0_DTCM1_DEC_MASK)
+#define SCM_MATRIX_STATUS2_C0_DTCM0_DEC_MASK 0x10000u
+#define SCM_MATRIX_STATUS2_C0_DTCM0_DEC_SHIFT 16u
+#define SCM_MATRIX_STATUS2_C0_DTCM0_DEC_WIDTH 1u
+#define SCM_MATRIX_STATUS2_C0_DTCM0_DEC(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS2_C0_DTCM0_DEC_SHIFT))&SCM_MATRIX_STATUS2_C0_DTCM0_DEC_MASK)
+#define SCM_MATRIX_STATUS2_C0_ITCM_DEC_MASK 0x8000u
+#define SCM_MATRIX_STATUS2_C0_ITCM_DEC_SHIFT 15u
+#define SCM_MATRIX_STATUS2_C0_ITCM_DEC_WIDTH 1u
+#define SCM_MATRIX_STATUS2_C0_ITCM_DEC(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS2_C0_ITCM_DEC_SHIFT))&SCM_MATRIX_STATUS2_C0_ITCM_DEC_MASK)
+#define SCM_MATRIX_STATUS2_C0_AHBP_F2S_MASK 0x1000u
+#define SCM_MATRIX_STATUS2_C0_AHBP_F2S_SHIFT 12u
+#define SCM_MATRIX_STATUS2_C0_AHBP_F2S_WIDTH 1u
+#define SCM_MATRIX_STATUS2_C0_AHBP_F2S(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS2_C0_AHBP_F2S_SHIFT))&SCM_MATRIX_STATUS2_C0_AHBP_F2S_MASK)
+#define SCM_MATRIX_STATUS2_C0_AHBM_M_MASK 0x800u
+#define SCM_MATRIX_STATUS2_C0_AHBM_M_SHIFT 11u
+#define SCM_MATRIX_STATUS2_C0_AHBM_M_WIDTH 1u
+#define SCM_MATRIX_STATUS2_C0_AHBM_M(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS2_C0_AHBM_M_SHIFT))&SCM_MATRIX_STATUS2_C0_AHBM_M_MASK)
+#define SCM_MATRIX_STATUS2_C0_AHBM_D_MASK 0x200u
+#define SCM_MATRIX_STATUS2_C0_AHBM_D_SHIFT 9u
+#define SCM_MATRIX_STATUS2_C0_AHBM_D_WIDTH 1u
+#define SCM_MATRIX_STATUS2_C0_AHBM_D(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS2_C0_AHBM_D_SHIFT))&SCM_MATRIX_STATUS2_C0_AHBM_D_MASK)
+#define SCM_MATRIX_STATUS2_C0_AHBM_A_MASK 0x100u
+#define SCM_MATRIX_STATUS2_C0_AHBM_A_SHIFT 8u
+#define SCM_MATRIX_STATUS2_C0_AHBM_A_WIDTH 1u
+#define SCM_MATRIX_STATUS2_C0_AHBM_A(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS2_C0_AHBM_A_SHIFT))&SCM_MATRIX_STATUS2_C0_AHBM_A_MASK)
+#define SCM_MATRIX_STATUS2_C0_AHBP_M_MASK 0x8u
+#define SCM_MATRIX_STATUS2_C0_AHBP_M_SHIFT 3u
+#define SCM_MATRIX_STATUS2_C0_AHBP_M_WIDTH 1u
+#define SCM_MATRIX_STATUS2_C0_AHBP_M(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS2_C0_AHBP_M_SHIFT))&SCM_MATRIX_STATUS2_C0_AHBP_M_MASK)
+#define SCM_MATRIX_STATUS2_C0_AHBP_D_MASK 0x2u
+#define SCM_MATRIX_STATUS2_C0_AHBP_D_SHIFT 1u
+#define SCM_MATRIX_STATUS2_C0_AHBP_D_WIDTH 1u
+#define SCM_MATRIX_STATUS2_C0_AHBP_D(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS2_C0_AHBP_D_SHIFT))&SCM_MATRIX_STATUS2_C0_AHBP_D_MASK)
+#define SCM_MATRIX_STATUS2_C0_AHBP_A_MASK 0x1u
+#define SCM_MATRIX_STATUS2_C0_AHBP_A_SHIFT 0u
+#define SCM_MATRIX_STATUS2_C0_AHBP_A_WIDTH 1u
+#define SCM_MATRIX_STATUS2_C0_AHBP_A(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS2_C0_AHBP_A_SHIFT))&SCM_MATRIX_STATUS2_C0_AHBP_A_MASK)
+/* MATRIX_STATUS2 Reg Mask */
+#define SCM_MATRIX_STATUS2_MASK        0xFFFF9B0Bu
+
+/* MATRIX_STATUS3 Bit Fields */
+#define SCM_MATRIX_STATUS3_C1_OVERLAY_MASK 0x80000000u
+#define SCM_MATRIX_STATUS3_C1_OVERLAY_SHIFT 31u
+#define SCM_MATRIX_STATUS3_C1_OVERLAY_WIDTH 1u
+#define SCM_MATRIX_STATUS3_C1_OVERLAY(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS3_C1_OVERLAY_SHIFT))&SCM_MATRIX_STATUS3_C1_OVERLAY_MASK)
+#define SCM_MATRIX_STATUS3_INTM1_MON_MASK 0x40000000u
+#define SCM_MATRIX_STATUS3_INTM1_MON_SHIFT 30u
+#define SCM_MATRIX_STATUS3_INTM1_MON_WIDTH 1u
+#define SCM_MATRIX_STATUS3_INTM1_MON(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS3_INTM1_MON_SHIFT))&SCM_MATRIX_STATUS3_INTM1_MON_MASK)
+#define SCM_MATRIX_STATUS3_C1_LOCKSTEP_MASK 0x20000000u
+#define SCM_MATRIX_STATUS3_C1_LOCKSTEP_SHIFT 29u
+#define SCM_MATRIX_STATUS3_C1_LOCKSTEP_WIDTH 1u
+#define SCM_MATRIX_STATUS3_C1_LOCKSTEP(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS3_C1_LOCKSTEP_SHIFT))&SCM_MATRIX_STATUS3_C1_LOCKSTEP_MASK)
+#define SCM_MATRIX_STATUS3_C1_DTCM1_A_MASK 0x10000000u
+#define SCM_MATRIX_STATUS3_C1_DTCM1_A_SHIFT 28u
+#define SCM_MATRIX_STATUS3_C1_DTCM1_A_WIDTH 1u
+#define SCM_MATRIX_STATUS3_C1_DTCM1_A(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS3_C1_DTCM1_A_SHIFT))&SCM_MATRIX_STATUS3_C1_DTCM1_A_MASK)
+#define SCM_MATRIX_STATUS3_C1_DTCM1_M_MASK 0x8000000u
+#define SCM_MATRIX_STATUS3_C1_DTCM1_M_SHIFT 27u
+#define SCM_MATRIX_STATUS3_C1_DTCM1_M_WIDTH 1u
+#define SCM_MATRIX_STATUS3_C1_DTCM1_M(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS3_C1_DTCM1_M_SHIFT))&SCM_MATRIX_STATUS3_C1_DTCM1_M_MASK)
+#define SCM_MATRIX_STATUS3_C1_DTCM1_S_MASK 0x4000000u
+#define SCM_MATRIX_STATUS3_C1_DTCM1_S_SHIFT 26u
+#define SCM_MATRIX_STATUS3_C1_DTCM1_S_WIDTH 1u
+#define SCM_MATRIX_STATUS3_C1_DTCM1_S(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS3_C1_DTCM1_S_SHIFT))&SCM_MATRIX_STATUS3_C1_DTCM1_S_MASK)
+#define SCM_MATRIX_STATUS3_C1_DTCM0_A_MASK 0x2000000u
+#define SCM_MATRIX_STATUS3_C1_DTCM0_A_SHIFT 25u
+#define SCM_MATRIX_STATUS3_C1_DTCM0_A_WIDTH 1u
+#define SCM_MATRIX_STATUS3_C1_DTCM0_A(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS3_C1_DTCM0_A_SHIFT))&SCM_MATRIX_STATUS3_C1_DTCM0_A_MASK)
+#define SCM_MATRIX_STATUS3_C1_DTCM0_M_MASK 0x1000000u
+#define SCM_MATRIX_STATUS3_C1_DTCM0_M_SHIFT 24u
+#define SCM_MATRIX_STATUS3_C1_DTCM0_M_WIDTH 1u
+#define SCM_MATRIX_STATUS3_C1_DTCM0_M(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS3_C1_DTCM0_M_SHIFT))&SCM_MATRIX_STATUS3_C1_DTCM0_M_MASK)
+#define SCM_MATRIX_STATUS3_C1_DTCM0_S_MASK 0x800000u
+#define SCM_MATRIX_STATUS3_C1_DTCM0_S_SHIFT 23u
+#define SCM_MATRIX_STATUS3_C1_DTCM0_S_WIDTH 1u
+#define SCM_MATRIX_STATUS3_C1_DTCM0_S(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS3_C1_DTCM0_S_SHIFT))&SCM_MATRIX_STATUS3_C1_DTCM0_S_MASK)
+#define SCM_MATRIX_STATUS3_C1_ITCM_A_MASK 0x400000u
+#define SCM_MATRIX_STATUS3_C1_ITCM_A_SHIFT 22u
+#define SCM_MATRIX_STATUS3_C1_ITCM_A_WIDTH 1u
+#define SCM_MATRIX_STATUS3_C1_ITCM_A(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS3_C1_ITCM_A_SHIFT))&SCM_MATRIX_STATUS3_C1_ITCM_A_MASK)
+#define SCM_MATRIX_STATUS3_C1_ITCM_M_MASK 0x200000u
+#define SCM_MATRIX_STATUS3_C1_ITCM_M_SHIFT 21u
+#define SCM_MATRIX_STATUS3_C1_ITCM_M_WIDTH 1u
+#define SCM_MATRIX_STATUS3_C1_ITCM_M(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS3_C1_ITCM_M_SHIFT))&SCM_MATRIX_STATUS3_C1_ITCM_M_MASK)
+#define SCM_MATRIX_STATUS3_C1_ITCM_S_MASK 0x100000u
+#define SCM_MATRIX_STATUS3_C1_ITCM_S_SHIFT 20u
+#define SCM_MATRIX_STATUS3_C1_ITCM_S_WIDTH 1u
+#define SCM_MATRIX_STATUS3_C1_ITCM_S(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS3_C1_ITCM_S_SHIFT))&SCM_MATRIX_STATUS3_C1_ITCM_S_MASK)
+#define SCM_MATRIX_STATUS3_C1_DCACHE_MASK 0x80000u
+#define SCM_MATRIX_STATUS3_C1_DCACHE_SHIFT 19u
+#define SCM_MATRIX_STATUS3_C1_DCACHE_WIDTH 1u
+#define SCM_MATRIX_STATUS3_C1_DCACHE(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS3_C1_DCACHE_SHIFT))&SCM_MATRIX_STATUS3_C1_DCACHE_MASK)
+#define SCM_MATRIX_STATUS3_C1_ICACHE_MASK 0x40000u
+#define SCM_MATRIX_STATUS3_C1_ICACHE_SHIFT 18u
+#define SCM_MATRIX_STATUS3_C1_ICACHE_WIDTH 1u
+#define SCM_MATRIX_STATUS3_C1_ICACHE(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS3_C1_ICACHE_SHIFT))&SCM_MATRIX_STATUS3_C1_ICACHE_MASK)
+#define SCM_MATRIX_STATUS3_C1_DTCM1_DEC_MASK 0x20000u
+#define SCM_MATRIX_STATUS3_C1_DTCM1_DEC_SHIFT 17u
+#define SCM_MATRIX_STATUS3_C1_DTCM1_DEC_WIDTH 1u
+#define SCM_MATRIX_STATUS3_C1_DTCM1_DEC(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS3_C1_DTCM1_DEC_SHIFT))&SCM_MATRIX_STATUS3_C1_DTCM1_DEC_MASK)
+#define SCM_MATRIX_STATUS3_C1_DTCM0_DEC_MASK 0x10000u
+#define SCM_MATRIX_STATUS3_C1_DTCM0_DEC_SHIFT 16u
+#define SCM_MATRIX_STATUS3_C1_DTCM0_DEC_WIDTH 1u
+#define SCM_MATRIX_STATUS3_C1_DTCM0_DEC(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS3_C1_DTCM0_DEC_SHIFT))&SCM_MATRIX_STATUS3_C1_DTCM0_DEC_MASK)
+#define SCM_MATRIX_STATUS3_C1_ITCM_DEC_MASK 0x8000u
+#define SCM_MATRIX_STATUS3_C1_ITCM_DEC_SHIFT 15u
+#define SCM_MATRIX_STATUS3_C1_ITCM_DEC_WIDTH 1u
+#define SCM_MATRIX_STATUS3_C1_ITCM_DEC(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS3_C1_ITCM_DEC_SHIFT))&SCM_MATRIX_STATUS3_C1_ITCM_DEC_MASK)
+#define SCM_MATRIX_STATUS3_C1_AHBP_F2S_MASK 0x1000u
+#define SCM_MATRIX_STATUS3_C1_AHBP_F2S_SHIFT 12u
+#define SCM_MATRIX_STATUS3_C1_AHBP_F2S_WIDTH 1u
+#define SCM_MATRIX_STATUS3_C1_AHBP_F2S(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS3_C1_AHBP_F2S_SHIFT))&SCM_MATRIX_STATUS3_C1_AHBP_F2S_MASK)
+#define SCM_MATRIX_STATUS3_C1_AHBM_M_MASK 0x800u
+#define SCM_MATRIX_STATUS3_C1_AHBM_M_SHIFT 11u
+#define SCM_MATRIX_STATUS3_C1_AHBM_M_WIDTH 1u
+#define SCM_MATRIX_STATUS3_C1_AHBM_M(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS3_C1_AHBM_M_SHIFT))&SCM_MATRIX_STATUS3_C1_AHBM_M_MASK)
+#define SCM_MATRIX_STATUS3_C1_AHBM_D_MASK 0x200u
+#define SCM_MATRIX_STATUS3_C1_AHBM_D_SHIFT 9u
+#define SCM_MATRIX_STATUS3_C1_AHBM_D_WIDTH 1u
+#define SCM_MATRIX_STATUS3_C1_AHBM_D(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS3_C1_AHBM_D_SHIFT))&SCM_MATRIX_STATUS3_C1_AHBM_D_MASK)
+#define SCM_MATRIX_STATUS3_C1_AHBM_A_MASK 0x100u
+#define SCM_MATRIX_STATUS3_C1_AHBM_A_SHIFT 8u
+#define SCM_MATRIX_STATUS3_C1_AHBM_A_WIDTH 1u
+#define SCM_MATRIX_STATUS3_C1_AHBM_A(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS3_C1_AHBM_A_SHIFT))&SCM_MATRIX_STATUS3_C1_AHBM_A_MASK)
+#define SCM_MATRIX_STATUS3_C1_AHBP_M_MASK 0x8u
+#define SCM_MATRIX_STATUS3_C1_AHBP_M_SHIFT 3u
+#define SCM_MATRIX_STATUS3_C1_AHBP_M_WIDTH 1u
+#define SCM_MATRIX_STATUS3_C1_AHBP_M(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS3_C1_AHBP_M_SHIFT))&SCM_MATRIX_STATUS3_C1_AHBP_M_MASK)
+#define SCM_MATRIX_STATUS3_C1_AHBP_D_MASK 0x2u
+#define SCM_MATRIX_STATUS3_C1_AHBP_D_SHIFT 1u
+#define SCM_MATRIX_STATUS3_C1_AHBP_D_WIDTH 1u
+#define SCM_MATRIX_STATUS3_C1_AHBP_D(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS3_C1_AHBP_D_SHIFT))&SCM_MATRIX_STATUS3_C1_AHBP_D_MASK)
+#define SCM_MATRIX_STATUS3_C1_AHBP_A_MASK 0x1u
+#define SCM_MATRIX_STATUS3_C1_AHBP_A_SHIFT 0u
+#define SCM_MATRIX_STATUS3_C1_AHBP_A_WIDTH 1u
+#define SCM_MATRIX_STATUS3_C1_AHBP_A(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS3_C1_AHBP_A_SHIFT))&SCM_MATRIX_STATUS3_C1_AHBP_A_MASK)
+/* MATRIX_STATUS3 Reg Mask */
+#define SCM_MATRIX_STATUS3_MASK        0xFFFF9B0Bu
+
+/* MATRIX_STATUS5 Bit Fields */
+#define SCM_MATRIX_STATUS5_DMA0_CFG_M_MASK 0x8000000u
+#define SCM_MATRIX_STATUS5_DMA0_CFG_M_SHIFT 27u
+#define SCM_MATRIX_STATUS5_DMA0_CFG_M_WIDTH 1u
+#define SCM_MATRIX_STATUS5_DMA0_CFG_M(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS5_DMA0_CFG_M_SHIFT))&SCM_MATRIX_STATUS5_DMA0_CFG_M_MASK)
+#define SCM_MATRIX_STATUS5_DMA0_LOCKSTEP_MASK 0x4000000u
+#define SCM_MATRIX_STATUS5_DMA0_LOCKSTEP_SHIFT 26u
+#define SCM_MATRIX_STATUS5_DMA0_LOCKSTEP_WIDTH 1u
+#define SCM_MATRIX_STATUS5_DMA0_LOCKSTEP(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS5_DMA0_LOCKSTEP_SHIFT))&SCM_MATRIX_STATUS5_DMA0_LOCKSTEP_MASK)
+#define SCM_MATRIX_STATUS5_DMA0_CFG_S_MASK 0x2000000u
+#define SCM_MATRIX_STATUS5_DMA0_CFG_S_SHIFT 25u
+#define SCM_MATRIX_STATUS5_DMA0_CFG_S_WIDTH 1u
+#define SCM_MATRIX_STATUS5_DMA0_CFG_S(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS5_DMA0_CFG_S_SHIFT))&SCM_MATRIX_STATUS5_DMA0_CFG_S_MASK)
+#define SCM_MATRIX_STATUS5_DMA0_CFG_A_MASK 0x1000000u
+#define SCM_MATRIX_STATUS5_DMA0_CFG_A_SHIFT 24u
+#define SCM_MATRIX_STATUS5_DMA0_CFG_A_WIDTH 1u
+#define SCM_MATRIX_STATUS5_DMA0_CFG_A(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS5_DMA0_CFG_A_SHIFT))&SCM_MATRIX_STATUS5_DMA0_CFG_A_MASK)
+#define SCM_MATRIX_STATUS5_EDC_HI_MASK 0x100000u
+#define SCM_MATRIX_STATUS5_EDC_HI_SHIFT 20u
+#define SCM_MATRIX_STATUS5_EDC_HI_WIDTH 1u
+#define SCM_MATRIX_STATUS5_EDC_HI(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS5_EDC_HI_SHIFT))&SCM_MATRIX_STATUS5_EDC_HI_MASK)
+#define SCM_MATRIX_STATUS5_LINE_SBC_MASK 0x80000u
+#define SCM_MATRIX_STATUS5_LINE_SBC_SHIFT 19u
+#define SCM_MATRIX_STATUS5_LINE_SBC_WIDTH 1u
+#define SCM_MATRIX_STATUS5_LINE_SBC(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS5_LINE_SBC_SHIFT))&SCM_MATRIX_STATUS5_LINE_SBC_MASK)
+#define SCM_MATRIX_STATUS5_LINE_MULTI_MASK 0x40000u
+#define SCM_MATRIX_STATUS5_LINE_MULTI_SHIFT 18u
+#define SCM_MATRIX_STATUS5_LINE_MULTI_WIDTH 1u
+#define SCM_MATRIX_STATUS5_LINE_MULTI(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS5_LINE_MULTI_SHIFT))&SCM_MATRIX_STATUS5_LINE_MULTI_MASK)
+#define SCM_MATRIX_STATUS5_ENC_MASK    0x20000u
+#define SCM_MATRIX_STATUS5_ENC_SHIFT   17u
+#define SCM_MATRIX_STATUS5_ENC_WIDTH   1u
+#define SCM_MATRIX_STATUS5_ENC(x)      (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS5_ENC_SHIFT))&SCM_MATRIX_STATUS5_ENC_MASK)
+#define SCM_MATRIX_STATUS5_EDC_MASK    0x10000u
+#define SCM_MATRIX_STATUS5_EDC_SHIFT   16u
+#define SCM_MATRIX_STATUS5_EDC_WIDTH   1u
+#define SCM_MATRIX_STATUS5_EDC(x)      (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS5_EDC_SHIFT))&SCM_MATRIX_STATUS5_EDC_MASK)
+#define SCM_MATRIX_STATUS5_P2_D_M_MASK 0x4000u
+#define SCM_MATRIX_STATUS5_P2_D_M_SHIFT 14u
+#define SCM_MATRIX_STATUS5_P2_D_M_WIDTH 1u
+#define SCM_MATRIX_STATUS5_P2_D_M(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS5_P2_D_M_SHIFT))&SCM_MATRIX_STATUS5_P2_D_M_MASK)
+#define SCM_MATRIX_STATUS5_P0_D_M_MASK 0x1000u
+#define SCM_MATRIX_STATUS5_P0_D_M_SHIFT 12u
+#define SCM_MATRIX_STATUS5_P0_D_M_WIDTH 1u
+#define SCM_MATRIX_STATUS5_P0_D_M(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS5_P0_D_M_SHIFT))&SCM_MATRIX_STATUS5_P0_D_M_MASK)
+#define SCM_MATRIX_STATUS5_P2_C_M_MASK 0x400u
+#define SCM_MATRIX_STATUS5_P2_C_M_SHIFT 10u
+#define SCM_MATRIX_STATUS5_P2_C_M_WIDTH 1u
+#define SCM_MATRIX_STATUS5_P2_C_M(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS5_P2_C_M_SHIFT))&SCM_MATRIX_STATUS5_P2_C_M_MASK)
+#define SCM_MATRIX_STATUS5_P0_C_M_MASK 0x100u
+#define SCM_MATRIX_STATUS5_P0_C_M_SHIFT 8u
+#define SCM_MATRIX_STATUS5_P0_C_M_WIDTH 1u
+#define SCM_MATRIX_STATUS5_P0_C_M(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS5_P0_C_M_SHIFT))&SCM_MATRIX_STATUS5_P0_C_M_MASK)
+#define SCM_MATRIX_STATUS5_P2_D_S_MASK 0x40u
+#define SCM_MATRIX_STATUS5_P2_D_S_SHIFT 6u
+#define SCM_MATRIX_STATUS5_P2_D_S_WIDTH 1u
+#define SCM_MATRIX_STATUS5_P2_D_S(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS5_P2_D_S_SHIFT))&SCM_MATRIX_STATUS5_P2_D_S_MASK)
+#define SCM_MATRIX_STATUS5_P0_D_S_MASK 0x10u
+#define SCM_MATRIX_STATUS5_P0_D_S_SHIFT 4u
+#define SCM_MATRIX_STATUS5_P0_D_S_WIDTH 1u
+#define SCM_MATRIX_STATUS5_P0_D_S(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS5_P0_D_S_SHIFT))&SCM_MATRIX_STATUS5_P0_D_S_MASK)
+#define SCM_MATRIX_STATUS5_P2_C_S_MASK 0x4u
+#define SCM_MATRIX_STATUS5_P2_C_S_SHIFT 2u
+#define SCM_MATRIX_STATUS5_P2_C_S_WIDTH 1u
+#define SCM_MATRIX_STATUS5_P2_C_S(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS5_P2_C_S_SHIFT))&SCM_MATRIX_STATUS5_P2_C_S_MASK)
+#define SCM_MATRIX_STATUS5_P0_C_S_MASK 0x1u
+#define SCM_MATRIX_STATUS5_P0_C_S_SHIFT 0u
+#define SCM_MATRIX_STATUS5_P0_C_S_WIDTH 1u
+#define SCM_MATRIX_STATUS5_P0_C_S(x)   (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS5_P0_C_S_SHIFT))&SCM_MATRIX_STATUS5_P0_C_S_MASK)
+/* MATRIX_STATUS5 Reg Mask */
+#define SCM_MATRIX_STATUS5_MASK        0x0F1F5555u
+
+/* MATRIX_ID_STATUS0 Bit Fields */
+#define SCM_MATRIX_ID_STATUS0_SRAM2_ID_MASK 0xF000000u
+#define SCM_MATRIX_ID_STATUS0_SRAM2_ID_SHIFT 24u
+#define SCM_MATRIX_ID_STATUS0_SRAM2_ID_WIDTH 4u
+#define SCM_MATRIX_ID_STATUS0_SRAM2_ID(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_ID_STATUS0_SRAM2_ID_SHIFT))&SCM_MATRIX_ID_STATUS0_SRAM2_ID_MASK)
+#define SCM_MATRIX_ID_STATUS0_SRAM1_ID_MASK 0xF00000u
+#define SCM_MATRIX_ID_STATUS0_SRAM1_ID_SHIFT 20u
+#define SCM_MATRIX_ID_STATUS0_SRAM1_ID_WIDTH 4u
+#define SCM_MATRIX_ID_STATUS0_SRAM1_ID(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_ID_STATUS0_SRAM1_ID_SHIFT))&SCM_MATRIX_ID_STATUS0_SRAM1_ID_MASK)
+#define SCM_MATRIX_ID_STATUS0_SRAM0_ID_MASK 0xF0000u
+#define SCM_MATRIX_ID_STATUS0_SRAM0_ID_SHIFT 16u
+#define SCM_MATRIX_ID_STATUS0_SRAM0_ID_WIDTH 4u
+#define SCM_MATRIX_ID_STATUS0_SRAM0_ID(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_ID_STATUS0_SRAM0_ID_SHIFT))&SCM_MATRIX_ID_STATUS0_SRAM0_ID_MASK)
+#define SCM_MATRIX_ID_STATUS0_MAM0_S7_ID_MASK 0xF000u
+#define SCM_MATRIX_ID_STATUS0_MAM0_S7_ID_SHIFT 12u
+#define SCM_MATRIX_ID_STATUS0_MAM0_S7_ID_WIDTH 4u
+#define SCM_MATRIX_ID_STATUS0_MAM0_S7_ID(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_ID_STATUS0_MAM0_S7_ID_SHIFT))&SCM_MATRIX_ID_STATUS0_MAM0_S7_ID_MASK)
+#define SCM_MATRIX_ID_STATUS0_MAM0_S6_ID_MASK 0xF00u
+#define SCM_MATRIX_ID_STATUS0_MAM0_S6_ID_SHIFT 8u
+#define SCM_MATRIX_ID_STATUS0_MAM0_S6_ID_WIDTH 4u
+#define SCM_MATRIX_ID_STATUS0_MAM0_S6_ID(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_ID_STATUS0_MAM0_S6_ID_SHIFT))&SCM_MATRIX_ID_STATUS0_MAM0_S6_ID_MASK)
+#define SCM_MATRIX_ID_STATUS0_MAM0_S5_ID_MASK 0xF0u
+#define SCM_MATRIX_ID_STATUS0_MAM0_S5_ID_SHIFT 4u
+#define SCM_MATRIX_ID_STATUS0_MAM0_S5_ID_WIDTH 4u
+#define SCM_MATRIX_ID_STATUS0_MAM0_S5_ID(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_ID_STATUS0_MAM0_S5_ID_SHIFT))&SCM_MATRIX_ID_STATUS0_MAM0_S5_ID_MASK)
+#define SCM_MATRIX_ID_STATUS0_MAM0_S4_ID_MASK 0xFu
+#define SCM_MATRIX_ID_STATUS0_MAM0_S4_ID_SHIFT 0u
+#define SCM_MATRIX_ID_STATUS0_MAM0_S4_ID_WIDTH 4u
+#define SCM_MATRIX_ID_STATUS0_MAM0_S4_ID(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_ID_STATUS0_MAM0_S4_ID_SHIFT))&SCM_MATRIX_ID_STATUS0_MAM0_S4_ID_MASK)
+/* MATRIX_ID_STATUS0 Reg Mask */
+#define SCM_MATRIX_ID_STATUS0_MASK     0x0FFFFFFFu
+
+/* MATRIX_STATUS6 Bit Fields */
+#define SCM_MATRIX_STATUS6_STALL_ERR_MASK 0x80000000u
+#define SCM_MATRIX_STATUS6_STALL_ERR_SHIFT 31u
+#define SCM_MATRIX_STATUS6_STALL_ERR_WIDTH 1u
+#define SCM_MATRIX_STATUS6_STALL_ERR(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_STALL_ERR_SHIFT))&SCM_MATRIX_STATUS6_STALL_ERR_MASK)
+#define SCM_MATRIX_STATUS6_MAM1_S2_DS_MASK 0x40000000u
+#define SCM_MATRIX_STATUS6_MAM1_S2_DS_SHIFT 30u
+#define SCM_MATRIX_STATUS6_MAM1_S2_DS_WIDTH 1u
+#define SCM_MATRIX_STATUS6_MAM1_S2_DS(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_MAM1_S2_DS_SHIFT))&SCM_MATRIX_STATUS6_MAM1_S2_DS_MASK)
+#define SCM_MATRIX_STATUS6_MAM0_S7_DS_MASK 0x20000000u
+#define SCM_MATRIX_STATUS6_MAM0_S7_DS_SHIFT 29u
+#define SCM_MATRIX_STATUS6_MAM0_S7_DS_WIDTH 1u
+#define SCM_MATRIX_STATUS6_MAM0_S7_DS(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_MAM0_S7_DS_SHIFT))&SCM_MATRIX_STATUS6_MAM0_S7_DS_MASK)
+#define SCM_MATRIX_STATUS6_MAM0_S7_S2F_MASK 0x10000000u
+#define SCM_MATRIX_STATUS6_MAM0_S7_S2F_SHIFT 28u
+#define SCM_MATRIX_STATUS6_MAM0_S7_S2F_WIDTH 1u
+#define SCM_MATRIX_STATUS6_MAM0_S7_S2F(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_MAM0_S7_S2F_SHIFT))&SCM_MATRIX_STATUS6_MAM0_S7_S2F_MASK)
+#define SCM_MATRIX_STATUS6_AFCB0_PD0_MON_MASK 0x8000000u
+#define SCM_MATRIX_STATUS6_AFCB0_PD0_MON_SHIFT 27u
+#define SCM_MATRIX_STATUS6_AFCB0_PD0_MON_WIDTH 1u
+#define SCM_MATRIX_STATUS6_AFCB0_PD0_MON(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_AFCB0_PD0_MON_SHIFT))&SCM_MATRIX_STATUS6_AFCB0_PD0_MON_MASK)
+#define SCM_MATRIX_STATUS6_SRAM2_DEC_MASK 0x4000000u
+#define SCM_MATRIX_STATUS6_SRAM2_DEC_SHIFT 26u
+#define SCM_MATRIX_STATUS6_SRAM2_DEC_WIDTH 1u
+#define SCM_MATRIX_STATUS6_SRAM2_DEC(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_SRAM2_DEC_SHIFT))&SCM_MATRIX_STATUS6_SRAM2_DEC_MASK)
+#define SCM_MATRIX_STATUS6_SRAM1_DEC_MASK 0x2000000u
+#define SCM_MATRIX_STATUS6_SRAM1_DEC_SHIFT 25u
+#define SCM_MATRIX_STATUS6_SRAM1_DEC_WIDTH 1u
+#define SCM_MATRIX_STATUS6_SRAM1_DEC(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_SRAM1_DEC_SHIFT))&SCM_MATRIX_STATUS6_SRAM1_DEC_MASK)
+#define SCM_MATRIX_STATUS6_SRAM0_DEC_MASK 0x1000000u
+#define SCM_MATRIX_STATUS6_SRAM0_DEC_SHIFT 24u
+#define SCM_MATRIX_STATUS6_SRAM0_DEC_WIDTH 1u
+#define SCM_MATRIX_STATUS6_SRAM0_DEC(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_SRAM0_DEC_SHIFT))&SCM_MATRIX_STATUS6_SRAM0_DEC_MASK)
+#define SCM_MATRIX_STATUS6_AFCB1_MON_MASK 0x800000u
+#define SCM_MATRIX_STATUS6_AFCB1_MON_SHIFT 23u
+#define SCM_MATRIX_STATUS6_AFCB1_MON_WIDTH 1u
+#define SCM_MATRIX_STATUS6_AFCB1_MON(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_AFCB1_MON_SHIFT))&SCM_MATRIX_STATUS6_AFCB1_MON_MASK)
+#define SCM_MATRIX_STATUS6_AFCB0_MON_MASK 0x400000u
+#define SCM_MATRIX_STATUS6_AFCB0_MON_SHIFT 22u
+#define SCM_MATRIX_STATUS6_AFCB0_MON_WIDTH 1u
+#define SCM_MATRIX_STATUS6_AFCB0_MON(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_AFCB0_MON_SHIFT))&SCM_MATRIX_STATUS6_AFCB0_MON_MASK)
+#define SCM_MATRIX_STATUS6_STCU_ST_MASK 0x200000u
+#define SCM_MATRIX_STATUS6_STCU_ST_SHIFT 21u
+#define SCM_MATRIX_STATUS6_STCU_ST_WIDTH 1u
+#define SCM_MATRIX_STATUS6_STCU_ST(x)  (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_STCU_ST_SHIFT))&SCM_MATRIX_STATUS6_STCU_ST_MASK)
+#define SCM_MATRIX_STATUS6_DCM_SCAN_MASK 0x100000u
+#define SCM_MATRIX_STATUS6_DCM_SCAN_SHIFT 20u
+#define SCM_MATRIX_STATUS6_DCM_SCAN_WIDTH 1u
+#define SCM_MATRIX_STATUS6_DCM_SCAN(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_DCM_SCAN_SHIFT))&SCM_MATRIX_STATUS6_DCM_SCAN_MASK)
+#define SCM_MATRIX_STATUS6_NON_USER_MASK 0x40000u
+#define SCM_MATRIX_STATUS6_NON_USER_SHIFT 18u
+#define SCM_MATRIX_STATUS6_NON_USER_WIDTH 1u
+#define SCM_MATRIX_STATUS6_NON_USER(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_NON_USER_SHIFT))&SCM_MATRIX_STATUS6_NON_USER_MASK)
+#define SCM_MATRIX_STATUS6_SCM_CRC_MASK 0x20000u
+#define SCM_MATRIX_STATUS6_SCM_CRC_SHIFT 17u
+#define SCM_MATRIX_STATUS6_SCM_CRC_WIDTH 1u
+#define SCM_MATRIX_STATUS6_SCM_CRC(x)  (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_SCM_CRC_SHIFT))&SCM_MATRIX_STATUS6_SCM_CRC_MASK)
+#define SCM_MATRIX_STATUS6_CGM_CRC_MASK 0x10000u
+#define SCM_MATRIX_STATUS6_CGM_CRC_SHIFT 16u
+#define SCM_MATRIX_STATUS6_CGM_CRC_WIDTH 1u
+#define SCM_MATRIX_STATUS6_CGM_CRC(x)  (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_CGM_CRC_SHIFT))&SCM_MATRIX_STATUS6_CGM_CRC_MASK)
+#define SCM_MATRIX_STATUS6_SRAM2_CTL_MON_MASK 0x4000u
+#define SCM_MATRIX_STATUS6_SRAM2_CTL_MON_SHIFT 14u
+#define SCM_MATRIX_STATUS6_SRAM2_CTL_MON_WIDTH 1u
+#define SCM_MATRIX_STATUS6_SRAM2_CTL_MON(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_SRAM2_CTL_MON_SHIFT))&SCM_MATRIX_STATUS6_SRAM2_CTL_MON_MASK)
+#define SCM_MATRIX_STATUS6_SRAM1_CTL_MON_MASK 0x2000u
+#define SCM_MATRIX_STATUS6_SRAM1_CTL_MON_SHIFT 13u
+#define SCM_MATRIX_STATUS6_SRAM1_CTL_MON_WIDTH 1u
+#define SCM_MATRIX_STATUS6_SRAM1_CTL_MON(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_SRAM1_CTL_MON_SHIFT))&SCM_MATRIX_STATUS6_SRAM1_CTL_MON_MASK)
+#define SCM_MATRIX_STATUS6_SRAM0_CTL_MON_MASK 0x1000u
+#define SCM_MATRIX_STATUS6_SRAM0_CTL_MON_SHIFT 12u
+#define SCM_MATRIX_STATUS6_SRAM0_CTL_MON_WIDTH 1u
+#define SCM_MATRIX_STATUS6_SRAM0_CTL_MON(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_SRAM0_CTL_MON_SHIFT))&SCM_MATRIX_STATUS6_SRAM0_CTL_MON_MASK)
+#define SCM_MATRIX_STATUS6_SRAM2_M_MASK 0x800u
+#define SCM_MATRIX_STATUS6_SRAM2_M_SHIFT 11u
+#define SCM_MATRIX_STATUS6_SRAM2_M_WIDTH 1u
+#define SCM_MATRIX_STATUS6_SRAM2_M(x)  (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_SRAM2_M_SHIFT))&SCM_MATRIX_STATUS6_SRAM2_M_MASK)
+#define SCM_MATRIX_STATUS6_SRAM2_EDC_MASK 0x400u
+#define SCM_MATRIX_STATUS6_SRAM2_EDC_SHIFT 10u
+#define SCM_MATRIX_STATUS6_SRAM2_EDC_WIDTH 1u
+#define SCM_MATRIX_STATUS6_SRAM2_EDC(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_SRAM2_EDC_SHIFT))&SCM_MATRIX_STATUS6_SRAM2_EDC_MASK)
+#define SCM_MATRIX_STATUS6_SRAM2_A_MASK 0x200u
+#define SCM_MATRIX_STATUS6_SRAM2_A_SHIFT 9u
+#define SCM_MATRIX_STATUS6_SRAM2_A_WIDTH 1u
+#define SCM_MATRIX_STATUS6_SRAM2_A(x)  (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_SRAM2_A_SHIFT))&SCM_MATRIX_STATUS6_SRAM2_A_MASK)
+#define SCM_MATRIX_STATUS6_SRAM2_S_MASK 0x100u
+#define SCM_MATRIX_STATUS6_SRAM2_S_SHIFT 8u
+#define SCM_MATRIX_STATUS6_SRAM2_S_WIDTH 1u
+#define SCM_MATRIX_STATUS6_SRAM2_S(x)  (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_SRAM2_S_SHIFT))&SCM_MATRIX_STATUS6_SRAM2_S_MASK)
+#define SCM_MATRIX_STATUS6_SRAM1_M_MASK 0x80u
+#define SCM_MATRIX_STATUS6_SRAM1_M_SHIFT 7u
+#define SCM_MATRIX_STATUS6_SRAM1_M_WIDTH 1u
+#define SCM_MATRIX_STATUS6_SRAM1_M(x)  (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_SRAM1_M_SHIFT))&SCM_MATRIX_STATUS6_SRAM1_M_MASK)
+#define SCM_MATRIX_STATUS6_SRAM1_EDC_MASK 0x40u
+#define SCM_MATRIX_STATUS6_SRAM1_EDC_SHIFT 6u
+#define SCM_MATRIX_STATUS6_SRAM1_EDC_WIDTH 1u
+#define SCM_MATRIX_STATUS6_SRAM1_EDC(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_SRAM1_EDC_SHIFT))&SCM_MATRIX_STATUS6_SRAM1_EDC_MASK)
+#define SCM_MATRIX_STATUS6_SRAM1_A_MASK 0x20u
+#define SCM_MATRIX_STATUS6_SRAM1_A_SHIFT 5u
+#define SCM_MATRIX_STATUS6_SRAM1_A_WIDTH 1u
+#define SCM_MATRIX_STATUS6_SRAM1_A(x)  (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_SRAM1_A_SHIFT))&SCM_MATRIX_STATUS6_SRAM1_A_MASK)
+#define SCM_MATRIX_STATUS6_SRAM1_S_MASK 0x10u
+#define SCM_MATRIX_STATUS6_SRAM1_S_SHIFT 4u
+#define SCM_MATRIX_STATUS6_SRAM1_S_WIDTH 1u
+#define SCM_MATRIX_STATUS6_SRAM1_S(x)  (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_SRAM1_S_SHIFT))&SCM_MATRIX_STATUS6_SRAM1_S_MASK)
+#define SCM_MATRIX_STATUS6_SRAM0_M_MASK 0x8u
+#define SCM_MATRIX_STATUS6_SRAM0_M_SHIFT 3u
+#define SCM_MATRIX_STATUS6_SRAM0_M_WIDTH 1u
+#define SCM_MATRIX_STATUS6_SRAM0_M(x)  (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_SRAM0_M_SHIFT))&SCM_MATRIX_STATUS6_SRAM0_M_MASK)
+#define SCM_MATRIX_STATUS6_SRAM0_EDC_MASK 0x4u
+#define SCM_MATRIX_STATUS6_SRAM0_EDC_SHIFT 2u
+#define SCM_MATRIX_STATUS6_SRAM0_EDC_WIDTH 1u
+#define SCM_MATRIX_STATUS6_SRAM0_EDC(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_SRAM0_EDC_SHIFT))&SCM_MATRIX_STATUS6_SRAM0_EDC_MASK)
+#define SCM_MATRIX_STATUS6_SRAM0_A_MASK 0x2u
+#define SCM_MATRIX_STATUS6_SRAM0_A_SHIFT 1u
+#define SCM_MATRIX_STATUS6_SRAM0_A_WIDTH 1u
+#define SCM_MATRIX_STATUS6_SRAM0_A(x)  (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_SRAM0_A_SHIFT))&SCM_MATRIX_STATUS6_SRAM0_A_MASK)
+#define SCM_MATRIX_STATUS6_SRAM0_S_MASK 0x1u
+#define SCM_MATRIX_STATUS6_SRAM0_S_SHIFT 0u
+#define SCM_MATRIX_STATUS6_SRAM0_S_WIDTH 1u
+#define SCM_MATRIX_STATUS6_SRAM0_S(x)  (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS6_SRAM0_S_SHIFT))&SCM_MATRIX_STATUS6_SRAM0_S_MASK)
+/* MATRIX_STATUS6 Reg Mask */
+#define SCM_MATRIX_STATUS6_MASK        0xFFF77FFFu
+
+/* MATRIX_STATUS7 Bit Fields */
+#define SCM_MATRIX_STATUS7_MAM1_CHK_ERR_MASK 0x2000000u
+#define SCM_MATRIX_STATUS7_MAM1_CHK_ERR_SHIFT 25u
+#define SCM_MATRIX_STATUS7_MAM1_CHK_ERR_WIDTH 1u
+#define SCM_MATRIX_STATUS7_MAM1_CHK_ERR(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS7_MAM1_CHK_ERR_SHIFT))&SCM_MATRIX_STATUS7_MAM1_CHK_ERR_MASK)
+#define SCM_MATRIX_STATUS7_MAM0_CHK_ERR_MASK 0x1000000u
+#define SCM_MATRIX_STATUS7_MAM0_CHK_ERR_SHIFT 24u
+#define SCM_MATRIX_STATUS7_MAM0_CHK_ERR_WIDTH 1u
+#define SCM_MATRIX_STATUS7_MAM0_CHK_ERR(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS7_MAM0_CHK_ERR_SHIFT))&SCM_MATRIX_STATUS7_MAM0_CHK_ERR_MASK)
+#define SCM_MATRIX_STATUS7_TMU_IRQ_ERR_MASK 0x800000u
+#define SCM_MATRIX_STATUS7_TMU_IRQ_ERR_SHIFT 23u
+#define SCM_MATRIX_STATUS7_TMU_IRQ_ERR_WIDTH 1u
+#define SCM_MATRIX_STATUS7_TMU_IRQ_ERR(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS7_TMU_IRQ_ERR_SHIFT))&SCM_MATRIX_STATUS7_TMU_IRQ_ERR_MASK)
+#define SCM_MATRIX_STATUS7_PLL1_LOL_MASK 0x200000u
+#define SCM_MATRIX_STATUS7_PLL1_LOL_SHIFT 21u
+#define SCM_MATRIX_STATUS7_PLL1_LOL_WIDTH 1u
+#define SCM_MATRIX_STATUS7_PLL1_LOL(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS7_PLL1_LOL_SHIFT))&SCM_MATRIX_STATUS7_PLL1_LOL_MASK)
+#define SCM_MATRIX_STATUS7_PLL0_LOL_MASK 0x100000u
+#define SCM_MATRIX_STATUS7_PLL0_LOL_SHIFT 20u
+#define SCM_MATRIX_STATUS7_PLL0_LOL_WIDTH 1u
+#define SCM_MATRIX_STATUS7_PLL0_LOL(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS7_PLL0_LOL_SHIFT))&SCM_MATRIX_STATUS7_PLL0_LOL_MASK)
+#define SCM_MATRIX_STATUS7_ADC1_CMP2_MASK 0x80000u
+#define SCM_MATRIX_STATUS7_ADC1_CMP2_SHIFT 19u
+#define SCM_MATRIX_STATUS7_ADC1_CMP2_WIDTH 1u
+#define SCM_MATRIX_STATUS7_ADC1_CMP2(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS7_ADC1_CMP2_SHIFT))&SCM_MATRIX_STATUS7_ADC1_CMP2_MASK)
+#define SCM_MATRIX_STATUS7_ADC1_CMP1_MASK 0x40000u
+#define SCM_MATRIX_STATUS7_ADC1_CMP1_SHIFT 18u
+#define SCM_MATRIX_STATUS7_ADC1_CMP1_WIDTH 1u
+#define SCM_MATRIX_STATUS7_ADC1_CMP1(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS7_ADC1_CMP1_SHIFT))&SCM_MATRIX_STATUS7_ADC1_CMP1_MASK)
+#define SCM_MATRIX_STATUS7_ADC0_CMP2_MASK 0x20000u
+#define SCM_MATRIX_STATUS7_ADC0_CMP2_SHIFT 17u
+#define SCM_MATRIX_STATUS7_ADC0_CMP2_WIDTH 1u
+#define SCM_MATRIX_STATUS7_ADC0_CMP2(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS7_ADC0_CMP2_SHIFT))&SCM_MATRIX_STATUS7_ADC0_CMP2_MASK)
+#define SCM_MATRIX_STATUS7_ADC0_CMP1_MASK 0x10000u
+#define SCM_MATRIX_STATUS7_ADC0_CMP1_SHIFT 16u
+#define SCM_MATRIX_STATUS7_ADC0_CMP1_WIDTH 1u
+#define SCM_MATRIX_STATUS7_ADC0_CMP1(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS7_ADC0_CMP1_SHIFT))&SCM_MATRIX_STATUS7_ADC0_CMP1_MASK)
+#define SCM_MATRIX_STATUS7_FLASH_RST_ERR_MASK 0x1000u
+#define SCM_MATRIX_STATUS7_FLASH_RST_ERR_SHIFT 12u
+#define SCM_MATRIX_STATUS7_FLASH_RST_ERR_WIDTH 1u
+#define SCM_MATRIX_STATUS7_FLASH_RST_ERR(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS7_FLASH_RST_ERR_SHIFT))&SCM_MATRIX_STATUS7_FLASH_RST_ERR_MASK)
+#define SCM_MATRIX_STATUS7_HSM_IRAM_M_MASK 0x800u
+#define SCM_MATRIX_STATUS7_HSM_IRAM_M_SHIFT 11u
+#define SCM_MATRIX_STATUS7_HSM_IRAM_M_WIDTH 1u
+#define SCM_MATRIX_STATUS7_HSM_IRAM_M(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS7_HSM_IRAM_M_SHIFT))&SCM_MATRIX_STATUS7_HSM_IRAM_M_MASK)
+#define SCM_MATRIX_STATUS7_HSM_IRAM_S_MASK 0x400u
+#define SCM_MATRIX_STATUS7_HSM_IRAM_S_SHIFT 10u
+#define SCM_MATRIX_STATUS7_HSM_IRAM_S_WIDTH 1u
+#define SCM_MATRIX_STATUS7_HSM_IRAM_S(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS7_HSM_IRAM_S_SHIFT))&SCM_MATRIX_STATUS7_HSM_IRAM_S_MASK)
+#define SCM_MATRIX_STATUS7_HSM_DRAM_M_MASK 0x200u
+#define SCM_MATRIX_STATUS7_HSM_DRAM_M_SHIFT 9u
+#define SCM_MATRIX_STATUS7_HSM_DRAM_M_WIDTH 1u
+#define SCM_MATRIX_STATUS7_HSM_DRAM_M(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS7_HSM_DRAM_M_SHIFT))&SCM_MATRIX_STATUS7_HSM_DRAM_M_MASK)
+#define SCM_MATRIX_STATUS7_HSM_DRAM_S_MASK 0x100u
+#define SCM_MATRIX_STATUS7_HSM_DRAM_S_SHIFT 8u
+#define SCM_MATRIX_STATUS7_HSM_DRAM_S_WIDTH 1u
+#define SCM_MATRIX_STATUS7_HSM_DRAM_S(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS7_HSM_DRAM_S_SHIFT))&SCM_MATRIX_STATUS7_HSM_DRAM_S_MASK)
+#define SCM_MATRIX_STATUS7_HSM_WDOG_MASK 0x80u
+#define SCM_MATRIX_STATUS7_HSM_WDOG_SHIFT 7u
+#define SCM_MATRIX_STATUS7_HSM_WDOG_WIDTH 1u
+#define SCM_MATRIX_STATUS7_HSM_WDOG(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS7_HSM_WDOG_SHIFT))&SCM_MATRIX_STATUS7_HSM_WDOG_MASK)
+#define SCM_MATRIX_STATUS7_MAM1_TO_ERR_MASK 0x20u
+#define SCM_MATRIX_STATUS7_MAM1_TO_ERR_SHIFT 5u
+#define SCM_MATRIX_STATUS7_MAM1_TO_ERR_WIDTH 1u
+#define SCM_MATRIX_STATUS7_MAM1_TO_ERR(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS7_MAM1_TO_ERR_SHIFT))&SCM_MATRIX_STATUS7_MAM1_TO_ERR_MASK)
+#define SCM_MATRIX_STATUS7_MAM0_TO_ERR_MASK 0x10u
+#define SCM_MATRIX_STATUS7_MAM0_TO_ERR_SHIFT 4u
+#define SCM_MATRIX_STATUS7_MAM0_TO_ERR_WIDTH 1u
+#define SCM_MATRIX_STATUS7_MAM0_TO_ERR(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS7_MAM0_TO_ERR_SHIFT))&SCM_MATRIX_STATUS7_MAM0_TO_ERR_MASK)
+#define SCM_MATRIX_STATUS7_FOSC_LOC_MASK 0x4u
+#define SCM_MATRIX_STATUS7_FOSC_LOC_SHIFT 2u
+#define SCM_MATRIX_STATUS7_FOSC_LOC_WIDTH 1u
+#define SCM_MATRIX_STATUS7_FOSC_LOC(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS7_FOSC_LOC_SHIFT))&SCM_MATRIX_STATUS7_FOSC_LOC_MASK)
+#define SCM_MATRIX_STATUS7_PLL1_LOC_MASK 0x2u
+#define SCM_MATRIX_STATUS7_PLL1_LOC_SHIFT 1u
+#define SCM_MATRIX_STATUS7_PLL1_LOC_WIDTH 1u
+#define SCM_MATRIX_STATUS7_PLL1_LOC(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS7_PLL1_LOC_SHIFT))&SCM_MATRIX_STATUS7_PLL1_LOC_MASK)
+#define SCM_MATRIX_STATUS7_PLL0_LOC_MASK 0x1u
+#define SCM_MATRIX_STATUS7_PLL0_LOC_SHIFT 0u
+#define SCM_MATRIX_STATUS7_PLL0_LOC_WIDTH 1u
+#define SCM_MATRIX_STATUS7_PLL0_LOC(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS7_PLL0_LOC_SHIFT))&SCM_MATRIX_STATUS7_PLL0_LOC_MASK)
+/* MATRIX_STATUS7 Reg Mask */
+#define SCM_MATRIX_STATUS7_MASK        0x03BF1FB7u
+
+/* MATRIX_STATUS8 Bit Fields */
+#define SCM_MATRIX_STATUS8_MAM0_S8_DS_MASK 0x20000u
+#define SCM_MATRIX_STATUS8_MAM0_S8_DS_SHIFT 17u
+#define SCM_MATRIX_STATUS8_MAM0_S8_DS_WIDTH 1u
+#define SCM_MATRIX_STATUS8_MAM0_S8_DS(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS8_MAM0_S8_DS_SHIFT))&SCM_MATRIX_STATUS8_MAM0_S8_DS_MASK)
+#define SCM_MATRIX_STATUS8_MAM0_S8_S2F_MASK 0x10000u
+#define SCM_MATRIX_STATUS8_MAM0_S8_S2F_SHIFT 16u
+#define SCM_MATRIX_STATUS8_MAM0_S8_S2F_WIDTH 1u
+#define SCM_MATRIX_STATUS8_MAM0_S8_S2F(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS8_MAM0_S8_S2F_SHIFT))&SCM_MATRIX_STATUS8_MAM0_S8_S2F_MASK)
+#define SCM_MATRIX_STATUS8_MAM1_S3_M_MASK 0x8000u
+#define SCM_MATRIX_STATUS8_MAM1_S3_M_SHIFT 15u
+#define SCM_MATRIX_STATUS8_MAM1_S3_M_WIDTH 1u
+#define SCM_MATRIX_STATUS8_MAM1_S3_M(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS8_MAM1_S3_M_SHIFT))&SCM_MATRIX_STATUS8_MAM1_S3_M_MASK)
+#define SCM_MATRIX_STATUS8_MAM1_S3_AT_MASK 0x4000u
+#define SCM_MATRIX_STATUS8_MAM1_S3_AT_SHIFT 14u
+#define SCM_MATRIX_STATUS8_MAM1_S3_AT_WIDTH 1u
+#define SCM_MATRIX_STATUS8_MAM1_S3_AT(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS8_MAM1_S3_AT_SHIFT))&SCM_MATRIX_STATUS8_MAM1_S3_AT_MASK)
+#define SCM_MATRIX_STATUS8_MAM1_S3_D_MASK 0x2000u
+#define SCM_MATRIX_STATUS8_MAM1_S3_D_SHIFT 13u
+#define SCM_MATRIX_STATUS8_MAM1_S3_D_WIDTH 1u
+#define SCM_MATRIX_STATUS8_MAM1_S3_D(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS8_MAM1_S3_D_SHIFT))&SCM_MATRIX_STATUS8_MAM1_S3_D_MASK)
+#define SCM_MATRIX_STATUS8_MAM1_S3_A_MASK 0x1000u
+#define SCM_MATRIX_STATUS8_MAM1_S3_A_SHIFT 12u
+#define SCM_MATRIX_STATUS8_MAM1_S3_A_WIDTH 1u
+#define SCM_MATRIX_STATUS8_MAM1_S3_A(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS8_MAM1_S3_A_SHIFT))&SCM_MATRIX_STATUS8_MAM1_S3_A_MASK)
+#define SCM_MATRIX_STATUS8_MAM0_S8_M_MASK 0x8u
+#define SCM_MATRIX_STATUS8_MAM0_S8_M_SHIFT 3u
+#define SCM_MATRIX_STATUS8_MAM0_S8_M_WIDTH 1u
+#define SCM_MATRIX_STATUS8_MAM0_S8_M(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS8_MAM0_S8_M_SHIFT))&SCM_MATRIX_STATUS8_MAM0_S8_M_MASK)
+#define SCM_MATRIX_STATUS8_MAM0_S8_AT_MASK 0x4u
+#define SCM_MATRIX_STATUS8_MAM0_S8_AT_SHIFT 2u
+#define SCM_MATRIX_STATUS8_MAM0_S8_AT_WIDTH 1u
+#define SCM_MATRIX_STATUS8_MAM0_S8_AT(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS8_MAM0_S8_AT_SHIFT))&SCM_MATRIX_STATUS8_MAM0_S8_AT_MASK)
+#define SCM_MATRIX_STATUS8_MAM0_S8_D_MASK 0x2u
+#define SCM_MATRIX_STATUS8_MAM0_S8_D_SHIFT 1u
+#define SCM_MATRIX_STATUS8_MAM0_S8_D_WIDTH 1u
+#define SCM_MATRIX_STATUS8_MAM0_S8_D(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS8_MAM0_S8_D_SHIFT))&SCM_MATRIX_STATUS8_MAM0_S8_D_MASK)
+#define SCM_MATRIX_STATUS8_MAM0_S8_A_MASK 0x1u
+#define SCM_MATRIX_STATUS8_MAM0_S8_A_SHIFT 0u
+#define SCM_MATRIX_STATUS8_MAM0_S8_A_WIDTH 1u
+#define SCM_MATRIX_STATUS8_MAM0_S8_A(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_STATUS8_MAM0_S8_A_SHIFT))&SCM_MATRIX_STATUS8_MAM0_S8_A_MASK)
+/* MATRIX_STATUS8 Reg Mask */
+#define SCM_MATRIX_STATUS8_MASK        0x0003F00Fu
+
+/* MATRIX_ID_STATUS1 Bit Fields */
+#define SCM_MATRIX_ID_STATUS1_MAM0_S8_ID_MASK 0xFu
+#define SCM_MATRIX_ID_STATUS1_MAM0_S8_ID_SHIFT 0u
+#define SCM_MATRIX_ID_STATUS1_MAM0_S8_ID_WIDTH 4u
+#define SCM_MATRIX_ID_STATUS1_MAM0_S8_ID(x) (((uint32_t)(((uint32_t)(x))<<SCM_MATRIX_ID_STATUS1_MAM0_S8_ID_SHIFT))&SCM_MATRIX_ID_STATUS1_MAM0_S8_ID_MASK)
+/* MATRIX_ID_STATUS1 Reg Mask */
+#define SCM_MATRIX_ID_STATUS1_MASK     0x0000000Fu
+
+/* CPU0_TXRX_EN Bit Fields */
+#define SCM_CPU0_TXRX_EN_WPB_LOCK_MASK 0x80000000u
+#define SCM_CPU0_TXRX_EN_WPB_LOCK_SHIFT 31u
+#define SCM_CPU0_TXRX_EN_WPB_LOCK_WIDTH 1u
+#define SCM_CPU0_TXRX_EN_WPB_LOCK(x)   (((uint32_t)(((uint32_t)(x))<<SCM_CPU0_TXRX_EN_WPB_LOCK_SHIFT))&SCM_CPU0_TXRX_EN_WPB_LOCK_MASK)
+#define SCM_CPU0_TXRX_EN_WPB_MASK      0x70000000u
+#define SCM_CPU0_TXRX_EN_WPB_SHIFT     28u
+#define SCM_CPU0_TXRX_EN_WPB_WIDTH     3u
+#define SCM_CPU0_TXRX_EN_WPB(x)        (((uint32_t)(((uint32_t)(x))<<SCM_CPU0_TXRX_EN_WPB_SHIFT))&SCM_CPU0_TXRX_EN_WPB_MASK)
+#define SCM_CPU0_TXRX_EN_CPU1_EN_MASK  0x2u
+#define SCM_CPU0_TXRX_EN_CPU1_EN_SHIFT 1u
+#define SCM_CPU0_TXRX_EN_CPU1_EN_WIDTH 1u
+#define SCM_CPU0_TXRX_EN_CPU1_EN(x)    (((uint32_t)(((uint32_t)(x))<<SCM_CPU0_TXRX_EN_CPU1_EN_SHIFT))&SCM_CPU0_TXRX_EN_CPU1_EN_MASK)
+/* CPU0_TXRX_EN Reg Mask */
+#define SCM_CPU0_TXRX_EN_MASK          0xF0000002u
+
+/* CPU1_TXRX_EN Bit Fields */
+#define SCM_CPU1_TXRX_EN_WPB_LOCK_MASK 0x80000000u
+#define SCM_CPU1_TXRX_EN_WPB_LOCK_SHIFT 31u
+#define SCM_CPU1_TXRX_EN_WPB_LOCK_WIDTH 1u
+#define SCM_CPU1_TXRX_EN_WPB_LOCK(x)   (((uint32_t)(((uint32_t)(x))<<SCM_CPU1_TXRX_EN_WPB_LOCK_SHIFT))&SCM_CPU1_TXRX_EN_WPB_LOCK_MASK)
+#define SCM_CPU1_TXRX_EN_WPB_MASK      0x70000000u
+#define SCM_CPU1_TXRX_EN_WPB_SHIFT     28u
+#define SCM_CPU1_TXRX_EN_WPB_WIDTH     3u
+#define SCM_CPU1_TXRX_EN_WPB(x)        (((uint32_t)(((uint32_t)(x))<<SCM_CPU1_TXRX_EN_WPB_SHIFT))&SCM_CPU1_TXRX_EN_WPB_MASK)
+#define SCM_CPU1_TXRX_EN_CPU0_EN_MASK  0x1u
+#define SCM_CPU1_TXRX_EN_CPU0_EN_SHIFT 0u
+#define SCM_CPU1_TXRX_EN_CPU0_EN_WIDTH 1u
+#define SCM_CPU1_TXRX_EN_CPU0_EN(x)    (((uint32_t)(((uint32_t)(x))<<SCM_CPU1_TXRX_EN_CPU0_EN_SHIFT))&SCM_CPU1_TXRX_EN_CPU0_EN_MASK)
+/* CPU1_TXRX_EN Reg Mask */
+#define SCM_CPU1_TXRX_EN_MASK          0xF0000001u
+
+/* FTU_GTBEM Bit Fields */
+#define SCM_FTU_GTBEM_FTU7_GTBEM_MASK  0xF0000000u
+#define SCM_FTU_GTBEM_FTU7_GTBEM_SHIFT 28u
+#define SCM_FTU_GTBEM_FTU7_GTBEM_WIDTH 4u
+#define SCM_FTU_GTBEM_FTU7_GTBEM(x)    (((uint32_t)(((uint32_t)(x))<<SCM_FTU_GTBEM_FTU7_GTBEM_SHIFT))&SCM_FTU_GTBEM_FTU7_GTBEM_MASK)
+#define SCM_FTU_GTBEM_FTU6_GTBEM_MASK  0xF000000u
+#define SCM_FTU_GTBEM_FTU6_GTBEM_SHIFT 24u
+#define SCM_FTU_GTBEM_FTU6_GTBEM_WIDTH 4u
+#define SCM_FTU_GTBEM_FTU6_GTBEM(x)    (((uint32_t)(((uint32_t)(x))<<SCM_FTU_GTBEM_FTU6_GTBEM_SHIFT))&SCM_FTU_GTBEM_FTU6_GTBEM_MASK)
+#define SCM_FTU_GTBEM_FTU5_GTBEM_MASK  0xF00000u
+#define SCM_FTU_GTBEM_FTU5_GTBEM_SHIFT 20u
+#define SCM_FTU_GTBEM_FTU5_GTBEM_WIDTH 4u
+#define SCM_FTU_GTBEM_FTU5_GTBEM(x)    (((uint32_t)(((uint32_t)(x))<<SCM_FTU_GTBEM_FTU5_GTBEM_SHIFT))&SCM_FTU_GTBEM_FTU5_GTBEM_MASK)
+#define SCM_FTU_GTBEM_FTU4_GTBEM_MASK  0xF0000u
+#define SCM_FTU_GTBEM_FTU4_GTBEM_SHIFT 16u
+#define SCM_FTU_GTBEM_FTU4_GTBEM_WIDTH 4u
+#define SCM_FTU_GTBEM_FTU4_GTBEM(x)    (((uint32_t)(((uint32_t)(x))<<SCM_FTU_GTBEM_FTU4_GTBEM_SHIFT))&SCM_FTU_GTBEM_FTU4_GTBEM_MASK)
+#define SCM_FTU_GTBEM_FTU3_GTBEM_MASK  0xF000u
+#define SCM_FTU_GTBEM_FTU3_GTBEM_SHIFT 12u
+#define SCM_FTU_GTBEM_FTU3_GTBEM_WIDTH 4u
+#define SCM_FTU_GTBEM_FTU3_GTBEM(x)    (((uint32_t)(((uint32_t)(x))<<SCM_FTU_GTBEM_FTU3_GTBEM_SHIFT))&SCM_FTU_GTBEM_FTU3_GTBEM_MASK)
+#define SCM_FTU_GTBEM_FTU2_GTBEM_MASK  0xF00u
+#define SCM_FTU_GTBEM_FTU2_GTBEM_SHIFT 8u
+#define SCM_FTU_GTBEM_FTU2_GTBEM_WIDTH 4u
+#define SCM_FTU_GTBEM_FTU2_GTBEM(x)    (((uint32_t)(((uint32_t)(x))<<SCM_FTU_GTBEM_FTU2_GTBEM_SHIFT))&SCM_FTU_GTBEM_FTU2_GTBEM_MASK)
+#define SCM_FTU_GTBEM_FTU1_GTBEM_MASK  0xF0u
+#define SCM_FTU_GTBEM_FTU1_GTBEM_SHIFT 4u
+#define SCM_FTU_GTBEM_FTU1_GTBEM_WIDTH 4u
+#define SCM_FTU_GTBEM_FTU1_GTBEM(x)    (((uint32_t)(((uint32_t)(x))<<SCM_FTU_GTBEM_FTU1_GTBEM_SHIFT))&SCM_FTU_GTBEM_FTU1_GTBEM_MASK)
+#define SCM_FTU_GTBEM_FTU0_GTBEM_MASK  0xFu
+#define SCM_FTU_GTBEM_FTU0_GTBEM_SHIFT 0u
+#define SCM_FTU_GTBEM_FTU0_GTBEM_WIDTH 4u
+#define SCM_FTU_GTBEM_FTU0_GTBEM(x)    (((uint32_t)(((uint32_t)(x))<<SCM_FTU_GTBEM_FTU0_GTBEM_SHIFT))&SCM_FTU_GTBEM_FTU0_GTBEM_MASK)
+/* FTU_GTBEM Reg Mask */
+#define SCM_FTU_GTBEM_MASK             0xFFFFFFFFu
+
+/* EFTU_CFG Bit Fields */
+#define SCM_EFTU_CFG_SPE1_OUT_SEL_MASK 0x8u
+#define SCM_EFTU_CFG_SPE1_OUT_SEL_SHIFT 3u
+#define SCM_EFTU_CFG_SPE1_OUT_SEL_WIDTH 1u
+#define SCM_EFTU_CFG_SPE1_OUT_SEL(x)   (((uint32_t)(((uint32_t)(x))<<SCM_EFTU_CFG_SPE1_OUT_SEL_SHIFT))&SCM_EFTU_CFG_SPE1_OUT_SEL_MASK)
+#define SCM_EFTU_CFG_SPE1_IN_SEL_MASK  0x4u
+#define SCM_EFTU_CFG_SPE1_IN_SEL_SHIFT 2u
+#define SCM_EFTU_CFG_SPE1_IN_SEL_WIDTH 1u
+#define SCM_EFTU_CFG_SPE1_IN_SEL(x)    (((uint32_t)(((uint32_t)(x))<<SCM_EFTU_CFG_SPE1_IN_SEL_SHIFT))&SCM_EFTU_CFG_SPE1_IN_SEL_MASK)
+#define SCM_EFTU_CFG_SPE0_OUT_SEL_MASK 0x2u
+#define SCM_EFTU_CFG_SPE0_OUT_SEL_SHIFT 1u
+#define SCM_EFTU_CFG_SPE0_OUT_SEL_WIDTH 1u
+#define SCM_EFTU_CFG_SPE0_OUT_SEL(x)   (((uint32_t)(((uint32_t)(x))<<SCM_EFTU_CFG_SPE0_OUT_SEL_SHIFT))&SCM_EFTU_CFG_SPE0_OUT_SEL_MASK)
+#define SCM_EFTU_CFG_SPE0_IN_SEL_MASK  0x1u
+#define SCM_EFTU_CFG_SPE0_IN_SEL_SHIFT 0u
+#define SCM_EFTU_CFG_SPE0_IN_SEL_WIDTH 1u
+#define SCM_EFTU_CFG_SPE0_IN_SEL(x)    (((uint32_t)(((uint32_t)(x))<<SCM_EFTU_CFG_SPE0_IN_SEL_SHIFT))&SCM_EFTU_CFG_SPE0_IN_SEL_MASK)
+/* EFTU_CFG Reg Mask */
+#define SCM_EFTU_CFG_MASK              0x0000000Fu
+
+/* SYSAP_MDO Bit Fields */
+#define SCM_SYSAP_MDO_SYSAP_MDO_MASK   0xFFFFFFFFu
+#define SCM_SYSAP_MDO_SYSAP_MDO_SHIFT  0u
+#define SCM_SYSAP_MDO_SYSAP_MDO_WIDTH  32u
+#define SCM_SYSAP_MDO_SYSAP_MDO(x)     (((uint32_t)(((uint32_t)(x))<<SCM_SYSAP_MDO_SYSAP_MDO_SHIFT))&SCM_SYSAP_MDO_SYSAP_MDO_MASK)
+/* SYSAP_MDO Reg Mask */
+#define SCM_SYSAP_MDO_MASK             0xFFFFFFFFu
+
+/* SYSAP_MDI Bit Fields */
+#define SCM_SYSAP_MDI_SYSAP_MDI_MASK   0xFFFFFFFFu
+#define SCM_SYSAP_MDI_SYSAP_MDI_SHIFT  0u
+#define SCM_SYSAP_MDI_SYSAP_MDI_WIDTH  32u
+#define SCM_SYSAP_MDI_SYSAP_MDI(x)     (((uint32_t)(((uint32_t)(x))<<SCM_SYSAP_MDI_SYSAP_MDI_SHIFT))&SCM_SYSAP_MDI_SYSAP_MDI_MASK)
+/* SYSAP_MDI Reg Mask */
+#define SCM_SYSAP_MDI_MASK             0xFFFFFFFFu
+
+/* SYSAP_CTRL Bit Fields */
+#define SCM_SYSAP_CTRL_SYSAP_CTRL_MASK 0xFFFFFFFFu
+#define SCM_SYSAP_CTRL_SYSAP_CTRL_SHIFT 0u
+#define SCM_SYSAP_CTRL_SYSAP_CTRL_WIDTH 32u
+#define SCM_SYSAP_CTRL_SYSAP_CTRL(x)   (((uint32_t)(((uint32_t)(x))<<SCM_SYSAP_CTRL_SYSAP_CTRL_SHIFT))&SCM_SYSAP_CTRL_SYSAP_CTRL_MASK)
+/* SYSAP_CTRL Reg Mask */
+#define SCM_SYSAP_CTRL_MASK            0xFFFFFFFFu
+
+/* FLEXHSM_CFG Bit Fields */
+#define SCM_FLEXHSM_CFG_STOP_REQ_MASK  0x1u
+#define SCM_FLEXHSM_CFG_STOP_REQ_SHIFT 0u
+#define SCM_FLEXHSM_CFG_STOP_REQ_WIDTH 1u
+#define SCM_FLEXHSM_CFG_STOP_REQ(x)    (((uint32_t)(((uint32_t)(x))<<SCM_FLEXHSM_CFG_STOP_REQ_SHIFT))&SCM_FLEXHSM_CFG_STOP_REQ_MASK)
+/* FLEXHSM_CFG Reg Mask */
+#define SCM_FLEXHSM_CFG_MASK           0x00000001u
+
+/* FLEXHSM_PCC Bit Fields */
+#define SCM_FLEXHSM_PCC_WPB_LOCK_MASK  0x80000000u
+#define SCM_FLEXHSM_PCC_WPB_LOCK_SHIFT 31u
+#define SCM_FLEXHSM_PCC_WPB_LOCK_WIDTH 1u
+#define SCM_FLEXHSM_PCC_WPB_LOCK(x)    (((uint32_t)(((uint32_t)(x))<<SCM_FLEXHSM_PCC_WPB_LOCK_SHIFT))&SCM_FLEXHSM_PCC_WPB_LOCK_MASK)
+#define SCM_FLEXHSM_PCC_WPB_MASK       0x70000000u
+#define SCM_FLEXHSM_PCC_WPB_SHIFT      28u
+#define SCM_FLEXHSM_PCC_WPB_WIDTH      3u
+#define SCM_FLEXHSM_PCC_WPB(x)         (((uint32_t)(((uint32_t)(x))<<SCM_FLEXHSM_PCC_WPB_SHIFT))&SCM_FLEXHSM_PCC_WPB_MASK)
+#define SCM_FLEXHSM_PCC_CLKEN_FLEXHSM_MASK 0x800000u
+#define SCM_FLEXHSM_PCC_CLKEN_FLEXHSM_SHIFT 23u
+#define SCM_FLEXHSM_PCC_CLKEN_FLEXHSM_WIDTH 1u
+#define SCM_FLEXHSM_PCC_CLKEN_FLEXHSM(x) (((uint32_t)(((uint32_t)(x))<<SCM_FLEXHSM_PCC_CLKEN_FLEXHSM_SHIFT))&SCM_FLEXHSM_PCC_CLKEN_FLEXHSM_MASK)
+#define SCM_FLEXHSM_PCC_SWRST_MASK     0x10000u
+#define SCM_FLEXHSM_PCC_SWRST_SHIFT    16u
+#define SCM_FLEXHSM_PCC_SWRST_WIDTH    1u
+#define SCM_FLEXHSM_PCC_SWRST(x)       (((uint32_t)(((uint32_t)(x))<<SCM_FLEXHSM_PCC_SWRST_SHIFT))&SCM_FLEXHSM_PCC_SWRST_MASK)
+#define SCM_FLEXHSM_PCC_WDG_RSTEN_MASK 0x10u
+#define SCM_FLEXHSM_PCC_WDG_RSTEN_SHIFT 4u
+#define SCM_FLEXHSM_PCC_WDG_RSTEN_WIDTH 1u
+#define SCM_FLEXHSM_PCC_WDG_RSTEN(x)   (((uint32_t)(((uint32_t)(x))<<SCM_FLEXHSM_PCC_WDG_RSTEN_SHIFT))&SCM_FLEXHSM_PCC_WDG_RSTEN_MASK)
+/* FLEXHSM_PCC Reg Mask */
+#define SCM_FLEXHSM_PCC_MASK           0xF0810010u
+
+/* FLEXHSM_STATUS Bit Fields */
+#define SCM_FLEXHSM_STATUS_FLEXHSM_TYPE_MASK 0xFFFF0000u
+#define SCM_FLEXHSM_STATUS_FLEXHSM_TYPE_SHIFT 16u
+#define SCM_FLEXHSM_STATUS_FLEXHSM_TYPE_WIDTH 16u
+#define SCM_FLEXHSM_STATUS_FLEXHSM_TYPE(x) (((uint32_t)(((uint32_t)(x))<<SCM_FLEXHSM_STATUS_FLEXHSM_TYPE_SHIFT))&SCM_FLEXHSM_STATUS_FLEXHSM_TYPE_MASK)
+#define SCM_FLEXHSM_STATUS_FLEXHSM_RST_MASK 0x40u
+#define SCM_FLEXHSM_STATUS_FLEXHSM_RST_SHIFT 6u
+#define SCM_FLEXHSM_STATUS_FLEXHSM_RST_WIDTH 1u
+#define SCM_FLEXHSM_STATUS_FLEXHSM_RST(x) (((uint32_t)(((uint32_t)(x))<<SCM_FLEXHSM_STATUS_FLEXHSM_RST_SHIFT))&SCM_FLEXHSM_STATUS_FLEXHSM_RST_MASK)
+#define SCM_FLEXHSM_STATUS_FLEXHSM_ERR_FLAG_MASK 0x20u
+#define SCM_FLEXHSM_STATUS_FLEXHSM_ERR_FLAG_SHIFT 5u
+#define SCM_FLEXHSM_STATUS_FLEXHSM_ERR_FLAG_WIDTH 1u
+#define SCM_FLEXHSM_STATUS_FLEXHSM_ERR_FLAG(x) (((uint32_t)(((uint32_t)(x))<<SCM_FLEXHSM_STATUS_FLEXHSM_ERR_FLAG_SHIFT))&SCM_FLEXHSM_STATUS_FLEXHSM_ERR_FLAG_MASK)
+#define SCM_FLEXHSM_STATUS_WDG_RST_MASK 0x10u
+#define SCM_FLEXHSM_STATUS_WDG_RST_SHIFT 4u
+#define SCM_FLEXHSM_STATUS_WDG_RST_WIDTH 1u
+#define SCM_FLEXHSM_STATUS_WDG_RST(x)  (((uint32_t)(((uint32_t)(x))<<SCM_FLEXHSM_STATUS_WDG_RST_SHIFT))&SCM_FLEXHSM_STATUS_WDG_RST_MASK)
+#define SCM_FLEXHSM_STATUS_INIT_DONE_MASK 0x8u
+#define SCM_FLEXHSM_STATUS_INIT_DONE_SHIFT 3u
+#define SCM_FLEXHSM_STATUS_INIT_DONE_WIDTH 1u
+#define SCM_FLEXHSM_STATUS_INIT_DONE(x) (((uint32_t)(((uint32_t)(x))<<SCM_FLEXHSM_STATUS_INIT_DONE_SHIFT))&SCM_FLEXHSM_STATUS_INIT_DONE_MASK)
+#define SCM_FLEXHSM_STATUS_ISP_TOGGLE_MASK 0x4u
+#define SCM_FLEXHSM_STATUS_ISP_TOGGLE_SHIFT 2u
+#define SCM_FLEXHSM_STATUS_ISP_TOGGLE_WIDTH 1u
+#define SCM_FLEXHSM_STATUS_ISP_TOGGLE(x) (((uint32_t)(((uint32_t)(x))<<SCM_FLEXHSM_STATUS_ISP_TOGGLE_SHIFT))&SCM_FLEXHSM_STATUS_ISP_TOGGLE_MASK)
+#define SCM_FLEXHSM_STATUS_FLEXCORE_SLEEP_MASK 0x2u
+#define SCM_FLEXHSM_STATUS_FLEXCORE_SLEEP_SHIFT 1u
+#define SCM_FLEXHSM_STATUS_FLEXCORE_SLEEP_WIDTH 1u
+#define SCM_FLEXHSM_STATUS_FLEXCORE_SLEEP(x) (((uint32_t)(((uint32_t)(x))<<SCM_FLEXHSM_STATUS_FLEXCORE_SLEEP_SHIFT))&SCM_FLEXHSM_STATUS_FLEXCORE_SLEEP_MASK)
+#define SCM_FLEXHSM_STATUS_STOP_ACK_MASK 0x1u
+#define SCM_FLEXHSM_STATUS_STOP_ACK_SHIFT 0u
+#define SCM_FLEXHSM_STATUS_STOP_ACK_WIDTH 1u
+#define SCM_FLEXHSM_STATUS_STOP_ACK(x) (((uint32_t)(((uint32_t)(x))<<SCM_FLEXHSM_STATUS_STOP_ACK_SHIFT))&SCM_FLEXHSM_STATUS_STOP_ACK_MASK)
+/* FLEXHSM_STATUS Reg Mask */
+#define SCM_FLEXHSM_STATUS_MASK        0xFFFF007Fu
+
+/* MDO_FLAG Bit Fields */
+#define SCM_MDO_FLAG_MDO_FLAG_MASK     0x1u
+#define SCM_MDO_FLAG_MDO_FLAG_SHIFT    0u
+#define SCM_MDO_FLAG_MDO_FLAG_WIDTH    1u
+#define SCM_MDO_FLAG_MDO_FLAG(x)       (((uint32_t)(((uint32_t)(x))<<SCM_MDO_FLAG_MDO_FLAG_SHIFT))&SCM_MDO_FLAG_MDO_FLAG_MASK)
+/* MDO_FLAG Reg Mask */
+#define SCM_MDO_FLAG_MASK              0x00000001u
+
+/* MASTER_HALT_ACK Bit Fields */
+#define SCM_MASTER_HALT_ACK_FLEXHSM_ACK_MASK 0x7u
+#define SCM_MASTER_HALT_ACK_FLEXHSM_ACK_SHIFT 0u
+#define SCM_MASTER_HALT_ACK_FLEXHSM_ACK_WIDTH 3u
+#define SCM_MASTER_HALT_ACK_FLEXHSM_ACK(x) (((uint32_t)(((uint32_t)(x))<<SCM_MASTER_HALT_ACK_FLEXHSM_ACK_SHIFT))&SCM_MASTER_HALT_ACK_FLEXHSM_ACK_MASK)
+/* MASTER_HALT_ACK Reg Mask */
+#define SCM_MASTER_HALT_ACK_MASK       0x00000007u
+
+/* CHIPCFG2 Bit Fields */
+#define SCM_CHIPCFG2_SMP_EN_MASK       0x1000000u
+#define SCM_CHIPCFG2_SMP_EN_SHIFT      24u
+#define SCM_CHIPCFG2_SMP_EN_WIDTH      1u
+#define SCM_CHIPCFG2_SMP_EN(x)         (((uint32_t)(((uint32_t)(x))<<SCM_CHIPCFG2_SMP_EN_SHIFT))&SCM_CHIPCFG2_SMP_EN_MASK)
+#define SCM_CHIPCFG2_C0_SPLIT_ENABLE_MASK 0x40000u
+#define SCM_CHIPCFG2_C0_SPLIT_ENABLE_SHIFT 18u
+#define SCM_CHIPCFG2_C0_SPLIT_ENABLE_WIDTH 1u
+#define SCM_CHIPCFG2_C0_SPLIT_ENABLE(x) (((uint32_t)(((uint32_t)(x))<<SCM_CHIPCFG2_C0_SPLIT_ENABLE_SHIFT))&SCM_CHIPCFG2_C0_SPLIT_ENABLE_MASK)
+#define SCM_CHIPCFG2_CPU1_DTCM_REMAP_MASK 0x2u
+#define SCM_CHIPCFG2_CPU1_DTCM_REMAP_SHIFT 1u
+#define SCM_CHIPCFG2_CPU1_DTCM_REMAP_WIDTH 1u
+#define SCM_CHIPCFG2_CPU1_DTCM_REMAP(x) (((uint32_t)(((uint32_t)(x))<<SCM_CHIPCFG2_CPU1_DTCM_REMAP_SHIFT))&SCM_CHIPCFG2_CPU1_DTCM_REMAP_MASK)
+#define SCM_CHIPCFG2_CPU0_DTCM_REMAP_MASK 0x1u
+#define SCM_CHIPCFG2_CPU0_DTCM_REMAP_SHIFT 0u
+#define SCM_CHIPCFG2_CPU0_DTCM_REMAP_WIDTH 1u
+#define SCM_CHIPCFG2_CPU0_DTCM_REMAP(x) (((uint32_t)(((uint32_t)(x))<<SCM_CHIPCFG2_CPU0_DTCM_REMAP_SHIFT))&SCM_CHIPCFG2_CPU0_DTCM_REMAP_MASK)
+/* CHIPCFG2 Reg Mask */
+#define SCM_CHIPCFG2_MASK              0x01040003u
+
+/* CRYPTO_PCC Bit Fields */
+#define SCM_CRYPTO_PCC_WPB_LOCK_MASK   0x80000000u
+#define SCM_CRYPTO_PCC_WPB_LOCK_SHIFT  31u
+#define SCM_CRYPTO_PCC_WPB_LOCK_WIDTH  1u
+#define SCM_CRYPTO_PCC_WPB_LOCK(x)     (((uint32_t)(((uint32_t)(x))<<SCM_CRYPTO_PCC_WPB_LOCK_SHIFT))&SCM_CRYPTO_PCC_WPB_LOCK_MASK)
+#define SCM_CRYPTO_PCC_WPB_MASK        0x70000000u
+#define SCM_CRYPTO_PCC_WPB_SHIFT       28u
+#define SCM_CRYPTO_PCC_WPB_WIDTH       3u
+#define SCM_CRYPTO_PCC_WPB(x)          (((uint32_t)(((uint32_t)(x))<<SCM_CRYPTO_PCC_WPB_SHIFT))&SCM_CRYPTO_PCC_WPB_MASK)
+#define SCM_CRYPTO_PCC_CLKEN_CRYPTO_MASK 0x800000u
+#define SCM_CRYPTO_PCC_CLKEN_CRYPTO_SHIFT 23u
+#define SCM_CRYPTO_PCC_CLKEN_CRYPTO_WIDTH 1u
+#define SCM_CRYPTO_PCC_CLKEN_CRYPTO(x) (((uint32_t)(((uint32_t)(x))<<SCM_CRYPTO_PCC_CLKEN_CRYPTO_SHIFT))&SCM_CRYPTO_PCC_CLKEN_CRYPTO_MASK)
+/* CRYPTO_PCC Reg Mask */
+#define SCM_CRYPTO_PCC_MASK            0xF0800000u
+
+/* ADC_CFG Bit Fields */
+#define SCM_ADC_CFG_SDADC0_OREN_MASK   0x7u
+#define SCM_ADC_CFG_SDADC0_OREN_SHIFT  0u
+#define SCM_ADC_CFG_SDADC0_OREN_WIDTH  3u
+#define SCM_ADC_CFG_SDADC0_OREN(x)     (((uint32_t)(((uint32_t)(x))<<SCM_ADC_CFG_SDADC0_OREN_SHIFT))&SCM_ADC_CFG_SDADC0_OREN_MASK)
+/* ADC_CFG Reg Mask */
+#define SCM_ADC_CFG_MASK               0x00000007u
+
+/* ADC_ROUTING2 Bit Fields */
+#define SCM_ADC_ROUTING2_PTIMER2CH1_SEL_MASK 0x200u
+#define SCM_ADC_ROUTING2_PTIMER2CH1_SEL_SHIFT 9u
+#define SCM_ADC_ROUTING2_PTIMER2CH1_SEL_WIDTH 1u
+#define SCM_ADC_ROUTING2_PTIMER2CH1_SEL(x) (((uint32_t)(((uint32_t)(x))<<SCM_ADC_ROUTING2_PTIMER2CH1_SEL_SHIFT))&SCM_ADC_ROUTING2_PTIMER2CH1_SEL_MASK)
+/* ADC_ROUTING2 Reg Mask */
+#define SCM_ADC_ROUTING2_MASK          0x00000200u
+
+/* SDADC_ROUTING Bit Fields */
+#define SCM_SDADC_ROUTING_SDADC0_CH0_CLKOUTSEL_MASK 0xC000u
+#define SCM_SDADC_ROUTING_SDADC0_CH0_CLKOUTSEL_SHIFT 14u
+#define SCM_SDADC_ROUTING_SDADC0_CH0_CLKOUTSEL_WIDTH 2u
+#define SCM_SDADC_ROUTING_SDADC0_CH0_CLKOUTSEL(x) (((uint32_t)(((uint32_t)(x))<<SCM_SDADC_ROUTING_SDADC0_CH0_CLKOUTSEL_SHIFT))&SCM_SDADC_ROUTING_SDADC0_CH0_CLKOUTSEL_MASK)
+#define SCM_SDADC_ROUTING_SDADC0_EXT_SIGN_SEL_MASK 0x3u
+#define SCM_SDADC_ROUTING_SDADC0_EXT_SIGN_SEL_SHIFT 0u
+#define SCM_SDADC_ROUTING_SDADC0_EXT_SIGN_SEL_WIDTH 2u
+#define SCM_SDADC_ROUTING_SDADC0_EXT_SIGN_SEL(x) (((uint32_t)(((uint32_t)(x))<<SCM_SDADC_ROUTING_SDADC0_EXT_SIGN_SEL_SHIFT))&SCM_SDADC_ROUTING_SDADC0_EXT_SIGN_SEL_MASK)
+/* SDADC_ROUTING Reg Mask */
+#define SCM_SDADC_ROUTING_MASK         0x0000C003u
+
+/* TSTMP_LOCK Bit Fields */
+#define SCM_TSTMP_LOCK_SDADC0_TMR_SRC_SEL_MASK 0x700000u
+#define SCM_TSTMP_LOCK_SDADC0_TMR_SRC_SEL_SHIFT 20u
+#define SCM_TSTMP_LOCK_SDADC0_TMR_SRC_SEL_WIDTH 3u
+#define SCM_TSTMP_LOCK_SDADC0_TMR_SRC_SEL(x) (((uint32_t)(((uint32_t)(x))<<SCM_TSTMP_LOCK_SDADC0_TMR_SRC_SEL_SHIFT))&SCM_TSTMP_LOCK_SDADC0_TMR_SRC_SEL_MASK)
+#define SCM_TSTMP_LOCK_SDADC0_TSTMP_SEL_MASK 0x30000u
+#define SCM_TSTMP_LOCK_SDADC0_TSTMP_SEL_SHIFT 16u
+#define SCM_TSTMP_LOCK_SDADC0_TSTMP_SEL_WIDTH 2u
+#define SCM_TSTMP_LOCK_SDADC0_TSTMP_SEL(x) (((uint32_t)(((uint32_t)(x))<<SCM_TSTMP_LOCK_SDADC0_TSTMP_SEL_SHIFT))&SCM_TSTMP_LOCK_SDADC0_TSTMP_SEL_MASK)
+#define SCM_TSTMP_LOCK_ADC_TMR_SRC_SEL1_MASK 0xF000u
+#define SCM_TSTMP_LOCK_ADC_TMR_SRC_SEL1_SHIFT 12u
+#define SCM_TSTMP_LOCK_ADC_TMR_SRC_SEL1_WIDTH 4u
+#define SCM_TSTMP_LOCK_ADC_TMR_SRC_SEL1(x) (((uint32_t)(((uint32_t)(x))<<SCM_TSTMP_LOCK_ADC_TMR_SRC_SEL1_SHIFT))&SCM_TSTMP_LOCK_ADC_TMR_SRC_SEL1_MASK)
+#define SCM_TSTMP_LOCK_ADC_CLK_SEL1_MASK 0x400u
+#define SCM_TSTMP_LOCK_ADC_CLK_SEL1_SHIFT 10u
+#define SCM_TSTMP_LOCK_ADC_CLK_SEL1_WIDTH 1u
+#define SCM_TSTMP_LOCK_ADC_CLK_SEL1(x) (((uint32_t)(((uint32_t)(x))<<SCM_TSTMP_LOCK_ADC_CLK_SEL1_SHIFT))&SCM_TSTMP_LOCK_ADC_CLK_SEL1_MASK)
+#define SCM_TSTMP_LOCK_ADC_TSTMP_SEL1_MASK 0x300u
+#define SCM_TSTMP_LOCK_ADC_TSTMP_SEL1_SHIFT 8u
+#define SCM_TSTMP_LOCK_ADC_TSTMP_SEL1_WIDTH 2u
+#define SCM_TSTMP_LOCK_ADC_TSTMP_SEL1(x) (((uint32_t)(((uint32_t)(x))<<SCM_TSTMP_LOCK_ADC_TSTMP_SEL1_SHIFT))&SCM_TSTMP_LOCK_ADC_TSTMP_SEL1_MASK)
+#define SCM_TSTMP_LOCK_ADC_TMR_SRC_SEL0_MASK 0xF0u
+#define SCM_TSTMP_LOCK_ADC_TMR_SRC_SEL0_SHIFT 4u
+#define SCM_TSTMP_LOCK_ADC_TMR_SRC_SEL0_WIDTH 4u
+#define SCM_TSTMP_LOCK_ADC_TMR_SRC_SEL0(x) (((uint32_t)(((uint32_t)(x))<<SCM_TSTMP_LOCK_ADC_TMR_SRC_SEL0_SHIFT))&SCM_TSTMP_LOCK_ADC_TMR_SRC_SEL0_MASK)
+#define SCM_TSTMP_LOCK_ADC_TSTMP_SEL0_MASK 0x3u
+#define SCM_TSTMP_LOCK_ADC_TSTMP_SEL0_SHIFT 0u
+#define SCM_TSTMP_LOCK_ADC_TSTMP_SEL0_WIDTH 2u
+#define SCM_TSTMP_LOCK_ADC_TSTMP_SEL0(x) (((uint32_t)(((uint32_t)(x))<<SCM_TSTMP_LOCK_ADC_TSTMP_SEL0_SHIFT))&SCM_TSTMP_LOCK_ADC_TSTMP_SEL0_MASK)
+/* TSTMP_LOCK Reg Mask */
+#define SCM_TSTMP_LOCK_MASK            0x0073F7F3u
+
+/* TSTMP_RES0 Bit Fields */
+#define SCM_TSTMP_RES0_ADC_TSTMP_RESULT0_MASK 0xFFFFFFFFu
+#define SCM_TSTMP_RES0_ADC_TSTMP_RESULT0_SHIFT 0u
+#define SCM_TSTMP_RES0_ADC_TSTMP_RESULT0_WIDTH 32u
+#define SCM_TSTMP_RES0_ADC_TSTMP_RESULT0(x) (((uint32_t)(((uint32_t)(x))<<SCM_TSTMP_RES0_ADC_TSTMP_RESULT0_SHIFT))&SCM_TSTMP_RES0_ADC_TSTMP_RESULT0_MASK)
+/* TSTMP_RES0 Reg Mask */
+#define SCM_TSTMP_RES0_MASK            0xFFFFFFFFu
+
+/* ADC_GROUP0_RES0 Bit Fields */
+#define SCM_ADC_GROUP0_RES0_RESULT_MASK 0xFFFFu
+#define SCM_ADC_GROUP0_RES0_RESULT_SHIFT 0u
+#define SCM_ADC_GROUP0_RES0_RESULT_WIDTH 16u
+#define SCM_ADC_GROUP0_RES0_RESULT(x)  (((uint32_t)(((uint32_t)(x))<<SCM_ADC_GROUP0_RES0_RESULT_SHIFT))&SCM_ADC_GROUP0_RES0_RESULT_MASK)
+/* ADC_GROUP0_RES0 Reg Mask */
+#define SCM_ADC_GROUP0_RES0_MASK       0x0000FFFFu
+
+/* ADC_GROUP0_RES1 Bit Fields */
+#define SCM_ADC_GROUP0_RES1_RESULT_MASK 0xFFFFu
+#define SCM_ADC_GROUP0_RES1_RESULT_SHIFT 0u
+#define SCM_ADC_GROUP0_RES1_RESULT_WIDTH 16u
+#define SCM_ADC_GROUP0_RES1_RESULT(x)  (((uint32_t)(((uint32_t)(x))<<SCM_ADC_GROUP0_RES1_RESULT_SHIFT))&SCM_ADC_GROUP0_RES1_RESULT_MASK)
+/* ADC_GROUP0_RES1 Reg Mask */
+#define SCM_ADC_GROUP0_RES1_MASK       0x0000FFFFu
+
+/* TSTMP_RES1 Bit Fields */
+#define SCM_TSTMP_RES1_ADC_TSTMP_RESULT1_MASK 0xFFFFFFFFu
+#define SCM_TSTMP_RES1_ADC_TSTMP_RESULT1_SHIFT 0u
+#define SCM_TSTMP_RES1_ADC_TSTMP_RESULT1_WIDTH 32u
+#define SCM_TSTMP_RES1_ADC_TSTMP_RESULT1(x) (((uint32_t)(((uint32_t)(x))<<SCM_TSTMP_RES1_ADC_TSTMP_RESULT1_SHIFT))&SCM_TSTMP_RES1_ADC_TSTMP_RESULT1_MASK)
+/* TSTMP_RES1 Reg Mask */
+#define SCM_TSTMP_RES1_MASK            0xFFFFFFFFu
+
+/* ADC_GROUP1_RES0 Bit Fields */
+#define SCM_ADC_GROUP1_RES0_RESULT_MASK 0xFFFFu
+#define SCM_ADC_GROUP1_RES0_RESULT_SHIFT 0u
+#define SCM_ADC_GROUP1_RES0_RESULT_WIDTH 16u
+#define SCM_ADC_GROUP1_RES0_RESULT(x)  (((uint32_t)(((uint32_t)(x))<<SCM_ADC_GROUP1_RES0_RESULT_SHIFT))&SCM_ADC_GROUP1_RES0_RESULT_MASK)
+/* ADC_GROUP1_RES0 Reg Mask */
+#define SCM_ADC_GROUP1_RES0_MASK       0x0000FFFFu
+
+/* ADC_GROUP1_RES1 Bit Fields */
+#define SCM_ADC_GROUP1_RES1_RESULT_MASK 0xFFFFu
+#define SCM_ADC_GROUP1_RES1_RESULT_SHIFT 0u
+#define SCM_ADC_GROUP1_RES1_RESULT_WIDTH 16u
+#define SCM_ADC_GROUP1_RES1_RESULT(x)  (((uint32_t)(((uint32_t)(x))<<SCM_ADC_GROUP1_RES1_RESULT_SHIFT))&SCM_ADC_GROUP1_RES1_RESULT_MASK)
+/* ADC_GROUP1_RES1 Reg Mask */
+#define SCM_ADC_GROUP1_RES1_MASK       0x0000FFFFu
+
+/* TSTMP_RES2 Bit Fields */
+#define SCM_TSTMP_RES2_SDADC0_TSTMP_RESULT_MASK 0xFFFFFFFFu
+#define SCM_TSTMP_RES2_SDADC0_TSTMP_RESULT_SHIFT 0u
+#define SCM_TSTMP_RES2_SDADC0_TSTMP_RESULT_WIDTH 32u
+#define SCM_TSTMP_RES2_SDADC0_TSTMP_RESULT(x) (((uint32_t)(((uint32_t)(x))<<SCM_TSTMP_RES2_SDADC0_TSTMP_RESULT_SHIFT))&SCM_TSTMP_RES2_SDADC0_TSTMP_RESULT_MASK)
+/* TSTMP_RES2 Reg Mask */
+#define SCM_TSTMP_RES2_MASK            0xFFFFFFFFu
+
+/* SDADC0_RES0 Bit Fields */
+#define SCM_SDADC0_RES0_RESULT_MASK    0xFFFFFF00u
+#define SCM_SDADC0_RES0_RESULT_SHIFT   8u
+#define SCM_SDADC0_RES0_RESULT_WIDTH   24u
+#define SCM_SDADC0_RES0_RESULT(x)      (((uint32_t)(((uint32_t)(x))<<SCM_SDADC0_RES0_RESULT_SHIFT))&SCM_SDADC0_RES0_RESULT_MASK)
+/* SDADC0_RES0 Reg Mask */
+#define SCM_SDADC0_RES0_MASK           0xFFFFFF00u
+
+/* SDADC0_RES1 Bit Fields */
+#define SCM_SDADC0_RES1_RESULT_MASK    0xFFFFFF00u
+#define SCM_SDADC0_RES1_RESULT_SHIFT   8u
+#define SCM_SDADC0_RES1_RESULT_WIDTH   24u
+#define SCM_SDADC0_RES1_RESULT(x)      (((uint32_t)(((uint32_t)(x))<<SCM_SDADC0_RES1_RESULT_SHIFT))&SCM_SDADC0_RES1_RESULT_MASK)
+/* SDADC0_RES1 Reg Mask */
+#define SCM_SDADC0_RES1_MASK           0xFFFFFF00u
+
+/* INT_ROUTER_NMI Bit Fields */
+#define SCM_INT_ROUTER_NMI_C1_EN_MASK  0x2000000u
+#define SCM_INT_ROUTER_NMI_C1_EN_SHIFT 25u
+#define SCM_INT_ROUTER_NMI_C1_EN_WIDTH 1u
+#define SCM_INT_ROUTER_NMI_C1_EN(x)    (((uint32_t)(((uint32_t)(x))<<SCM_INT_ROUTER_NMI_C1_EN_SHIFT))&SCM_INT_ROUTER_NMI_C1_EN_MASK)
+#define SCM_INT_ROUTER_NMI_C0_EN_MASK  0x1000000u
+#define SCM_INT_ROUTER_NMI_C0_EN_SHIFT 24u
+#define SCM_INT_ROUTER_NMI_C0_EN_WIDTH 1u
+#define SCM_INT_ROUTER_NMI_C0_EN(x)    (((uint32_t)(((uint32_t)(x))<<SCM_INT_ROUTER_NMI_C0_EN_SHIFT))&SCM_INT_ROUTER_NMI_C0_EN_MASK)
+#define SCM_INT_ROUTER_NMI_LOCK_MASK   0x1u
+#define SCM_INT_ROUTER_NMI_LOCK_SHIFT  0u
+#define SCM_INT_ROUTER_NMI_LOCK_WIDTH  1u
+#define SCM_INT_ROUTER_NMI_LOCK(x)     (((uint32_t)(((uint32_t)(x))<<SCM_INT_ROUTER_NMI_LOCK_SHIFT))&SCM_INT_ROUTER_NMI_LOCK_MASK)
+/* INT_ROUTER_NMI Reg Mask */
+#define SCM_INT_ROUTER_NMI_MASK        0x03000001u
+
+/* INT_ROUTER Bit Fields */
+#define SCM_INT_ROUTER_C1_EN_MASK      0x2000000u
+#define SCM_INT_ROUTER_C1_EN_SHIFT     25u
+#define SCM_INT_ROUTER_C1_EN_WIDTH     1u
+#define SCM_INT_ROUTER_C1_EN(x)        (((uint32_t)(((uint32_t)(x))<<SCM_INT_ROUTER_C1_EN_SHIFT))&SCM_INT_ROUTER_C1_EN_MASK)
+#define SCM_INT_ROUTER_C0_EN_MASK      0x1000000u
+#define SCM_INT_ROUTER_C0_EN_SHIFT     24u
+#define SCM_INT_ROUTER_C0_EN_WIDTH     1u
+#define SCM_INT_ROUTER_C0_EN(x)        (((uint32_t)(((uint32_t)(x))<<SCM_INT_ROUTER_C0_EN_SHIFT))&SCM_INT_ROUTER_C0_EN_MASK)
+#define SCM_INT_ROUTER_LOCK_MASK       0x1u
+#define SCM_INT_ROUTER_LOCK_SHIFT      0u
+#define SCM_INT_ROUTER_LOCK_WIDTH      1u
+#define SCM_INT_ROUTER_LOCK(x)         (((uint32_t)(((uint32_t)(x))<<SCM_INT_ROUTER_LOCK_SHIFT))&SCM_INT_ROUTER_LOCK_MASK)
+/* INT_ROUTER0 Reg Mask */
+#define SCM_INT_ROUTER_MASK            0x03000001u
+
+/* CRCCSR Bit Fields */
+#define SCM_CRCCSR_ERR_MASK            0x20u
+#define SCM_CRCCSR_ERR_SHIFT           5u
+#define SCM_CRCCSR_ERR_WIDTH           1u
+#define SCM_CRCCSR_ERR(x)              (((uint32_t)(((uint32_t)(x))<<SCM_CRCCSR_ERR_SHIFT))&SCM_CRCCSR_ERR_MASK)
+#define SCM_CRCCSR_BUY_MASK            0x10u
+#define SCM_CRCCSR_BUY_SHIFT           4u
+#define SCM_CRCCSR_BUY_WIDTH           1u
+#define SCM_CRCCSR_BUY(x)              (((uint32_t)(((uint32_t)(x))<<SCM_CRCCSR_BUY_SHIFT))&SCM_CRCCSR_BUY_MASK)
+#define SCM_CRCCSR_EOEN_MASK           0x8u
+#define SCM_CRCCSR_EOEN_SHIFT          3u
+#define SCM_CRCCSR_EOEN_WIDTH          1u
+#define SCM_CRCCSR_EOEN(x)             (((uint32_t)(((uint32_t)(x))<<SCM_CRCCSR_EOEN_SHIFT))&SCM_CRCCSR_EOEN_MASK)
+#define SCM_CRCCSR_CHKEN_MASK          0x4u
+#define SCM_CRCCSR_CHKEN_SHIFT         2u
+#define SCM_CRCCSR_CHKEN_WIDTH         1u
+#define SCM_CRCCSR_CHKEN(x)            (((uint32_t)(((uint32_t)(x))<<SCM_CRCCSR_CHKEN_SHIFT))&SCM_CRCCSR_CHKEN_MASK)
+#define SCM_CRCCSR_TRGEN_MASK          0x2u
+#define SCM_CRCCSR_TRGEN_SHIFT         1u
+#define SCM_CRCCSR_TRGEN_WIDTH         1u
+#define SCM_CRCCSR_TRGEN(x)            (((uint32_t)(((uint32_t)(x))<<SCM_CRCCSR_TRGEN_SHIFT))&SCM_CRCCSR_TRGEN_MASK)
+#define SCM_CRCCSR_GEN_MASK            0x1u
+#define SCM_CRCCSR_GEN_SHIFT           0u
+#define SCM_CRCCSR_GEN_WIDTH           1u
+#define SCM_CRCCSR_GEN(x)              (((uint32_t)(((uint32_t)(x))<<SCM_CRCCSR_GEN_SHIFT))&SCM_CRCCSR_GEN_MASK)
+/* CRCCSR Reg Mask */
+#define SCM_CRCCSR_MASK                0x0000003Fu
+
+/* CRCRES Bit Fields */
+#define SCM_CRCRES_RESULT_MASK         0xFFFFFFFFu
+#define SCM_CRCRES_RESULT_SHIFT        0u
+#define SCM_CRCRES_RESULT_WIDTH        32u
+#define SCM_CRCRES_RESULT(x)           (((uint32_t)(((uint32_t)(x))<<SCM_CRCRES_RESULT_SHIFT))&SCM_CRCRES_RESULT_MASK)
+/* CRCRES Reg Mask */
+#define SCM_CRCRES_MASK                0xFFFFFFFFu
+
+
+/*!
+ * @}
+ */ /* end of group SCM_Register_Masks */
+
+/*!
+ * @}
+ */ /* end of group SCM_Peripheral_Access_Layer */
+
+#endif

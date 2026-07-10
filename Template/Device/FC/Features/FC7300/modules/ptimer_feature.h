@@ -1,0 +1,6 @@
+#ifndef _DEVICE_FEATURES_FC7300_PTIMER_COMMON_H_
+#define _DEVICE_FEATURES_FC7300_PTIMER_COMMON_H_
+
+/************ PTIMER Features **************/
+
+#endif /* _DEVICE_FEATURES_FC7300_PTIMER_COMMON_H_ */

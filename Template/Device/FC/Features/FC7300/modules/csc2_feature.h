@@ -1,0 +1,8 @@
+#ifndef _DEVICE_FEATURES_FC7300_CSC2_COMMON_H_
+#define _DEVICE_FEATURES_FC7300_CSC2_COMMON_H_
+
+
+/************ CSC2 Features **************/
+
+
+#endif /* _DEVICE_FEATURES_FC7300_CSC2_COMMON_H_ */
