@@ -1,0 +1,105 @@
+# FC7300 complete NVR HEX generator
+
+`fc7300_nvr_config_tool.py` uses the known-good
+`Tools/reference/FC73000F4MDDT1C_Default.hex` as a 2 KB template. This file is
+an unchanged project copy of `02_MD/FC73000F4MDDT1C_Default.hex`. The tool modifies only the
+requested Table 54 fields and writes a complete NVR Intel HEX. Unmodified bytes
+and reserved bits are preserved from the template.
+
+Reference: `02_MD/FC7300F4MxxxT1C Reference Manual_V0.3.1_NVR.pdf`, Table 54
+for NVR assignments and Table 55 for the separate PFlash OTA indicator.
+
+## Generate the F4MDD OTA NVR image
+
+Run from the project directory:
+
+```powershell
+python Tools\fc7300_nvr_config_tool.py generate `
+  --config Tools\fc7300_nvr_config.example.json `
+  --output-hex Tools\fc7300_nvr_f4mdd_ota.hex `
+  --output-bin Tools\fc7300_nvr_f4mdd_ota.bin `
+  --report Tools\fc7300_nvr_f4mdd_ota.report.json
+```
+
+The example changes only these two 64-bit words:
+
+```text
+NVR + 0x100  OTAC0
+NVR + 0x108  OTAC_HIGH0
+```
+
+The output HEX still contains the complete range `0x04400000-0x044007FF`.
+
+## Start a new product configuration
+
+Bind a new JSON file to a reviewed base HEX:
+
+```powershell
+python Tools\fc7300_nvr_config_tool.py init `
+  --base-hex Tools\reference\FC73000F4MDDT1C_Default.hex `
+  --output Tools\my_nvr_config.json
+```
+
+The generated JSON records the base HEX SHA-256. Generation stops if someone
+later replaces or edits the template without updating the reviewed hash.
+
+## Change named fields
+
+Field values are the raw values stored in the documented bit range. For
+example, to change `BC0.BOOTROM` and `BC0.NMI_DISABLE`:
+
+```json
+{
+  "registers": {
+    "BC0": {
+      "fields": {
+        "BOOTROM": 1,
+        "NMI_DISABLE": 0
+      }
+    }
+  }
+}
+```
+
+List supported words and fields:
+
+```powershell
+python Tools\fc7300_nvr_config_tool.py list-registers
+```
+
+Inspect any complete NVR HEX:
+
+```powershell
+python Tools\fc7300_nvr_config_tool.py inspect `
+  --input-hex Tools\reference\FC73000F4MDDT1C_Default.hex `
+  --report Tools\default_nvr.inspect.json
+```
+
+## Sensitive changes
+
+Security, debug, boot authentication, lifecycle, revoke, key, HSM and arbitrary
+offset patches are blocked unless `--allow-sensitive` is supplied. This flag is
+an acknowledgement, not a correctness guarantee. Review the PDF and the
+generated report before programming:
+
+```powershell
+python Tools\fc7300_nvr_config_tool.py generate `
+  --config Tools\my_nvr_config.json `
+  --output-hex Tools\my_nvr.hex `
+  --report Tools\my_nvr.report.json `
+  --allow-sensitive
+```
+
+The report's `changed_words` list is the programming review boundary. For a
+normal OTA-only configuration it should contain exactly `OTAC0` and
+`OTAC_HIGH0`.
+
+## OTA-specific rules
+
+For F4MDD, each swap bank is 2 MB. `OTAC0[51:32]` is still a raw offset inside
+the selected 1 MB half. With `version_offset=0x000FF008` and
+`version_select=high`, the effective indicator offset is `0x001FF008`.
+
+This tool generates NVR only. The Table 55 valid code/version content in
+PFlash must still be generated with `nvr_ota_config_tool.py` or the application
+image packer.

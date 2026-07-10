@@ -1,0 +1,46 @@
+{
+  "chip": "FC7300F4MDDT1C",
+  "reference": "FC7300F4MxxxT1C Reference Manual V0.3.1, Table 54",
+  "base_hex": "./reference/FC73000F4MDDT1C_Default.hex",
+  "base_hex_file_sha256": "744DF18302AAC98E062888E35B3C7746895833ABBBDD9801D54B87BE8807FB18",
+  "nvr_base": "0x04400000",
+  "nvr_size": "0x800",
+  "output_binary_sha256": "5E6111422FE50288A4615F617BD6CFB840701CE45931DACB80FE9839FFD105D0",
+  "changed_word_count": 2,
+  "changed_words": [
+    {
+      "register": "OTAC0",
+      "offset": "0x100",
+      "address": "0x04400100",
+      "before": "0xFFFFFFFFFFFFFFFF",
+      "after": "0xFFFFF008FFFF80EA",
+      "bytes_before": "FF FF FF FF FF FF FF FF",
+      "bytes_after": "EA 80 FF FF 08 F0 FF FF"
+    },
+    {
+      "register": "OTAC_HIGH0",
+      "offset": "0x108",
+      "address": "0x04400108",
+      "before": "0xFFFFFFFFFFFFFFFF",
+      "after": "0xFFFFFFFFFFFF8055",
+      "bytes_before": "FF FF FF FF FF FF FF FF",
+      "bytes_after": "55 80 FF FF FF FF FF FF"
+    }
+  ],
+  "requested_register_patches": [],
+  "ota0": {
+    "enabled": true,
+    "version_select_raw": "0x55",
+    "version_select_meaning": "high",
+    "raw_version_offset": "0xFF008",
+    "effective_bank_offset": "0x1FF008",
+    "otac0": "0xFFFFF008FFFF80EA",
+    "otac_high0": "0xFFFFFFFFFFFF8055"
+  },
+  "warnings": [
+    "The output is a complete 2 KB NVR image based on the supplied known-good default HEX.",
+    "Unmodified bytes and reserved bits are preserved from the template.",
+    "Review changed_words before programming hardware; NVR security/lifecycle changes may be irreversible.",
+    "The OTA PFlash indicator is not part of this NVR HEX and must be generated/programmed separately."
+  ]
+}

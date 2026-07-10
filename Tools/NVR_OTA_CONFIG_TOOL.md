@@ -1,5 +1,9 @@
 # FC7300 OTA NVR Config Tool
 
+For a directly programmable complete 2 KB NVR image, use
+`fc7300_nvr_config_tool.py` and `NVR_CONFIG_TOOL.md`. This older helper remains
+useful for generating OTA-only 16-byte patches and PFlash indicator records.
+
 This small app generates Intel HEX records for FC7300 hardware OTA settings from a JSON description. It is intentionally separate from the firmware so an Agent or test engineer can regenerate NVR settings without touching C code.
 
 Reference used for the field definitions: `02_MD/FC7300F4MxxxT1C Reference Manual_V0.3.1_NVR.pdf`.

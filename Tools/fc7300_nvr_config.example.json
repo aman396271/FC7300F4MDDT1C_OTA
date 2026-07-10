@@ -1,0 +1,20 @@
+{
+  "$schema": "./fc7300_nvr_config.schema.json",
+  "chip": "FC7300F4MDDT1C",
+  "reference": "FC7300F4MxxxT1C Reference Manual V0.3.1, Table 54/Table 55",
+  "base_hex": "./reference/FC73000F4MDDT1C_Default.hex",
+  "expected_base_hex_sha256": "744DF18302AAC98E062888E35B3C7746895833ABBBDD9801D54B87BE8807FB18",
+  "nvr_base": "0x04400000",
+  "nvr_size": "0x800",
+  "registers": {},
+  "ota0": {
+    "enabled": true,
+    "enable_code": "0x0A",
+    "low_start": "0x01000000",
+    "low_end": "0x010FFFFF",
+    "high_start": "0x01100000",
+    "high_end": "0x011FFFFF",
+    "version_offset": "0x000FF008",
+    "version_select": "high"
+  }
+}

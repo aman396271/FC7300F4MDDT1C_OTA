@@ -16,7 +16,7 @@
 | `Startup/FC7300_flash.ld` | `PFLASH_0`, `.isr_vector`, `.text` | Linker layout | Modified |
 | `Startup/startup_FC7300.S` | `cpsid i`, `cpsie i` | Interrupt mask pattern | SDK/CMSIS reused |
 
-No FC7300 NVR OTAC programming API or complete NVR OTAC structure was found in this project. Program OTAC0/OTAC_HIGH0 with the official RM/tool flow before using hardware swap.
+No FC7300 runtime NVR OTAC programming API was found in this project. The offline tool in `Tools/fc7300_nvr_config_tool.py` generates a complete NVR image from the reviewed default HEX; program it with the official device programming flow before using hardware swap.
 
 ## Demo Layout
 
@@ -101,7 +101,7 @@ The same effective version offset is used in Bank0 and Bank1.
 
 Do not put the hardware OTA indicator in DFlash.
 
-The helper app in `Tools/nvr_ota_config_tool.py` can generate the two OTAC words and an Intel HEX patch from a JSON description.  See `Tools/NVR_OTA_CONFIG_TOOL.md` and `Tools/fc7300_ota_nvr_config.example.json`.
+Use `Tools/fc7300_nvr_config_tool.py` for a complete 2 KB NVR HEX based on the known-good default image; see `Tools/NVR_CONFIG_TOOL.md`. The older `Tools/nvr_ota_config_tool.py` remains available for OTA-only 16-byte patches and PFlash indicator records.
 
 ## Commands
 
