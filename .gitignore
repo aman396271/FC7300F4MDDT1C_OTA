@@ -14,4 +14,5 @@ Release*/
 
 # Temporary files
 tmp/
+out/
 *.log

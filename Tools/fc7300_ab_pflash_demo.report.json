@@ -1,0 +1,42 @@
+{
+  "chip": "FC7300F4MDDT1C",
+  "artifact": "fc7300_ab_pflash_demo.hex",
+  "format": "sparse Intel HEX; erase both 2 MB PFlash banks before programming",
+  "contains_nvr": false,
+  "bank0": {
+    "source": "app_a_low.bin",
+    "physical_base": "0x01000000",
+    "logical_vma": "0x01000000",
+    "version": "0x00010000",
+    "header_version": "0x00010000",
+    "stack_pointer": "0x20010000",
+    "reset_handler": "0x0100033D",
+    "header_address": "0x011FF000",
+    "indicator_address": "0x011FF008",
+    "payload_crc32": "0x4C29911E",
+    "header_crc32": "0x653BD199",
+    "sha256": "86AB151497D3E4CEF43B21D0132AFF227B0824D0B3F0A09C86B4FCFA7E628016"
+  },
+  "bank1": {
+    "source": "app_b_low.bin",
+    "physical_base": "0x01200000",
+    "logical_vma": "0x01000000",
+    "version": "0x00010100",
+    "header_version": "0x00010000",
+    "stack_pointer": "0x20010000",
+    "reset_handler": "0x0100033D",
+    "header_address": "0x013FF000",
+    "indicator_address": "0x013FF008",
+    "payload_crc32": "0xABC9DA0E",
+    "header_crc32": "0x39C5CB0D",
+    "sha256": "4CABF30D06F79D0F077A25F90C37552B21284FB4C792DC8887942A04950477E9"
+  },
+  "hex_data_records": 1054,
+  "hex_sha256": "51EC3D95C7E1D2FFCD1B141814C1419BD87DA1E30824237458E6DA8102EF04EE",
+  "test_sequence": [
+    "Program this A+B PFlash HEX while NVR is still default/OTA-disabled.",
+    "POR and observe APP A / LED1 slow blink.",
+    "Program only the complete OTA NVR HEX without mass-erasing PFlash.",
+    "POR and observe APP B / LED2 fast blink."
+  ]
+}

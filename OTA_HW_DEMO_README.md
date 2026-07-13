@@ -69,10 +69,21 @@ The final header write is the validity boundary. If power is lost before the hea
 
 Both A and B apps use the same VMA: `0x01000000`. Hardware remap makes the selected physical slot appear at the same logical boot address.
 
+For the default-NVR-to-OTA-NVR POR demonstration, generate the observable A/B
+applications and one combined PFlash HEX:
+
+```sh
+python Tools/build_ab_demo.py
+```
+
+This produces `Tools/fc7300_ab_pflash_demo.hex`: APP A is placed in physical
+Bank0 with version `0x00010000`; APP B is placed in physical Bank1 with version
+`0x00010100`. See `Tools/AB_POR_SWAP_TEST.md` for the exact programming order.
+
 Build the project normally in `Debug_FLASH`, then convert ELF to binary and patch:
 
 ```sh
-arm-none-eabi-objcopy -O binary OTA_7300F4MDDT1C_260707.elf app.bin
+arm-none-eabi-objcopy --gap-fill 0xFF -O binary OTA_7300F4MDDT1C_260707.elf app.bin
 python Tools/pack_hw_ota_image.py app.bin --version 0x00010000 --out-prefix out/app_v100
 python Tools/pack_hw_ota_image.py app.bin --version 0x00010100 --out-prefix out/app_v110
 ```
@@ -117,7 +128,10 @@ Use `Tools/fc7300_nvr_config_tool.py` for a complete 2 KB NVR HEX based on the k
 
 `force_low` / `force_high`: write `FMC->OTA_CTRL[OTA_ACTIVE]` only if OTA is enabled, target is valid, and OTA lock is clear.
 
-This project has no UART driver wired in yet. Call `ota_demo_handle_command()` from the customer's UART shell, or call the module APIs directly in a test function.
+The EVB demo now transmits boot identity and FMC OTA status through FCUART1
+(PTA18/PTA19, 115200) and uses PTA26/PTD31 for A/B LED behavior. UART receive
+and command parsing are not wired yet; call `ota_demo_handle_command()` from a
+future transport shell or invoke the module APIs directly in a test function.
 
 ## Expected Logs
 
@@ -172,7 +186,7 @@ Confirm whether runtime reads of `FMC->OTA_START/END_ADDR(_HIGH)` are full logic
 
 Place flash erase/program wrappers in RAM if the final memory map violates FC7300 RWW requirements.
 
-Replace the weak `ota_demo_log()` and command facade with the real UART shell.
+Add UART/CAN/UDS receive and command parsing for streamed App OTA packages.
 
 Add authentication/signature checks before accepting update packages in a real bootloader.
 

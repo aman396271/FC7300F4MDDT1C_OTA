@@ -57,16 +57,7 @@ SECTIONS
     . = ALIGN(4);
   } > PFLASH_0
 
-  .ota_header OTA_HEADER_ADDR :
-  {
-    . = ALIGN(8);
-    __ota_header_start__ = .;
-    KEEP(*(.ota_header))
-    . = ALIGN(8);
-    __ota_header_end__ = .;
-  } > PFLASH_0
-
-      .ARM.extab : 
+    .ARM.extab :
     {
         *(.ARM.extab* .gnu.linkonce.armextab.*)
     } > PFLASH_0
@@ -111,6 +102,18 @@ SECTIONS
 
     } > SRAM_0
 
+    __flash_payload_end__ = __data_init_start__ + SIZEOF(.data);
+
+    /* Keep the OTA metadata as the final loadable PFlash section. */
+    .ota_header OTA_HEADER_ADDR :
+    {
+      . = ALIGN(8);
+      __ota_header_start__ = .;
+      KEEP(*(.ota_header))
+      . = ALIGN(8);
+      __ota_header_end__ = .;
+    } > PFLASH_0
+
     .bss (NOLOAD):
     {
         __bss_start__ = .;
@@ -143,6 +146,7 @@ SECTIONS
   .ARM.attributes 0 : { *(.ARM.attributes) }
 
   ASSERT(__StackLimit >= __HeapLimit, "region RAM overflowed with STACK")
+  ASSERT(__flash_payload_end__ <= OTA_HEADER_ADDR, "PFlash payload overlaps OTA header sector")
   ASSERT(__ota_header_start__ == OTA_HEADER_ADDR, "OTA header address mismatch")
   ASSERT(__ota_header_end__ <= (OTA_HEADER_ADDR + 0x80), "OTA header exceeds reserved size")
     

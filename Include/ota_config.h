@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 #include "device_header.h"
+#include "ota_build_variant.h"
 
 /*
  * FC7300 hardware OTA demo layout.
@@ -46,8 +47,6 @@
 #define OTA_IMAGE_VALID_CODE_LO           (0x88886666UL)
 #define OTA_IMAGE_VALID_CODE_HI           (0xFC60FACEUL)
 #define OTA_STATE_MAGIC                   (0x46435354UL) /* "FCST" */
-
-#define OTA_DEMO_VERSION                  (0x00010000UL)
 
 /*
  * Direct active-slot invalidation is intentionally guarded.  It is useful on

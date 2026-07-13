@@ -69,7 +69,15 @@ def main() -> int:
 
     image = bytearray(args.input_bin.read_bytes())
     if len(image) > HEADER_OFFSET:
-        raise SystemExit(f"image is too large: {len(image)} > {HEADER_OFFSET}")
+        existing_header = image[HEADER_OFFSET:]
+        if len(existing_header) != HEADER_SIZE:
+            raise SystemExit(
+                "image contains loadable data beyond the reserved OTA header: "
+                f"tail size {len(existing_header)} != {HEADER_SIZE}"
+            )
+        if existing_header[:4] != struct.pack("<I", IMAGE_MAGIC):
+            raise SystemExit("image tail is not the expected linked OTA header")
+        del image[HEADER_OFFSET:]
 
     image.extend(b"\xFF" * (HEADER_OFFSET - len(image)))
     payload = bytes(image[:HEADER_OFFSET])
