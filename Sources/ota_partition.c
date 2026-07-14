@@ -26,7 +26,8 @@ uint32_t ota_get_fmc_ota_active_version(void)
 
 bool ota_is_hardware_ota_enabled(void)
 {
-    return ((ota_get_fmc_ota_ctrl() & FMC_OTA_CTRL_OTA_EN_MASK) != 0UL);
+    return ((ota_get_fmc_ota_ctrl() & FMC_OTA_CTRL_OTA_EN_MASK) ==
+            FMC_OTA_CTRL_OTA_EN(OTA_HARDWARE_ENABLE_CODE));
 }
 
 bool ota_is_hardware_ota_locked(void)

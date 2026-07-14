@@ -85,7 +85,7 @@ ota_status_t ota_force_switch_by_fmc_register(ota_slot_t target_slot)
     }
 
     ctrl = ota_get_fmc_ota_ctrl();
-    if ((ctrl & FMC_OTA_CTRL_OTA_EN_MASK) == 0UL)
+    if (!ota_is_hardware_ota_enabled())
     {
         return OTA_ERR_NOT_SUPPORTED;
     }
