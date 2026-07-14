@@ -13,9 +13,9 @@
     "reset_handler": "0x0100033D",
     "header_address": "0x011FF000",
     "indicator_address": "0x011FF008",
-    "payload_crc32": "0x83F70B65",
-    "header_crc32": "0x163C4F56",
-    "sha256": "CF2DE63F668EEF96C048279D8ACA442FC6C4E4C890D75594160E58EFF366B31F"
+    "payload_crc32": "0x8F63C970",
+    "header_crc32": "0x9920F00E",
+    "sha256": "F5C14FFF436C605EBE9A2F806F7FDBE6D0CBE624585CE3D8ED30D3C8EE4B39F2"
   },
   "bank1": {
     "source": "app_b_low.bin",
@@ -27,12 +27,12 @@
     "reset_handler": "0x0100033D",
     "header_address": "0x013FF000",
     "indicator_address": "0x013FF008",
-    "payload_crc32": "0x3C394820",
-    "header_crc32": "0xD46B0A62",
-    "sha256": "E639BAB0C14E64C7BEFE944180B8DA49B908E09BE89FAC79DC86CFA0AE702ED8"
+    "payload_crc32": "0xD197CCE8",
+    "header_crc32": "0xC38BCC74",
+    "sha256": "83F9C673BBF4F87E411A67AF97FEADE7EA0553282CBFBE30EAC71E55BC18C0AA"
   },
-  "hex_data_records": 1053,
-  "hex_sha256": "80C9CE7B573F73C77353FF3FE4304B5DFA62268B3AF814C08A1B52D02D4E0B16",
+  "hex_data_records": 1059,
+  "hex_sha256": "052871ACE3FE2CE2EF4A757D615C69DD06B33263B5F2E502345C019D36DCE540",
   "test_sequence": [
     "Program this A+B PFlash HEX while NVR is still default/OTA-disabled.",
     "POR and observe APP A / LED1 slow blink.",

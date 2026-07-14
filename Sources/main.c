@@ -126,6 +126,19 @@ static void board_toggle_variant_led(void)
 #endif
 }
 
+static void board_format_hex32(uint32_t value, char output[9])
+{
+    static const char digits[] = "0123456789ABCDEF";
+    uint32_t index;
+
+    for (index = 0UL; index < 8UL; ++index)
+    {
+        output[7UL - index] = digits[value & 0xFUL];
+        value >>= 4U;
+    }
+    output[8] = '\0';
+}
+
 void ota_demo_log(const char *message)
 {
     (void)FCUART_Printf(&s_uart_handle, "%s\r\n", message);
@@ -134,6 +147,10 @@ void ota_demo_log(const char *message)
 int main(void)
 {
     ota_demo_info_t info;
+    char version_hex[9];
+    char fmc_ctrl_hex[9];
+    char ver_loc_hex[9];
+    char act_ver_hex[9];
 
     board_clock_init();
     board_port_init();
@@ -141,20 +158,25 @@ int main(void)
     ota_demo_init_on_boot();
 
     (void)ota_demo_get_info(&info);
+    /* FCUART_Printf has no width or unsigned formats, so pad hex values here. */
+    board_format_hex32(OTA_DEMO_VERSION, version_hex);
+    board_format_hex32(info.fmc_ota_ctrl, fmc_ctrl_hex);
+    board_format_hex32(info.fmc_ota_ver_loc, ver_loc_hex);
+    board_format_hex32(info.fmc_ota_act_ver, act_ver_hex);
     (void)FCUART_Printf(
         &s_uart_handle,
-        "\r\nFC7300 OTA %s version=0x%08X active=%s OTA_EN=%u OTA_ACTIVE=%u\r\n",
+        "\r\nFC7300 OTA %s version=0x%s active=%s OTA_EN=%d OTA_ACTIVE=%d\r\n",
         OTA_APP_LABEL,
-        (unsigned int)OTA_DEMO_VERSION,
+        version_hex,
         (info.active_slot == OTA_SLOT_HIGH) ? "BANK1/B" : "BANK0/A",
-        (unsigned int)info.ota_enabled,
-        (unsigned int)((info.fmc_ota_ctrl >> 5U) & 1UL));
+        (int)info.ota_enabled,
+        (int)((info.fmc_ota_ctrl >> 5U) & 1UL));
     (void)FCUART_Printf(
         &s_uart_handle,
-        "FMC_CTRL=0x%08X VER_LOC=0x%08X ACT_VER=0x%08X\r\n",
-        (unsigned int)info.fmc_ota_ctrl,
-        (unsigned int)info.fmc_ota_ver_loc,
-        (unsigned int)info.fmc_ota_act_ver);
+        "FMC_CTRL=0x%s VER_LOC=0x%s ACT_VER=0x%s\r\n",
+        fmc_ctrl_hex,
+        ver_loc_hex,
+        act_ver_hex);
 
 #ifndef OTA_DEMO_AUTO_CONFIRM
 #define OTA_DEMO_AUTO_CONFIRM 1
