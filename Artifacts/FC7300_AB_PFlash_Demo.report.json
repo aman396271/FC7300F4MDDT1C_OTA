@@ -1,6 +1,6 @@
 {
   "chip": "FC7300F4MDDT1C",
-  "artifact": "fc7300_ab_pflash_demo.hex",
+  "artifact": "FC7300_AB_PFlash_Demo.hex",
   "format": "sparse Intel HEX; erase both 2 MB PFlash banks before programming",
   "contains_nvr": false,
   "bank0": {

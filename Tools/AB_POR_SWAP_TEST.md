@@ -23,19 +23,19 @@ Change `Include/ota_board_config.h` if the target board uses other pins.
 ## Generated artifacts
 
 ```text
-Tools/fc7300_ab_pflash_demo.hex
+Artifacts/FC7300_AB_PFlash_Demo.hex
     Sparse PFlash-only Intel HEX.
     Bank0 contains APP A, version 0x00000001.
     Bank1 contains APP B, version 0x00000002.
     It does not contain NVR records.
 
-Tools/reference/FC73000F4MDDT1C_Default.hex
+Artifacts/FC7300_NVR_Default.hex
     Complete default NVR. OTA disabled.
 
-Tools/fc7300_nvr_f4mdd_ota.hex
+Artifacts/FC7300_NVR_OTA_Enabled.hex
     Complete OTA-enabled NVR.
 
-Tools/fc7300_ab_pflash_demo.report.json
+Artifacts/FC7300_AB_PFlash_Demo.report.json
     Addresses, vectors, versions, payload/header CRCs and SHA-256.
 ```
 
@@ -57,7 +57,7 @@ one PFlash HEX, then restores the checked-in A build selection.
 1. Back up the device NVR.
 2. Restore/program the complete default NVR if the board is not already using it.
 3. Erase physical PFlash `0x01000000-0x013FFFFF`.
-4. Program `Tools/fc7300_ab_pflash_demo.hex`.
+4. Program `Artifacts/FC7300_AB_PFlash_Demo.hex`.
 5. Perform POR.
 
 Expected UART and LED:
@@ -67,7 +67,7 @@ FC7300 OTA APP A version=0x00000001 active=BANK0/A OTA_EN=0 OTA_ACTIVE=0
 PTA26 toggles slowly.
 ```
 
-6. Program only `Tools/fc7300_nvr_f4mdd_ota.hex` as NVR. Do not mass erase and do not erase PFlash.
+6. Program only `Artifacts/FC7300_NVR_OTA_Enabled.hex` as NVR. Do not mass erase and do not erase PFlash.
 7. Perform POR again so the NVR is reloaded and hardware compares both indicators.
 
 Expected UART and LED:

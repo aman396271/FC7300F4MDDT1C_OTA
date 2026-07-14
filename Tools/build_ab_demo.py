@@ -13,6 +13,7 @@ from pathlib import Path
 PROJECT = Path(__file__).resolve().parents[1]
 BUILD_DIR = PROJECT / "Debug_FLASH"
 TOOLS_DIR = PROJECT / "Tools"
+ARTIFACTS_DIR = PROJECT / "Artifacts"
 SELECTION = PROJECT / "Include" / "ota_build_selection.h"
 ELF_NAME = "OTA_7300F4MDDT1C_260707.elf"
 
@@ -74,6 +75,7 @@ def build_variant(
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build FC7300 observable A/B POR swap demo")
     parser.add_argument("--output-dir", type=Path, default=PROJECT / "out" / "ab_demo")
+    parser.add_argument("--artifacts-dir", type=Path, default=ARTIFACTS_DIR)
     parser.add_argument("--a-version", default="0x00000001")
     parser.add_argument("--b-version", default="0x00000002")
     args = parser.parse_args()
@@ -85,6 +87,14 @@ def main() -> int:
         )
     output_dir = args.output_dir.resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
+    artifacts_dir = args.artifacts_dir.resolve()
+    artifacts_dir.mkdir(parents=True, exist_ok=True)
+    pflash_hex = artifacts_dir / "FC7300_AB_PFlash_Demo.hex"
+    pflash_report = artifacts_dir / "FC7300_AB_PFlash_Demo.report.json"
+    default_nvr_hex = artifacts_dir / "FC7300_NVR_Default.hex"
+    ota_nvr_hex = artifacts_dir / "FC7300_NVR_OTA_Enabled.hex"
+    ota_nvr_report = artifacts_dir / "FC7300_NVR_OTA_Enabled.report.json"
+    ota_nvr_bin = output_dir / "FC7300_NVR_OTA_Enabled.bin"
     make_tool = find_tool("mingw32-make", "make")
     objcopy = find_tool("arm-none-eabi-objcopy")
     original_selection = SELECTION.read_bytes()
@@ -101,9 +111,9 @@ def main() -> int:
                 "--b-bin",
                 str(b_bin),
                 "--output-hex",
-                str(TOOLS_DIR / "fc7300_ab_pflash_demo.hex"),
+                str(pflash_hex),
                 "--report",
-                str(TOOLS_DIR / "fc7300_ab_pflash_demo.report.json"),
+                str(pflash_report),
             ],
             PROJECT,
         )
@@ -115,13 +125,17 @@ def main() -> int:
                 "--config",
                 str(TOOLS_DIR / "fc7300_nvr_config.example.json"),
                 "--output-hex",
-                str(TOOLS_DIR / "fc7300_nvr_f4mdd_ota.hex"),
+                str(ota_nvr_hex),
                 "--output-bin",
-                str(TOOLS_DIR / "fc7300_nvr_f4mdd_ota.bin"),
+                str(ota_nvr_bin),
                 "--report",
-                str(TOOLS_DIR / "fc7300_nvr_f4mdd_ota.report.json"),
+                str(ota_nvr_report),
             ],
             PROJECT,
+        )
+        shutil.copy2(
+            TOOLS_DIR / "reference" / "FC73000F4MDDT1C_Default.hex",
+            default_nvr_hex,
         )
     except BaseException as exc:  # Restore the checked-in A selection even on a failed build.
         build_error = exc
@@ -136,10 +150,11 @@ def main() -> int:
         raise build_error
 
     print("\nGenerated test artifacts:")
-    print(TOOLS_DIR / "fc7300_ab_pflash_demo.hex")
-    print(TOOLS_DIR / "fc7300_ab_pflash_demo.report.json")
-    print(TOOLS_DIR / "reference" / "FC73000F4MDDT1C_Default.hex")
-    print(TOOLS_DIR / "fc7300_nvr_f4mdd_ota.hex")
+    print(pflash_hex)
+    print(default_nvr_hex)
+    print(ota_nvr_hex)
+    print(pflash_report)
+    print(ota_nvr_report)
     return 0
 
 

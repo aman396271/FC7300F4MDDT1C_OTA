@@ -76,7 +76,7 @@ applications and one combined PFlash HEX:
 python Tools/build_ab_demo.py
 ```
 
-This produces `Tools/fc7300_ab_pflash_demo.hex`: APP A is placed in physical
+This produces `Artifacts/FC7300_AB_PFlash_Demo.hex`: APP A is placed in physical
 Bank0 with version `0x00000001`; APP B is placed in physical Bank1 with version
 `0x00000002`. See `Tools/AB_POR_SWAP_TEST.md` for the exact programming order.
 
@@ -88,9 +88,9 @@ python Tools/pack_hw_ota_image.py app.bin --version 0x00000001 --out-prefix out/
 python Tools/pack_hw_ota_image.py app.bin --version 0x00000002 --out-prefix out/app_v2
 ```
 
-Program `out/app_v100_low.bin` at `0x01000000` for Bank0 V1.0.0.
+Program `out/app_v1_low.bin` at `0x01000000` for Bank0 version 1.
 
-Program `out/app_v110_high.bin` at `0x01200000` for Bank1 V1.1.0, or send `out/app_v110.pkg` to `ota_demo_install_package()`.
+Program `out/app_v2_high.bin` at `0x01200000` for Bank1 version 2, or send `out/app_v2.pkg` to `ota_demo_install_package()`.
 
 ## Required NVR OTA Configuration
 

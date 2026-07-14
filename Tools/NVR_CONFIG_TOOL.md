@@ -16,9 +16,9 @@ Run from the project directory:
 ```powershell
 python Tools\fc7300_nvr_config_tool.py generate `
   --config Tools\fc7300_nvr_config.example.json `
-  --output-hex Tools\fc7300_nvr_f4mdd_ota.hex `
-  --output-bin Tools\fc7300_nvr_f4mdd_ota.bin `
-  --report Tools\fc7300_nvr_f4mdd_ota.report.json
+  --output-hex Artifacts\FC7300_NVR_OTA_Enabled.hex `
+  --output-bin out\FC7300_NVR_OTA_Enabled.bin `
+  --report Artifacts\FC7300_NVR_OTA_Enabled.report.json
 ```
 
 The example changes only these two 64-bit words:
@@ -72,7 +72,7 @@ Inspect any complete NVR HEX:
 ```powershell
 python Tools\fc7300_nvr_config_tool.py inspect `
   --input-hex Tools\reference\FC73000F4MDDT1C_Default.hex `
-  --report Tools\default_nvr.inspect.json
+  --report Artifacts\FC7300_NVR_Default.inspect.json
 ```
 
 ## Sensitive changes
