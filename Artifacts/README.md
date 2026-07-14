@@ -5,7 +5,7 @@ Intermediate ELF, BIN and package files are generated under `out/ab_demo`.
 
 | File | Address range | Purpose |
 |---|---|---|
-| `FC7300_AB_PFlash_Demo.hex` | `0x01000000-0x013FFFFF` | Combined APP A version 1 and APP B version 2 PFlash image |
+| `FC7300_AB_PFlash_Demo.hex` | `0x01000000-0x013FFFFF` | Combined APP A hardware version `0x00010000` and APP B hardware version `0x00020000` |
 | `FC7300_NVR_Default.hex` | `0x04400000-0x044007FF` | Complete 2 KB default NVR with hardware OTA disabled |
 | `FC7300_NVR_OTA_Enabled.hex` | `0x04400000-0x044007FF` | Complete 2 KB NVR with hardware OTA enabled |
 

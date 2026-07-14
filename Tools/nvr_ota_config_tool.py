@@ -40,7 +40,7 @@ DEFAULT_CONFIG: Dict[str, Any] = {
         "enabled": True,
         "layout": "version_then_valid_code",
         "low_version": "0x00010000",
-        "high_version": "0x00010100",
+        "high_version": "0x00020000",
         "valid_code_f4mdd": "0xFC60FACE88886666",
         "valid_code_f4mds": "0xFC62FACE88886666",
     },

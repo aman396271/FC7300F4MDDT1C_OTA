@@ -151,6 +151,8 @@ int main(void)
     char fmc_ctrl_hex[9];
     char ver_loc_hex[9];
     char act_ver_hex[9];
+    char slot_a_version_hex[9];
+    char slot_b_version_hex[9];
 
     board_clock_init();
     board_port_init();
@@ -163,6 +165,8 @@ int main(void)
     board_format_hex32(info.fmc_ota_ctrl, fmc_ctrl_hex);
     board_format_hex32(info.fmc_ota_ver_loc, ver_loc_hex);
     board_format_hex32(info.fmc_ota_act_ver, act_ver_hex);
+    board_format_hex32(info.low_version, slot_a_version_hex);
+    board_format_hex32(info.high_version, slot_b_version_hex);
     (void)FCUART_Printf(
         &s_uart_handle,
         "\r\nFC7300 OTA %s version=0x%s active=%s OTA_EN=%d OTA_ACTIVE=%d\r\n",
@@ -177,6 +181,13 @@ int main(void)
         fmc_ctrl_hex,
         ver_loc_hex,
         act_ver_hex);
+    (void)FCUART_Printf(
+        &s_uart_handle,
+        "SLOT_A version=0x%s valid=%d SLOT_B version=0x%s valid=%d\r\n",
+        slot_a_version_hex,
+        (int)info.low_valid,
+        slot_b_version_hex,
+        (int)info.high_valid);
 
 #ifndef OTA_DEMO_AUTO_CONFIRM
 #define OTA_DEMO_AUTO_CONFIRM 1

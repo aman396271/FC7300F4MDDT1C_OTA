@@ -41,7 +41,7 @@ Input:
     "enabled": true,
     "layout": "version_then_valid_code",
     "low_version": "0x00010000",
-    "high_version": "0x00010100"
+    "high_version": "0x00020000"
   }
 }
 ```
@@ -78,10 +78,10 @@ F4MDDxxxT1C valid code = 0xFC60FACE88886666
 F4MDSxxxT1C valid code = 0xFC62FACE88886666
 ```
 
-With the default little-endian `version_then_valid_code` layout, version `0x00010100` is emitted as:
+With the default little-endian `version_then_valid_code` layout, version `0x00020000` is emitted as:
 
 ```text
-00 01 01 00 FF FE FE FF 66 66 88 88 CE FA 60 FC
+00 00 02 00 FF FF FD FF 66 66 88 88 CE FA 60 FC
 ```
 
 ## Usage

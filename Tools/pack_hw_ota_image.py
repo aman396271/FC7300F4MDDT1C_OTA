@@ -62,7 +62,7 @@ def make_header(version: int, payload: bytes, timestamp: int) -> bytes:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("input_bin", type=Path)
-    parser.add_argument("--version", required=True, help="32-bit version, e.g. 0x00010100")
+    parser.add_argument("--version", required=True, help="32-bit version, e.g. 0x00020000")
     parser.add_argument("--timestamp", default="0", help="optional 32-bit build timestamp")
     parser.add_argument("--out-prefix", type=Path)
     args = parser.parse_args()

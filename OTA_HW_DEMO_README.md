@@ -77,15 +77,17 @@ python Tools/build_ab_demo.py
 ```
 
 This produces `Artifacts/FC7300_AB_PFlash_Demo.hex`: APP A is placed in physical
-Bank0 with version `0x00000001`; APP B is placed in physical Bank1 with version
-`0x00000002`. See `Tools/AB_POR_SWAP_TEST.md` for the exact programming order.
+Bank0 with hardware version `0x00010000`; APP B is placed in physical Bank1 with
+hardware version `0x00020000`. The major demo version is kept in bits 31:16 so
+the 16-bit `FMC_OTA_ACT_VER` exposes `1` or `2`. See
+`Tools/AB_POR_SWAP_TEST.md` for the exact programming order.
 
 Build the project normally in `Debug_FLASH`, then convert ELF to binary and patch:
 
 ```sh
 arm-none-eabi-objcopy --gap-fill 0xFF -O binary OTA_7300F4MDDT1C_260707.elf app.bin
-python Tools/pack_hw_ota_image.py app.bin --version 0x00000001 --out-prefix out/app_v1
-python Tools/pack_hw_ota_image.py app.bin --version 0x00000002 --out-prefix out/app_v2
+python Tools/pack_hw_ota_image.py app.bin --version 0x00010000 --out-prefix out/app_v1
+python Tools/pack_hw_ota_image.py app.bin --version 0x00020000 --out-prefix out/app_v2
 ```
 
 Program `out/app_v1_low.bin` at `0x01000000` for Bank0 version 1.
@@ -138,30 +140,30 @@ future transport shell or invoke the module APIs directly in a test function.
 Normal upgrade:
 
 ```text
-boot: active=LOW version=0x00000001
+boot: active=LOW version=0x00010000
 update: erase HIGH
 update: write payload
 update: verify CRC OK
 update: write HIGH header/version last
 reset
-boot: active=HIGH version=0x00000002 pending attempt 1
+boot: active=HIGH version=0x00020000 pending attempt 1
 app: self-test OK, confirm
 ```
 
 Power loss during upgrade:
 
 ```text
-boot: active=LOW version=0x00000001
+boot: active=LOW version=0x00010000
 update: write half payload to HIGH
 reset
-boot: active=LOW version=0x00000001
+boot: active=LOW version=0x00010000
 HIGH: invalid header/version
 ```
 
 Failed new boot rollback:
 
 ```text
-boot: active=HIGH version=0x00000002 pending attempt 1
+boot: active=HIGH version=0x00020000 pending attempt 1
 reset without confirm
 boot: pending attempt exceeded, bump LOW version to HIGH+1
 reset

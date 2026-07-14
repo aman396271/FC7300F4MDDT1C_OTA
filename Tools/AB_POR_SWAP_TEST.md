@@ -25,8 +25,8 @@ Change `Include/ota_board_config.h` if the target board uses other pins.
 ```text
 Artifacts/FC7300_AB_PFlash_Demo.hex
     Sparse PFlash-only Intel HEX.
-    Bank0 contains APP A, version 0x00000001.
-    Bank1 contains APP B, version 0x00000002.
+    Bank0 contains APP A, hardware version 0x00010000.
+    Bank1 contains APP B, hardware version 0x00020000.
     It does not contain NVR records.
 
 Artifacts/FC7300_NVR_Default.hex
@@ -63,7 +63,8 @@ one PFlash HEX, then restores the checked-in A build selection.
 Expected UART and LED:
 
 ```text
-FC7300 OTA APP A version=0x00000001 active=BANK0/A OTA_EN=0 OTA_ACTIVE=0
+FC7300 OTA APP A version=0x00010000 active=BANK0/A OTA_EN=0 OTA_ACTIVE=0
+SLOT_A version=0x00010000 valid=1 SLOT_B version=0x00020000 valid=1
 PTA26 toggles slowly.
 ```
 
@@ -73,7 +74,8 @@ PTA26 toggles slowly.
 Expected UART and LED:
 
 ```text
-FC7300 OTA APP B version=0x00000002 active=BANK1/B OTA_EN=1 OTA_ACTIVE=1
+FC7300 OTA APP B version=0x00020000 active=BANK1/B OTA_EN=1 OTA_ACTIVE=1
+SLOT_A version=0x00010000 valid=1 SLOT_B version=0x00020000 valid=1
 PTD31 toggles quickly.
 ```
 
@@ -85,6 +87,7 @@ been remapped to the common low logical VMA.
 ```text
 FMC_OTA_CTRL    0x4001E500: OTA_EN[4:0] = 0x0A, OTA_ACTIVE[5] = 1
 FMC_OTA_VER_LOC 0x4001E50C: low 20 bits = 0xFF008
+FMC_OTA_ACT_VER 0x4001E518: low 16 bits = 0x0002
 APP B indicator 0x013FF008 before swap / 0x011FF008 through active mapping
 ```
 
