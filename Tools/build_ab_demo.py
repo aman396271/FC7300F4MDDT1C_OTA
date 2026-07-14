@@ -74,8 +74,8 @@ def build_variant(
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build FC7300 observable A/B POR swap demo")
     parser.add_argument("--output-dir", type=Path, default=PROJECT / "out" / "ab_demo")
-    parser.add_argument("--a-version", default="0x00010000")
-    parser.add_argument("--b-version", default="0x00010100")
+    parser.add_argument("--a-version", default="0x00000001")
+    parser.add_argument("--b-version", default="0x00000002")
     args = parser.parse_args()
 
     if not (BUILD_DIR / "makefile").is_file():

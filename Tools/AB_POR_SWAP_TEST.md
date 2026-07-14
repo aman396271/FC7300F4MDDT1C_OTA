@@ -25,8 +25,8 @@ Change `Include/ota_board_config.h` if the target board uses other pins.
 ```text
 Tools/fc7300_ab_pflash_demo.hex
     Sparse PFlash-only Intel HEX.
-    Bank0 contains APP A, version 0x00010000.
-    Bank1 contains APP B, version 0x00010100.
+    Bank0 contains APP A, version 0x00000001.
+    Bank1 contains APP B, version 0x00000002.
     It does not contain NVR records.
 
 Tools/reference/FC73000F4MDDT1C_Default.hex
@@ -63,7 +63,7 @@ one PFlash HEX, then restores the checked-in A build selection.
 Expected UART and LED:
 
 ```text
-FC7300 OTA APP A version=0x00010000 active=BANK0/A OTA_EN=0 OTA_ACTIVE=0
+FC7300 OTA APP A version=0x00000001 active=BANK0/A OTA_EN=0 OTA_ACTIVE=0
 PTA26 toggles slowly.
 ```
 
@@ -73,7 +73,7 @@ PTA26 toggles slowly.
 Expected UART and LED:
 
 ```text
-FC7300 OTA APP B version=0x00010100 active=BANK1/B OTA_EN=1 OTA_ACTIVE=1
+FC7300 OTA APP B version=0x00000002 active=BANK1/B OTA_EN=1 OTA_ACTIVE=1
 PTD31 toggles quickly.
 ```
 
