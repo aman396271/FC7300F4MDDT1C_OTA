@@ -4,6 +4,7 @@
 #include "ota_partition.h"
 #include "ota_protocol.h"
 #include "ota_service.h"
+#include "ota_time.h"
 #include "ota_uart.h"
 #include "ota_update.h"
 
@@ -369,6 +370,14 @@ void ota_service_poll(uint32_t now_ms)
         {
             s_service.last_activity_ms = now_ms;
             ota_service_handle_frame(&s_service.request);
+            /*
+             * START_UPDATE and FINISH may spend a long time in synchronous
+             * Flash operations. Refresh both values after the handler so a
+             * successful long erase is not immediately mistaken for a
+             * five-second idle session timeout.
+             */
+            now_ms = ota_time_now_ms();
+            s_service.last_activity_ms = now_ms;
         }
         else if (result == OTA_DECODE_DROPPED)
         {

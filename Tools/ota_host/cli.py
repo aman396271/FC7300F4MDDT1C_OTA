@@ -7,7 +7,7 @@ import sys
 
 from .client import OtaClient
 from .transport.serial import SerialTransport
-from .upgrade_controller import UpgradeController, UpgradeProgress
+from .upgrade_controller import UpgradeController, UpgradePhase, UpgradeProgress
 
 
 def print_info(info) -> None:
@@ -54,16 +54,23 @@ def main() -> int:
         print_info(info)
         print(f"package_version=0x{package.header.version:08X}")
 
-        last_percent = -1
+        last_display: tuple[UpgradePhase, int] | None = None
 
         def on_progress(value: UpgradeProgress) -> None:
-            nonlocal last_percent
-            current = int(value.percent)
-            if current != last_percent:
-                last_percent = current
+            nonlocal last_display
+            marker = (value.phase, int(value.elapsed_seconds) if value.indeterminate else int(value.percent))
+            if marker != last_display:
+                last_display = marker
+                if value.indeterminate:
+                    print(
+                        f"\r{value.message:<62}",
+                        end="",
+                        flush=True,
+                    )
+                    return
                 print(
-                    f"\r{value.percent:6.2f}% {value.bytes_per_second / 1024:8.1f} KiB/s "
-                    f"{value.elapsed_seconds:7.1f}s",
+                    f"\r{value.phase.value:<12} {value.percent:6.2f}% "
+                    f"{value.bytes_per_second / 1024:8.1f} KiB/s {value.elapsed_seconds:7.1f}s",
                     end="",
                     flush=True,
                 )

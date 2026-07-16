@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import time
 from dataclasses import dataclass
+from typing import Callable
 
 from .package import PackageHeader
 from .protocol import (
@@ -93,16 +94,23 @@ class OtaClient:
         offset: int = 0,
         payload: bytes = b"",
         timeout: float | None = None,
+        wait_callback: Callable[[float], None] | None = None,
     ) -> Frame:
         request = Frame(command=command, sequence=self.sequence, offset=offset, payload=payload)
         encoded = encode_frame(request)
         wait_time = self.timeout if timeout is None else timeout
+        request_started = time.monotonic()
+        next_wait_update = request_started
         for attempt in range(self.retries + 1):
             self.transport.write(encoded)
             deadline = time.monotonic() + wait_time
             while time.monotonic() < deadline:
                 chunk = self.transport.read(256, min(0.05, max(0.0, deadline - time.monotonic())))
                 if not chunk:
+                    now = time.monotonic()
+                    if wait_callback is not None and now >= next_wait_update:
+                        wait_callback(now - request_started)
+                        next_wait_update = now + 0.2
                     continue
                 for response in self.decoder.feed(chunk):
                     if (
@@ -134,8 +142,18 @@ class OtaClient:
         values = INFO_STRUCT.unpack(response.payload)
         return DeviceInfo(values[0], values[1], bool(values[2]), bool(values[3]), *values[4:])
 
-    def start_update(self, header: PackageHeader, timeout: float = 60.0) -> tuple[int, int, int]:
-        response = self._request(Command.START_UPDATE, payload=header.raw, timeout=timeout)
+    def start_update(
+        self,
+        header: PackageHeader,
+        timeout: float = 180.0,
+        wait_callback: Callable[[float], None] | None = None,
+    ) -> tuple[int, int, int]:
+        response = self._request(
+            Command.START_UPDATE,
+            payload=header.raw,
+            timeout=timeout,
+            wait_callback=wait_callback,
+        )
         if len(response.payload) != START_RESPONSE_STRUCT.size:
             raise OtaClientError("invalid START_UPDATE response")
         return START_RESPONSE_STRUCT.unpack(response.payload)
@@ -149,8 +167,18 @@ class OtaClient:
             raise OtaClientError(f"device ACK offset {response.offset} does not match {expected}")
         return response.offset
 
-    def finish(self, offset: int, timeout: float = 30.0) -> Frame:
-        response = self._request(Command.FINISH, offset=offset, timeout=timeout)
+    def finish(
+        self,
+        offset: int,
+        timeout: float = 30.0,
+        wait_callback: Callable[[float], None] | None = None,
+    ) -> Frame:
+        response = self._request(
+            Command.FINISH,
+            offset=offset,
+            timeout=timeout,
+            wait_callback=wait_callback,
+        )
         if response.status != Status.WAIT_POR:
             raise OtaClientError("FINISH did not return WAIT_POR")
         return response

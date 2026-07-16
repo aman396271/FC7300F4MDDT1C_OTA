@@ -60,3 +60,9 @@ python Tools\test_fc7300_nvr_config_tool.py
 The in-memory simulator covers framing, retry/idempotency, sequence and offset
 errors, package validation, complete upgrade, cancellation, version rejection,
 disabled OTA and FINISH CRC failure without requiring hardware.
+
+The GUI shows a green connected badge and changes `Connect` to `Disconnect`
+after HELLO/GET_INFO succeed. START_UPDATE performs a synchronous full inactive
+Bank erase on the MCU, so the GUI uses an animated indeterminate progress bar
+and an elapsed timer during that phase. Percentage and transfer speed begin
+when DATA transmission starts.

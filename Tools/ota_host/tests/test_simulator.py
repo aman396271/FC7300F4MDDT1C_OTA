@@ -5,7 +5,7 @@ import pytest
 from ..client import OtaClient, OtaNackError, OtaTimeoutError
 from ..protocol import Command, Frame, FrameStreamDecoder, Status, encode_frame
 from ..simulator import SimulatedDevice, SimulatorConfig, SimulatorTransport
-from ..upgrade_controller import UpgradeCancelled, UpgradeController
+from ..upgrade_controller import UpgradeCancelled, UpgradeController, UpgradePhase
 from .helpers import make_package
 
 
@@ -80,6 +80,19 @@ def test_complete_simulated_upgrade() -> None:
     assert result.target_physical_base == 0x01200000
     assert transport.device.config.high_version == 2
     assert progress[-1].transferred == len(package.payload)
+    assert progress[-1].phase == UpgradePhase.COMPLETE
+    assert UpgradePhase.ERASING in {item.phase for item in progress}
+    assert UpgradePhase.TRANSFERRING in {item.phase for item in progress}
+    assert UpgradePhase.VERIFYING in {item.phase for item in progress}
+
+
+def test_start_wait_callback_reports_retry_wait() -> None:
+    controller, transport = connected_controller(retries=1)
+    package = make_package(version=2, size=900)
+    waits = []
+    transport.drop_responses = 1
+    controller.client.start_update(package.header, timeout=0.01, wait_callback=waits.append)
+    assert waits
 
 
 def test_transfer_interruption_keeps_old_version() -> None:

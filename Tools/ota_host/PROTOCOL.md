@@ -85,7 +85,10 @@ causes a second Flash write. DATA offset must equal the next unreceived image
 offset; otherwise `BAD_OFFSET` returns the required offset.
 
 The host uses stop-and-wait DATA, a one-second normal response timeout, three
-retries, a longer START erase timeout and a longer FINISH verification timeout.
+retries, a 180-second START erase timeout for the synchronous 2 MB Bank erase,
+and a longer FINISH verification timeout. GUI/CLI display START as an
+indeterminate erase phase until the MCU returns its response; payload percentage
+begins only after the first DATA ACK.
 An active update session is aborted after five seconds without a valid frame.
 
 ## Commit and power-fail boundary

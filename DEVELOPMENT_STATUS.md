@@ -31,7 +31,7 @@
 | 代码已有，未完整验证 | pending/confirm/rollback | 使用 DFlash 保存状态，仍需故障注入测试 |
 | 已完成并通过构建/模拟测试 | UART 通讯升级 | FCUART1 RX ISR、2 KB ring、COBS/CRC32、sequence/offset、ACK/NACK、timeout |
 | 已完成并通过自动化测试 | PC 升级工具 | package parser、SerialTransport、OtaClient、UpgradeController、CLI、PySide6 GUI、模拟设备 |
-| 待板级验收 | A/B 串口实流升级 | 软件闭环、A/B 构建和 30 项测试已通过，仍需按 `Tools/UART_OTA_HW_TEST.md` 执行 POR/掉电用例 |
+| 待板级验收 | A/B 串口实流升级 | 软件闭环、A/B 构建和 31 项测试已通过；START 擦除显示、180 秒等待和长擦除会话时间戳已修正，仍需按 `Tools/UART_OTA_HW_TEST.md` 执行 POR/掉电用例 |
 
 ## 3. 已确认的硬件与 Demo 板规则
 
