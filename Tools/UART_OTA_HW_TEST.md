@@ -13,6 +13,8 @@
 
 ## 2. 环境准备
 
+目标板使用 BGA320 Demo Board V1.1 原理图中的板载 USB Type-C/CH340C 通路：MCU `FCUART1_TX=PTA18/PD2`，`FCUART1_RX=PTA19/PD3`，115200 8-N-1。TX/RX 名称均以 MCU 为参照；使用板载 USB 口时无需再把两根信号线手工交叉连接。三颗独立 LED 均为 N-MOSFET 低边驱动，GPIO 高电平点亮。
+
 在开发工程根目录安装依赖并执行回归测试：
 
 ```powershell

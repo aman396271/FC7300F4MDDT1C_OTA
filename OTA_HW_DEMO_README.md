@@ -47,6 +47,32 @@ The source constants describe the physical Bank0/Bank1 images.  Runtime access i
 
 The DFlash state records `pending/confirmed/boot_attempts`; it never replaces the PFlash OTA indicator used by hardware OTA selection.
 
+## BGA320 Demo Board Wiring
+
+The board mapping is taken from
+`../02_MD/FC7300F4MDDT1C_BGA320_Demo_Board_SCH_V1.1.pdf` in the development
+workspace. The PDF filename and
+change history identify V1.1, while the page title blocks still say
+`FC600_BGA320_Demo_Board`, revision `0.1`. This project names the target board
+by its fitted FC7300F4MDDT1C device and keeps that schematic naming mismatch
+visible instead of silently treating the title block as another board.
+
+The onboard USB Type-C port connects to UART1 through a CH340C. Signal
+directions are always stated from the MCU point of view:
+
+| Function | MCU pin | Schematic net | Connection |
+|---|---|---|---|
+| FCUART1 TX | PTA18 / PD2 | `PTA18_PD2_UART1_to_USB_TX` | Drives the CH340C RX path |
+| FCUART1 RX | PTA19 / PD3 | `PTA19_PD3_UART1_to_USB_RX` | Receives from the CH340C TX path |
+| LED1 | PTA26 / PL5 | `PTA26_PL5_LED1` | Active-high N-MOSFET gate drive |
+| LED2 | PTD31 / PE13 | `PTD31_PE13_LED2` | Active-high N-MOSFET gate drive |
+| LED3 | PTA14 / PE10 | `PTA14_PE10_LED3` | Active-high N-MOSFET gate drive |
+
+Each discrete LED is supplied from `VDD_HV_A_misc` through its resistor and
+switched to ground by an N-MOSFET. The MCU drives the MOSFET gate through a
+1 kOhm resistor with a 31.6 kOhm pull-down, so GPIO high means LED on; these
+are not direct GPIO-to-LED loads.
+
 ## Image Format
 
 Transport package:
@@ -152,8 +178,9 @@ Use `Tools/fc7300_nvr_config_tool.py` for a complete 2 KB NVR HEX based on the k
 
 `force_low` / `force_high`: write `FMC->OTA_CTRL[OTA_ACTIVE]` only if OTA is enabled, target is valid, and OTA lock is clear.
 
-The EVB demo now transmits boot identity, FMC OTA status, and a periodic PC
-heartbeat through FCUART1 (PTA18/PTA19, 115200). APP A toggles LED1/PTA26 and
+The BGA320 Demo Board application now transmits boot identity, FMC OTA status,
+and a periodic PC heartbeat through FCUART1 (MCU TX PTA18, MCU RX PTA19,
+115200 8-N-1) using the onboard CH340C USB-UART. APP A toggles LED1/PTA26 and
 APP B toggles LED2/PTD31; both LEDs are active-high. LED3/PTA14 is initialized
 off.
 

@@ -1,7 +1,13 @@
 #ifndef OTA_BOARD_CONFIG_H_
 #define OTA_BOARD_CONFIG_H_
 
-/* FC7300 board wiring, matched to the existing board projects in this workspace. */
+/*
+ * FC7300F4MDDT1C BGA320 Demo Board wiring, checked against
+ * FC7300F4MDDT1C_BGA320_Demo_Board_SCH_V1.1.pdf.
+ * UART directions below are from the MCU point of view: PTA18 drives the
+ * CH340C RX path and PTA19 receives from the CH340C TX path.
+ * LED1/2/3 drive N-MOSFET gates and are therefore active-high at the MCU.
+ */
 #define OTA_DEMO_UART_BAUD               (115200UL)
 #define OTA_DEMO_UART_INSTANCE           UART_INSTANCE_1
 #define OTA_DEMO_UART_PCC_CLOCK          PCC_CLK_FCUART1

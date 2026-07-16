@@ -33,7 +33,23 @@
 | 已完成并通过自动化测试 | PC 升级工具 | package parser、SerialTransport、OtaClient、UpgradeController、CLI、PySide6 GUI、模拟设备 |
 | 待板级验收 | A/B 串口实流升级 | 软件闭环、A/B 构建和 30 项测试已通过，仍需按 `Tools/UART_OTA_HW_TEST.md` 执行 POR/掉电用例 |
 
-## 3. 已确认的硬件规则
+## 3. 已确认的硬件与 Demo 板规则
+
+### 3.1 BGA320 Demo 板接口
+
+板级定义已按开发工作区 `../02_MD/FC7300F4MDDT1C_BGA320_Demo_Board_SCH_V1.1.pdf` 核对。文件名和变更记录标为 V1.1；各页标题栏仍保留 `FC600_BGA320_Demo_Board`、`Rev 0.1`，这是原理图自身的命名差异，本文按目标器件称为 FC7300F4MDDT1C BGA320 Demo 板。
+
+| 功能 | MCU 管脚 | 原理图网络/电路 | 软件约定 |
+| --- | --- | --- | --- |
+| USB-UART1 TX | PTA18 / PD2 | `PTA18_PD2_UART1_to_USB_TX`，接 CH340C RX 通路 | `FCUART1_TX` |
+| USB-UART1 RX | PTA19 / PD3 | `PTA19_PD3_UART1_to_USB_RX`，接 CH340C TX 通路 | `FCUART1_RX` |
+| LED1 | PTA26 / PL5 | 1 kΩ 栅极串阻、31.6 kΩ 下拉、N-MOSFET 低边驱动 | MCU 高电平点亮 |
+| LED2 | PTD31 / PE13 | 1 kΩ 栅极串阻、31.6 kΩ 下拉、N-MOSFET 低边驱动 | MCU 高电平点亮 |
+| LED3 | PTA14 / PE10 | 1 kΩ 栅极串阻、31.6 kΩ 下拉、N-MOSFET 低边驱动 | MCU 高电平点亮 |
+
+板载 USB Type-C 通过 CH340C 接 UART1。本文中的 TX/RX 始终以 MCU 为参照，不能按 CH340C 引脚名反向理解。LED 不是 MCU 直接灌拉 LED 电流；GPIO 拉高使 N-MOSFET 导通并点亮。上述连接已由原理图确认，串口收发和三颗 LED 的最终丝印/实物对应仍按硬件验收记录复核。
+
+### 3.2 Flash/OTA 规则
 
 ```text
 PFlash:              0x01000000 - 0x013FFFFF
@@ -207,7 +223,7 @@ HEARTBEAT APP B count=0x00000001 PC=0x010xxxxx LED=LED2/PTD31
 
 ## 11. 已知问题和风险
 
-1. LED 引脚刚按原理图修正，最新固件已编译，仍需在板上确认三路电平和实际丝印对应关系。
+1. LED 管脚和高电平有效已由 BGA320 Demo Board V1.1 原理图确认；最新固件已编译，仍需在板上确认三路实际丝印对应关系和闪烁现象。
 2. UART RX、协议和Host已经实现并编译/模拟测试，但尚未在当前板上完成真实 `.pkg` 全量传输。
 3. 4MDDT1C按两个独立Bank处理：一个Bank执行、另一个Bank读写；当前不增加跨Bank RAM/ITCM搬移约束。
 4. Flash API继续使用硬件remap后的CPU访问地址；GET_INFO和启动日志另行报告固定物理Bank地址，板测需重点核对B运行时写A的反向路径。

@@ -8,18 +8,25 @@ This test proves the hardware behavior requested for the demo:
 
 ## Board wiring used by the demo
 
-The defaults match the FC7300F4MDD EVB examples in this workspace:
+The defaults are taken from
+`../02_MD/FC7300F4MDDT1C_BGA320_Demo_Board_SCH_V1.1.pdf` in the development
+workspace. The onboard USB
+Type-C port uses a CH340C USB-UART. TX and RX below are named from the MCU
+point of view:
 
 ```text
-FCUART1 TX: PTA18
-FCUART1 RX: PTA19
+FCUART1 TX: PTA18 / PD2 -> CH340C RX path
+FCUART1 RX: PTA19 / PD3 <- CH340C TX path
 Baud:       115200, 8-N-1
-APP A LED:  LED1 / PTA26, active-high, slow toggle
-APP B LED:  LED2 / PTD31, active-high, fast toggle
-Unused LED: LED3 / PTA14, initialized low (off)
+APP A LED:  LED1 / PTA26 / PL5, active-high N-MOSFET gate, slow toggle
+APP B LED:  LED2 / PTD31 / PE13, active-high N-MOSFET gate, fast toggle
+Unused LED: LED3 / PTA14 / PE10, initialized low (off)
 ```
 
-Change `Include/ota_board_config.h` if the target board uses other pins.
+The three discrete LEDs are powered from `VDD_HV_A_misc` and switched by
+low-side N-MOSFETs; GPIO high turns the corresponding LED on. Change
+`Include/ota_board_config.h` only if the actual target is a different board
+revision or wiring variant.
 
 ## Generated artifacts
 
@@ -125,4 +132,4 @@ erasing PFlash and perform POR. OTA becomes disabled and APP A runs again.
 - The combined PFlash HEX is sparse. Erase both PFlash banks before its first programming.
 - Program NVR with an NVR-only operation. A chip-wide erase would destroy the A/B images and invalidate the test.
 - Use POR for both observations; a debugger restart or software reset may not reproduce the NVR load sequence.
-- The current UART integration transmits boot status and a periodic heartbeat. UART package reception/command parsing is a separate App OTA transport task.
+- The current UART integration includes package reception and binary command parsing. After a valid HELLO, text heartbeat/log output pauses so it cannot corrupt COBS-framed OTA traffic.
