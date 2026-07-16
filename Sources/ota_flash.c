@@ -215,10 +215,6 @@ ota_status_t ota_flash_read(ota_slot_t slot, uint32_t offset, void *data, uint32
 ota_status_t ota_flash_verify_crc(ota_slot_t slot)
 {
     ota_image_header_t header;
-    uint32_t crc;
-    uint32_t offset;
-    uint32_t chunk_len;
-    const uint8_t *slot_ptr;
 
     if (ota_read_slot_header(slot, &header) != OTA_OK)
     {
@@ -230,12 +226,29 @@ ota_status_t ota_flash_verify_crc(ota_slot_t slot)
         return OTA_ERR_INVALID_IMAGE;
     }
 
-    slot_ptr = (const uint8_t *)ota_get_slot_base(slot);
+    return ota_flash_verify_payload_crc(slot, header.image_size, header.image_crc32);
+}
+
+ota_status_t ota_flash_verify_payload_crc(ota_slot_t slot, uint32_t image_size, uint32_t expected_crc)
+{
+    uint32_t crc;
+    uint32_t offset;
+    uint32_t chunk_len;
+    const uint8_t *slot_ptr;
+
+    if (!ota_slot_range_ok(slot, 0UL, image_size) ||
+        (image_size == 0UL) ||
+        (image_size > OTA_IMAGE_PAYLOAD_MAX_SIZE))
+    {
+        return OTA_ERR_PARAM;
+    }
+
+    slot_ptr = (const uint8_t *)ota_get_slot_access_base(slot);
     crc = ota_crc32_init();
     offset = 0UL;
-    while (offset < header.image_size)
+    while (offset < image_size)
     {
-        chunk_len = header.image_size - offset;
+        chunk_len = image_size - offset;
         if (chunk_len > 1024UL)
         {
             chunk_len = 1024UL;
@@ -244,7 +257,7 @@ ota_status_t ota_flash_verify_crc(ota_slot_t slot)
         offset += chunk_len;
     }
 
-    return (ota_crc32_finish(crc) == header.image_crc32) ? OTA_OK : OTA_ERR_CRC;
+    return (ota_crc32_finish(crc) == expected_crc) ? OTA_OK : OTA_ERR_CRC;
 }
 
 ota_status_t ota_flash_erase_header_sector(ota_slot_t slot, bool allow_active_slot)
@@ -274,6 +287,8 @@ ota_status_t ota_flash_erase_header_sector(ota_slot_t slot, bool allow_active_sl
 ota_status_t ota_flash_program_header(ota_slot_t slot, const ota_image_header_t *header)
 {
     ota_status_t status;
+    const uint8_t *header_bytes;
+    ota_image_header_t readback;
 
     if (header == 0)
     {
@@ -292,7 +307,47 @@ ota_status_t ota_flash_program_header(ota_slot_t slot, const ota_image_header_t 
         return status;
     }
 
-    return ota_flash_program(slot, OTA_HEADER_OFFSET, header, sizeof(*header));
+    header_bytes = (const uint8_t *)header;
+
+    /*
+     * Program the software-only body first.  The first aligned 16-byte record
+     * is the hardware version indicator and is deliberately committed last.
+     */
+    status = ota_flash_program(
+        slot,
+        OTA_HEADER_OFFSET + OTA_HARDWARE_INDICATOR_SIZE,
+        &header_bytes[OTA_HARDWARE_INDICATOR_SIZE],
+        (uint32_t)sizeof(*header) - OTA_HARDWARE_INDICATOR_SIZE);
+    if (status != OTA_OK)
+    {
+        return status;
+    }
+
+    if (ota_flash_read(slot, OTA_HEADER_OFFSET, &readback, sizeof(readback)) != OTA_OK)
+    {
+        return OTA_ERR_FLASH;
+    }
+    if (memcmp(&((const uint8_t *)&readback)[OTA_HARDWARE_INDICATOR_SIZE],
+               &header_bytes[OTA_HARDWARE_INDICATOR_SIZE],
+               sizeof(readback) - OTA_HARDWARE_INDICATOR_SIZE) != 0)
+    {
+        return OTA_ERR_FLASH;
+    }
+
+    status = ota_flash_program(slot, OTA_HEADER_OFFSET, header, OTA_HARDWARE_INDICATOR_SIZE);
+    if (status != OTA_OK)
+    {
+        return status;
+    }
+
+    if ((ota_flash_read(slot, OTA_HEADER_OFFSET, &readback, sizeof(readback)) != OTA_OK) ||
+        (memcmp(&readback, header, sizeof(readback)) != 0) ||
+        (!ota_is_slot_valid(slot)))
+    {
+        return OTA_ERR_FLASH;
+    }
+
+    return OTA_OK;
 }
 
 ota_status_t ota_dflash_read_state(void *data, uint32_t len)

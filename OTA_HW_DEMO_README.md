@@ -67,7 +67,12 @@ inside one 128-bit-aligned PFlash line:
 2. `~version`
 3. F4MDD valid code `0xFC60FACE88886666`
 
-The final header write is the validity boundary. If power is lost before the header sector is programmed, the inactive slot has no valid header/version and the old active slot remains bootable.
+The final aligned 16-byte hardware indicator write is the validity boundary.
+Firmware first programs and verifies the payload, records pending, writes header
+bytes `0x10..0x7f`, verifies that body, and only then programs
+`version/~version/valid-code`. If power is lost before that final record, the
+inactive slot has no valid hardware version and the old active slot remains
+bootable.
 
 ## Link And Generate Images
 
@@ -86,6 +91,10 @@ different linker scripts: `Startup/FC7300_flash_A.ld` for Bank0 and
 giving each app its own objects, ELF, HEX and IDE debug symbols. After an
 external update to `.cproject`, refresh or reopen the FCIDE project so both
 configurations appear.
+
+Versions are maintained only in `Tools/ota_versions.json`. The generated
+`Include/ota_version_autogen.h` feeds the runtime and linked ELF header; the
+packer reads the linked version instead of accepting another version argument.
 
 Build `Debug_FLASH_A` and `Debug_FLASH_B` once in FCIDE, then generate the
 observable A/B applications and physical-bank HEX files:
@@ -146,9 +155,26 @@ Use `Tools/fc7300_nvr_config_tool.py` for a complete 2 KB NVR HEX based on the k
 The EVB demo now transmits boot identity, FMC OTA status, and a periodic PC
 heartbeat through FCUART1 (PTA18/PTA19, 115200). APP A toggles LED1/PTA26 and
 APP B toggles LED2/PTD31; both LEDs are active-high. LED3/PTA14 is initialized
-off. UART receive and command parsing are not wired yet; call
-`ota_demo_handle_command()` from a future transport shell or invoke the module
-APIs directly in a test function.
+off.
+
+FCUART1 RX now uses its interrupt/FIFO path and a 2 KB software ring buffer.
+`ota_protocol.c` implements COBS-delimited CRC32 framing and `ota_service.c`
+implements HELLO, GET_INFO, START_UPDATE, DATA, FINISH, ABORT and GET_STATUS.
+Each DATA is ACKed, duplicate requests return a cached response without another
+Flash write, and offset/sequence mismatches are rejected. Heartbeat and text
+logs stop after a valid HELLO so binary frames cannot be contaminated.
+
+GET_INFO and the boot log distinguish fixed physical placement from remapped
+access/execution addresses. For example, when B is active:
+
+```text
+ACTIVE_PHYSICAL=0x01200000 ACTIVE_ACCESS=0x01000000 EXEC_VMA=0x01000000
+TARGET_PHYSICAL=0x01000000 TARGET_ACCESS=0x01200000
+```
+
+The PC implementation is under `Tools/ota_host`; its CLI and PySide6 GUI share
+one `UpgradeController`. See `Tools/ota_host/PROTOCOL.md` and
+`Tools/UART_OTA_HW_TEST.md`.
 
 ## Expected Logs
 
@@ -158,9 +184,10 @@ Normal upgrade:
 boot: active=LOW version=0x00000001
 update: erase HIGH
 update: write payload
-update: verify CRC OK
-update: write HIGH header/version last
-reset
+update: stream CRC and PFlash readback CRC OK
+update: write HIGH header body, commit 16-byte version indicator last
+host: WAIT_POR target physical=0x01200000
+physical POR
 boot: active=HIGH version=0x00000002 pending attempt 1
 app: self-test OK, confirm
 ```
@@ -170,7 +197,7 @@ Power loss during upgrade:
 ```text
 boot: active=LOW version=0x00000001
 update: write half payload to HIGH
-reset
+physical POR
 boot: active=LOW version=0x00000001
 HIGH: invalid header/version
 ```
@@ -179,9 +206,9 @@ Failed new boot rollback:
 
 ```text
 boot: active=HIGH version=0x00000002 pending attempt 1
-reset without confirm
+physical POR without confirm
 boot: pending attempt exceeded, bump LOW version to HIGH+1
-reset
+physical POR
 boot: active=LOW
 ```
 
@@ -191,7 +218,7 @@ Manual rollback:
 boot: active=HIGH
 cmd rollback
 LOW header version rewritten to active+1
-reset
+physical POR
 boot: active=LOW
 ```
 
@@ -201,9 +228,13 @@ Confirm the exact NVR OTAC0/OTAC_HIGH0 bit layout in the FC7300F4MDDT1C RM/tool 
 
 Confirm whether runtime reads of `FMC->OTA_START/END_ADDR(_HIGH)` are full logical addresses or encoded register fields.
 
-Place flash erase/program wrappers in RAM if the final memory map violates FC7300 RWW requirements.
+FC7300F4MDDT1C is currently treated as two independent Banks: execute from the
+active Bank while reading/writing the inactive Bank, without RAM/ITCM wrapper
+relocation. Keep this assumption in the hardware acceptance record.
 
-Add UART/CAN/UDS receive and command parsing for streamed App OTA packages.
+Complete the A v1 -> B v2 -> A v3 serial package and power-cut hardware matrix.
+
+CAN/ISO-TP/UDS are intentionally only extension points in this phase.
 
 Add authentication/signature checks before accepting update packages in a real bootloader.
 

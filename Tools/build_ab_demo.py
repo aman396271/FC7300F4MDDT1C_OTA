@@ -82,7 +82,6 @@ def verify_elf_layout(label: str, elf: Path, readelf: str) -> None:
 
 def build_variant(
     label: str,
-    version: str,
     make_tool: str,
     objcopy: str,
     readelf: str,
@@ -104,8 +103,6 @@ def build_variant(
             sys.executable,
             str(TOOLS_DIR / "pack_hw_ota_image.py"),
             str(raw_output),
-            "--version",
-            version,
             "--out-prefix",
             str(prefix),
         ],
@@ -118,8 +115,6 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Build FC7300 observable A/B POR swap demo")
     parser.add_argument("--output-dir", type=Path, default=PROJECT / "out" / "ab_demo")
     parser.add_argument("--artifacts-dir", type=Path, default=ARTIFACTS_DIR)
-    parser.add_argument("--a-version", default="0x00000001")
-    parser.add_argument("--b-version", default="0x00000002")
     args = parser.parse_args()
 
     missing_build_dirs = [
@@ -146,8 +141,12 @@ def main() -> int:
     make_tool = find_tool("mingw32-make", "make")
     objcopy = find_tool("arm-none-eabi-objcopy")
     readelf = find_tool("arm-none-eabi-readelf")
-    a_bin = build_variant("A", args.a_version, make_tool, objcopy, readelf, output_dir)
-    b_bin = build_variant("B", args.b_version, make_tool, objcopy, readelf, output_dir)
+    run(
+        [sys.executable, str(TOOLS_DIR / "generate_ota_version.py")],
+        PROJECT,
+    )
+    a_bin = build_variant("A", make_tool, objcopy, readelf, output_dir)
+    b_bin = build_variant("B", make_tool, objcopy, readelf, output_dir)
     run(
         [
             sys.executable,

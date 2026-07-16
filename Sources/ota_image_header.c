@@ -15,8 +15,8 @@
  */
 const ota_image_header_t g_ota_image_header __attribute__((section(".ota_header"), used)) =
 {
-    OTA_DEMO_VERSION,
-    ~OTA_DEMO_VERSION,
+    OTA_APP_VERSION,
+    ~OTA_APP_VERSION,
     OTA_IMAGE_VALID_CODE_LO,
     OTA_IMAGE_VALID_CODE_HI,
     OTA_IMAGE_MAGIC,

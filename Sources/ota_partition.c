@@ -64,6 +64,24 @@ ota_slot_t ota_get_inactive_slot(void)
 
 uint32_t ota_get_slot_base(ota_slot_t slot)
 {
+    return ota_get_slot_access_base(slot);
+}
+
+uint32_t ota_get_slot_physical_base(ota_slot_t slot)
+{
+    if (slot == OTA_SLOT_LOW)
+    {
+        return OTA_SLOT_LOW_BASE;
+    }
+    if (slot == OTA_SLOT_HIGH)
+    {
+        return OTA_SLOT_HIGH_BASE;
+    }
+    return 0UL;
+}
+
+uint32_t ota_get_slot_access_base(ota_slot_t slot)
+{
     ota_slot_t active;
 
     if (!ota_slot_is_known(slot))

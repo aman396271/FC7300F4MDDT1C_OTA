@@ -25,12 +25,13 @@
 | 已完成 | A/B PFlash 打包工具 | 生成单 Bank HEX 和合并 PFlash HEX |
 | 已完成 | NVR HEX 生成工具 | 支持 Default NVR 和 OTA Enabled NVR 单独输出 |
 | 已完成 | UART 启动诊断 | 输出 APP、Version、Bank、FMC 和镜像有效性 |
-| 已完成 | UART 心跳 | 每约 1 秒输出 APP、计数、逻辑 PC 和 LED 名称 |
+| 已完成 | UART 心跳 | 非阻塞 1 ms tick 调度；进入二进制协议后暂停文本输出 |
 | 已编译，待板级复验 | LED 指示 | 已按原理图改为 PTA26、PTD31、PTA14，高电平有效 |
-| 代码已有，未通讯集成 | 非活动 Bank 升级 Core | 支持擦除、流式写入、CRC、header 最后提交 |
+| 已完成并通过构建/模拟测试 | 非活动 Bank 升级 Core | START 预校验、任意长度 staging、回读 CRC、16-byte indicator 最后提交 |
 | 代码已有，未完整验证 | pending/confirm/rollback | 使用 DFlash 保存状态，仍需故障注入测试 |
-| 未完成 | 通讯升级 | 尚无 UART RX、CAN/ISO-TP 或 UDS 下载链路 |
-| 未完成 | PC 升级工具 | 尚无在线传输、进度、重试和自动激活工具 |
+| 已完成并通过构建/模拟测试 | UART 通讯升级 | FCUART1 RX ISR、2 KB ring、COBS/CRC32、sequence/offset、ACK/NACK、timeout |
+| 已完成并通过自动化测试 | PC 升级工具 | package parser、SerialTransport、OtaClient、UpgradeController、CLI、PySide6 GUI、模拟设备 |
+| 待板级验收 | A/B 串口实流升级 | 软件闭环、A/B 构建和 30 项测试已通过，仍需按 `Tools/UART_OTA_HW_TEST.md` 执行 POR/掉电用例 |
 
 ## 3. 已确认的硬件规则
 
@@ -88,19 +89,27 @@ LED3 为 PTA14，目前仅初始化为低电平关闭。建议后续用作升级
 
 | 文件 | 职责 |
 | --- | --- |
-| `Sources/main.c` | 时钟、UART、LED、启动状态输出、心跳 |
+| `Sources/main.c` | 板级初始化、启动状态、非阻塞 LED/heartbeat 和模块调度 |
 | `Include/ota_board_config.h` | UART 和 LED 板级引脚 |
-| `Include/ota_build_variant.h` | Demo A/B 标签、版本和 LED 周期 |
+| `Tools/ota_versions.json` | A/B 固件版本的唯一人工维护来源 |
+| `Include/ota_version_autogen.h` | 从版本 manifest 自动生成，供运行时和 ELF header 使用 |
+| `Include/ota_build_variant.h` | Demo A/B 标签、自动生成版本和 LED 周期 |
 | `Include/ota_config.h` | Bank、header、indicator、DFlash 地址常量 |
 | `Sources/ota_partition.c` | 读取 active/inactive Bank，处理硬件重映射 |
 | `Sources/ota_flash.c` | PFlash/DFlash 擦除、写入、校验封装 |
-| `Sources/ota_update.c` | 流式升级状态机和完整性检查 |
+| `Sources/ota_update.c` | START 预校验、staging、流式升级和提交状态机 |
 | `Sources/ota_image_header.c` | 当前镜像的 OTA indicator/header |
 | `Sources/ota_boot_confirm.c` | pending、confirmed、boot attempt 状态 |
 | `Sources/ota_rollback.c` | 版本提升回滚和工程诊断切换 |
-| `Sources/ota_demo.c` | Demo 信息和命令接口，尚未连接 UART RX |
+| `Sources/ota_uart.c` | FCUART1 RX中断、ring buffer和二进制发送 |
+| `Sources/ota_protocol.c` | COBS framing、帧字段和CRC32解析/编码 |
+| `Sources/ota_service.c` | 命令、sequence/offset、会话、ACK/NACK和ota_update适配 |
+| `Sources/ota_time.c` | 非阻塞1 ms SysTick时基 |
+| `Sources/ota_demo.c` | Demo/GET_INFO数据，包括物理、访问和VMA地址 |
 | `Tools/build_ab_demo.py` | 构建 A/B、检查 ELF VMA/LMA、生成统一产物 |
 | `Tools/pack_hw_ota_image.py` | 生成带有效 indicator 和 CRC 的升级包 |
+| `Tools/build_ota_package.py` | 根据版本manifest构建单个A或B升级包 |
+| `Tools/ota_host` | 共用Host协议、SerialTransport、CLI、GUI、模拟设备和测试 |
 | `Tools/make_ab_pflash_hex.py` | 生成 A、B 和合并 PFlash HEX |
 | `Tools/fc7300_nvr_config_tool.py` | 根据配置生成完整 NVR HEX |
 
@@ -117,7 +126,7 @@ LED3 为 PTA14，目前仅初始化为低电平关闭。建议后续用作升级
 当前已经提供以下接口：
 
 ```c
-ota_status_t ota_begin_update(void);
+ota_status_t ota_begin_update(const ota_image_header_t *header);
 ota_status_t ota_write_chunk(const void *data, uint32_t len);
 ota_status_t ota_finish_update(void);
 ota_status_t ota_abort_update(void);
@@ -126,15 +135,15 @@ ota_status_t ota_abort_update(void);
 当前行为：
 
 1. 自动选择非活动 Bank。
-2. 擦除目标 Bank。
-3. 先接收 128-byte `ota_image_header_t`，再接收 payload。
-4. payload 写入必须满足 8-byte Flash page 对齐。
-5. 传输过程中计算 CRC32。
-6. 检查新版本必须高于当前有效版本。
-7. payload 完整后才写 header/indicator，避免半包被硬件选中。
-8. 写后再次校验 CRC，并在 DFlash 标记 pending。
+2. 在擦除前检查 `OTA_EN=0x0A`、完整 128-byte header、header CRC、版本和大小。
+3. 校验通过后才擦除目标 Bank。
+4. 128-byte staging 接受任意通讯长度，内部按 Flash 8-byte 最小页写入。
+5. 传输过程中计算 CRC32，并在 FINISH 前回读目标 payload 再计算 CRC32。
+6. 回读完整性成功后写 DFlash pending。
+7. 先写 header 的 `0x10..0x7F` 并回读，再最后写 16-byte hardware indicator。
+8. 最后的 `version/~version/valid-code` 记录是硬件有效性和掉电提交边界。
 
-这部分目前只是代码实现，尚未经过真实通讯流、传输中断、掉电和反复 A/B 升级验证，不能作为量产完成状态。
+该逻辑已经通过 A/B 编译、C/Python协议向量和模拟通讯测试；真实PFlash串口流、传输中断、掉电和反复A/B升级仍须板级验收，不能作为量产完成状态。
 
 ## 8. 构建和产物
 
@@ -144,10 +153,12 @@ ota_status_t ota_abort_update(void);
 python Tools\build_ab_demo.py
 ```
 
-显式指定打包版本：
+版本只在 `Tools/ota_versions.json` 中维护。构建脚本生成头文件，ELF和packer不再接受独立版本参数：
 
 ```powershell
-python Tools\build_ab_demo.py --a-version 0x00000001 --b-version 0x00000002
+python Tools\generate_ota_version.py
+python Tools\build_ab_demo.py
+python Tools\build_ota_package.py B
 ```
 
 主要产物：
@@ -162,7 +173,7 @@ Artifacts/FC7300_AB_PFlash_Demo.report.json
 Artifacts/FC7300_NVR_OTA_Enabled.report.json
 ```
 
-注意：`ota_build_variant.h` 中的 Demo Version 和 Python 打包参数目前是两个来源。修改版本时必须保持一致。后续应由一个版本配置自动生成头文件和打包参数。
+`pack_hw_ota_image.py` 从链接后的ELF header读取版本并完成CRC，不提供覆盖版本参数，因此运行时打印、ELF header、package和硬件indicator不能再由不同参数生成。
 
 ## 9. 已验证测试流程
 
@@ -184,7 +195,7 @@ SLOT_A version=0x00000001 hw_valid=1 image_valid=1 SLOT_B version=0x00000002 hw_
 HEARTBEAT APP B count=0x00000001 PC=0x010xxxxx LED=LED2/PTD31
 ```
 
-详细烧录注意事项见 `Tools/AB_POR_SWAP_TEST.md`。
+详细烧录注意事项见 `Tools/AB_POR_SWAP_TEST.md`；UART 全流程和故障注入验收见 `Tools/UART_OTA_HW_TEST.md`。
 
 ## 10. 调试注意事项
 
@@ -197,9 +208,9 @@ HEARTBEAT APP B count=0x00000001 PC=0x010xxxxx LED=LED2/PTD31
 ## 11. 已知问题和风险
 
 1. LED 引脚刚按原理图修正，最新固件已编译，仍需在板上确认三路电平和实际丝印对应关系。
-2. UART 当前只有 TX 日志和 heartbeat，没有 RX 命令解析。
-3. `ota_demo_handle_command()` 已存在，但没有接入真实 transport shell。
-4. Flash 升级 Core 尚未确认 FC7300 RWW 限制；必要时擦写函数必须放入 RAM/ITCM。
+2. UART RX、协议和Host已经实现并编译/模拟测试，但尚未在当前板上完成真实 `.pkg` 全量传输。
+3. 4MDDT1C按两个独立Bank处理：一个Bank执行、另一个Bank读写；当前不增加跨Bank RAM/ITCM搬移约束。
+4. Flash API继续使用硬件remap后的CPU访问地址；GET_INFO和启动日志另行报告固定物理Bank地址，板测需重点核对B运行时写A的反向路径。
 5. `OTA_DEMO_AUTO_CONFIRM` 当前默认开启，不适合验证失败启动和自动回滚。
 6. 回滚通过重写另一个 Bank 的 Version 实现，必须做掉电和版本溢出测试。
 7. 尚未验证 `NVIC_SystemReset()` 或 RGM reset 是否能触发与 POR 相同的 OTA 重选行为。
@@ -210,10 +221,12 @@ HEARTBEAT APP B count=0x00000001 PC=0x010xxxxx LED=LED2/PTD31
 
 ### P0：通讯升级最小闭环
 
-- [ ] 选择 UART 分包协议作为首个 bring-up transport。
-- [ ] 为任意长度通讯数据增加 8-byte Flash 写入 staging buffer。
-- [ ] 接入 `ota_begin/write/finish/abort`。
-- [ ] PC Python CLI 支持握手、Manifest、分包、序号、ACK、超时和重试。
+- [x] COBS + `0x00` + CRC32 UART framing。
+- [x] 任意长度通讯数据的8-byte Flash写入staging。
+- [x] ota_service接入 `ota_begin/write/finish/abort`。
+- [x] Python CLI支持握手、package、分包、序号、offset、ACK、超时和重试。
+- [x] CLI和PySide6 GUI共用UpgradeController。
+- [x] Python模拟设备及拆包/粘包、CRC、重复、丢包、timeout、NACK、版本和完整升级测试。
 - [ ] LED3 显示下载、写入、校验成功和错误状态。
 - [ ] 完成 APP A -> APP B 的在线下载和 POR 切换。
 
@@ -230,7 +243,7 @@ HEARTBEAT APP B count=0x00000001 PC=0x010xxxxx LED=LED2/PTD31
 - [ ] 掉电点覆盖：擦除前、擦除中、下载中、校验前、indicator 写入前后。
 - [ ] watchdog、自检、pending、confirm 和自动 rollback 联调。
 - [ ] 确认并实现可触发硬件 OTA 重选的复位/掉电方案。
-- [ ] 统一版本号来源，生成 `ota_version_autogen.h`。
+- [x] 统一版本号来源，生成 `ota_version_autogen.h`，packer从ELF继承版本。
 - [ ] 增加 SHA-256 和签名验证，公钥固化在受保护区域。
 - [ ] 增加 anti-rollback 和生产 NVR/生命周期策略审查。
 

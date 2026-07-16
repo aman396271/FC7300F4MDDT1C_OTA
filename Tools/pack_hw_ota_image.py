@@ -64,26 +64,36 @@ def make_header(version: int, payload: bytes, timestamp: int) -> bytes:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("input_bin", type=Path)
-    parser.add_argument("--version", required=True, help="32-bit version, e.g. 0x00000002")
     parser.add_argument("--timestamp", default="0", help="optional 32-bit build timestamp")
     parser.add_argument("--out-prefix", type=Path)
     args = parser.parse_args()
 
     image = bytearray(args.input_bin.read_bytes())
-    if len(image) > HEADER_OFFSET:
-        existing_header = image[HEADER_OFFSET:]
-        if len(existing_header) != HEADER_SIZE:
-            raise SystemExit(
-                "image contains loadable data beyond the reserved OTA header: "
-                f"tail size {len(existing_header)} != {HEADER_SIZE}"
-            )
-        if existing_header[16:20] != struct.pack("<I", IMAGE_MAGIC):
-            raise SystemExit("image tail is not the expected linked OTA header")
-        del image[HEADER_OFFSET:]
+    if len(image) <= HEADER_OFFSET:
+        raise SystemExit("linked image does not contain the generated OTA header")
+
+    existing_header = image[HEADER_OFFSET:]
+    if len(existing_header) != HEADER_SIZE:
+        raise SystemExit(
+            "image contains loadable data beyond the reserved OTA header: "
+            f"tail size {len(existing_header)} != {HEADER_SIZE}"
+        )
+    if existing_header[16:20] != struct.pack("<I", IMAGE_MAGIC):
+        raise SystemExit("image tail is not the expected linked OTA header")
+    version = struct.unpack_from("<I", existing_header, 0)[0]
+    version_inverted = struct.unpack_from("<I", existing_header, 4)[0]
+    if not 0 < version < 0xFFFFFFFF:
+        raise SystemExit("linked OTA version must be in range 0x00000001..0xFFFFFFFE")
+    if version_inverted != ((~version) & 0xFFFFFFFF):
+        raise SystemExit("linked OTA version complement mismatch")
+    del image[HEADER_OFFSET:]
 
     image.extend(b"\xFF" * (HEADER_OFFSET - len(image)))
     payload = bytes(image[:HEADER_OFFSET])
-    header = make_header(int(args.version, 0), payload, int(args.timestamp, 0))
+    timestamp = int(args.timestamp, 0)
+    if not 0 <= timestamp <= 0xFFFFFFFF:
+        raise SystemExit("timestamp must fit in uint32")
+    header = make_header(version, payload, timestamp)
     if len(header) != HEADER_SIZE:
         raise SystemExit("internal header size mismatch")
 
@@ -103,7 +113,7 @@ def main() -> int:
     print(f"low_bin={low_path}")
     print(f"high_bin={high_path}")
     print(f"package={pkg_path}")
-    print(f"version=0x{int(args.version, 0):08X}")
+    print(f"version=0x{version:08X}")
     print(f"header_offset=0x{HEADER_OFFSET:08X}")
     print(f"nvr_version_offset=0x{NVR_VERSION_OFFSET:08X}")
     print(f"payload_crc=0x{crc32(payload):08X}")

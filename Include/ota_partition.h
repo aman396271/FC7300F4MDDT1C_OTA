@@ -8,6 +8,8 @@
 
 ota_slot_t ota_get_active_slot(void);
 ota_slot_t ota_get_inactive_slot(void);
+uint32_t ota_get_slot_physical_base(ota_slot_t slot);
+uint32_t ota_get_slot_access_base(ota_slot_t slot);
 uint32_t ota_get_slot_base(ota_slot_t slot);
 uint32_t ota_get_slot_end(ota_slot_t slot);
 uint32_t ota_get_slot_header_addr(ota_slot_t slot);
