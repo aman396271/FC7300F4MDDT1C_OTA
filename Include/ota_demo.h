@@ -15,6 +15,8 @@ typedef struct
     uint32_t fmc_ota_act_ver;
     uint32_t low_version;
     uint32_t high_version;
+    uint8_t low_hw_valid;
+    uint8_t high_hw_valid;
     uint8_t low_valid;
     uint8_t high_valid;
     uint8_t ota_enabled;

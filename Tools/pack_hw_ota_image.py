@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Patch FC7300 hardware-OTA demo binary headers.
 
-Input is a raw binary linked at the Low-bank VMA (0x01000000).  The script
-computes the payload CRC from offset 0 to OTA_HEADER_OFFSET, writes a software
-header at OTA_HEADER_OFFSET, and emits:
+Input is a slot-relative raw binary extracted from either APP A or APP B ELF.
+APP B keeps the low execution VMA but uses physical Bank1 load addresses; GNU
+objcopy still emits the expected slot-relative binary. The script computes the
+payload CRC from offset 0 to OTA_HEADER_OFFSET, writes a software header there,
+and emits:
 
   * <prefix>_low.bin  - program at 0x01000000
   * <prefix>_high.bin - same bytes, program at 0x01200000
@@ -20,7 +22,7 @@ from pathlib import Path
 
 SLOT_SIZE = 0x00200000
 HEADER_OFFSET = 0x001FF000
-NVR_VERSION_OFFSET = 0x000FF008
+NVR_VERSION_OFFSET = 0x000FF000
 HEADER_SIZE = 0x80
 IMAGE_MAGIC = 0x46435441
 HEADER_VERSION = 0x00010000
@@ -41,12 +43,12 @@ def make_header(version: int, payload: bytes, timestamp: int) -> bytes:
     valid_code_lo = VALID_CODE_F4MDD & 0xFFFFFFFF
     valid_code_hi = (VALID_CODE_F4MDD >> 32) & 0xFFFFFFFF
     fields = [
-        IMAGE_MAGIC,
-        HEADER_VERSION,
         version_word,
         (~version_word) & 0xFFFFFFFF,
         valid_code_lo,
         valid_code_hi,
+        IMAGE_MAGIC,
+        HEADER_VERSION,
         len(payload),
         crc32(payload),
         timestamp,
@@ -62,7 +64,7 @@ def make_header(version: int, payload: bytes, timestamp: int) -> bytes:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("input_bin", type=Path)
-    parser.add_argument("--version", required=True, help="32-bit version, e.g. 0x00020000")
+    parser.add_argument("--version", required=True, help="32-bit version, e.g. 0x00000002")
     parser.add_argument("--timestamp", default="0", help="optional 32-bit build timestamp")
     parser.add_argument("--out-prefix", type=Path)
     args = parser.parse_args()
@@ -75,7 +77,7 @@ def main() -> int:
                 "image contains loadable data beyond the reserved OTA header: "
                 f"tail size {len(existing_header)} != {HEADER_SIZE}"
             )
-        if existing_header[:4] != struct.pack("<I", IMAGE_MAGIC):
+        if existing_header[16:20] != struct.pack("<I", IMAGE_MAGIC):
             raise SystemExit("image tail is not the expected linked OTA header")
         del image[HEADER_OFFSET:]
 

@@ -14,6 +14,7 @@
 static FCUART_HandleType s_uart_handle;
 static PORT_HandleType s_port_a = { .eInstance = PORT_A };
 static PORT_HandleType s_port_d = { .eInstance = PORT_D };
+static uint32_t s_core_clock_hz;
 
 static void board_clock_init(void)
 {
@@ -57,6 +58,7 @@ static void board_clock_init(void)
     status = SCG_SetClkCtrl(&clock);
     status = SCG_SetNvmClk(SCG_NVMCLK_SRC_FIRC);
     (void)status;
+    s_core_clock_hz = SCG_GetScgClockFreq(SCG_CORE_CLK);
 
     pcc.eClockName = OTA_DEMO_UART_PCC_CLOCK;
     pcc.bEn = true;
@@ -85,6 +87,9 @@ static void board_port_init(void)
 
     config.u32PortPins = OTA_DEMO_LED_B_PIN;
     PORT_InitPins(&s_port_d, &config);
+
+    config.u32PortPins = OTA_DEMO_LED_3_PIN;
+    PORT_InitPins(&s_port_a, &config);
 }
 
 static void board_uart_init(void)
@@ -105,16 +110,25 @@ static void board_uart_init(void)
 
 static void board_delay_ms(uint32_t milliseconds)
 {
-    volatile uint32_t outer;
-    volatile uint32_t inner;
+    uint32_t reload;
 
-    for (outer = 0UL; outer < milliseconds; ++outer)
+    reload = s_core_clock_hz / 1000UL;
+    if ((reload == 0UL) || (reload > (SysTick_LOAD_RELOAD_Msk + 1UL)))
     {
-        for (inner = 0UL; inner < 5000UL; ++inner)
-        {
-            __asm volatile ("nop");
-        }
+        return;
     }
+
+    SysTick->LOAD = reload - 1UL;
+    SysTick->VAL = 0UL;
+    SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
+    while (milliseconds > 0UL)
+    {
+        while ((SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) == 0UL)
+        {
+        }
+        --milliseconds;
+    }
+    SysTick->CTRL = 0UL;
 }
 
 static void board_toggle_variant_led(void)
@@ -139,6 +153,14 @@ static void board_format_hex32(uint32_t value, char output[9])
     output[8] = '\0';
 }
 
+static uint32_t board_read_pc(void)
+{
+    uint32_t pc;
+
+    __asm volatile ("mov %0, pc" : "=r" (pc));
+    return pc;
+}
+
 void ota_demo_log(const char *message)
 {
     (void)FCUART_Printf(&s_uart_handle, "%s\r\n", message);
@@ -153,6 +175,10 @@ int main(void)
     char act_ver_hex[9];
     char slot_a_version_hex[9];
     char slot_b_version_hex[9];
+    char heartbeat_count_hex[9];
+    char heartbeat_pc_hex[9];
+    uint32_t heartbeat_count = 0UL;
+    uint32_t heartbeat_elapsed_ms = 0UL;
 
     board_clock_init();
     board_port_init();
@@ -183,10 +209,13 @@ int main(void)
         act_ver_hex);
     (void)FCUART_Printf(
         &s_uart_handle,
-        "SLOT_A version=0x%s valid=%d SLOT_B version=0x%s valid=%d\r\n",
+        "SLOT_A version=0x%s hw_valid=%d image_valid=%d "
+        "SLOT_B version=0x%s hw_valid=%d image_valid=%d\r\n",
         slot_a_version_hex,
+        (int)info.low_hw_valid,
         (int)info.low_valid,
         slot_b_version_hex,
+        (int)info.high_hw_valid,
         (int)info.high_valid);
 
 #ifndef OTA_DEMO_AUTO_CONFIRM
@@ -201,5 +230,20 @@ int main(void)
     {
         board_toggle_variant_led();
         board_delay_ms(OTA_LED_DELAY_MS);
+        heartbeat_elapsed_ms += OTA_LED_DELAY_MS;
+        if (heartbeat_elapsed_ms >= 1000UL)
+        {
+            ++heartbeat_count;
+            heartbeat_elapsed_ms = 0UL;
+            board_format_hex32(heartbeat_count, heartbeat_count_hex);
+            board_format_hex32(board_read_pc(), heartbeat_pc_hex);
+            (void)FCUART_Printf(
+                &s_uart_handle,
+                "HEARTBEAT %s count=0x%s PC=0x%s LED=%s\r\n",
+                OTA_APP_LABEL,
+                heartbeat_count_hex,
+                heartbeat_pc_hex,
+                OTA_LED_LABEL);
+        }
     }
 }

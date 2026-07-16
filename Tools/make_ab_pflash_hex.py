@@ -105,12 +105,12 @@ def inspect_slot(path: Path, expected_base: int) -> tuple[bytes, dict]:
         raise ValueError(f"{path}: slot image must be {SLOT_SIZE} bytes, got {len(image)}")
     words = struct.unpack("<11I", image[HEADER_OFFSET : HEADER_OFFSET + 44])
     (
-        magic,
-        header_version,
         version,
         version_inverted,
         valid_code_lo,
         valid_code_hi,
+        magic,
+        header_version,
         image_size,
         image_crc,
         timestamp,
@@ -150,7 +150,7 @@ def inspect_slot(path: Path, expected_base: int) -> tuple[bytes, dict]:
         "stack_pointer": f"0x{stack_pointer:08X}",
         "reset_handler": f"0x{reset_handler:08X}",
         "header_address": f"0x{expected_base + HEADER_OFFSET:08X}",
-        "indicator_address": f"0x{expected_base + HEADER_OFFSET + 8:08X}",
+        "indicator_address": f"0x{expected_base + HEADER_OFFSET:08X}",
         "payload_crc32": f"0x{image_crc:08X}",
         "header_crc32": f"0x{header_crc:08X}",
         "sha256": hashlib.sha256(image).hexdigest().upper(),
@@ -161,6 +161,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Create one sparse FC7300 A+B PFlash Intel HEX")
     parser.add_argument("--a-bin", type=Path, required=True)
     parser.add_argument("--b-bin", type=Path, required=True)
+    parser.add_argument("--a-output-hex", type=Path)
+    parser.add_argument("--b-output-hex", type=Path)
     parser.add_argument("--output-hex", type=Path, required=True)
     parser.add_argument("--report", type=Path, required=True)
     args = parser.parse_args()
@@ -172,11 +174,26 @@ def main() -> int:
     if a_image == b_image:
         raise SystemExit("A and B slot images are identical; observable application variants are required")
 
-    memory = sparse_slot_memory(a_image, BANK0_BASE)
+    a_memory = sparse_slot_memory(a_image, BANK0_BASE)
     b_memory = sparse_slot_memory(b_image, BANK1_BASE)
-    overlap = set(memory).intersection(b_memory)
+    overlap = set(a_memory).intersection(b_memory)
     if overlap:
         raise SystemExit(f"A/B HEX overlap at 0x{min(overlap):08X}")
+    if args.a_output_hex:
+        args.a_output_hex.parent.mkdir(parents=True, exist_ok=True)
+        write_ihex(a_memory, args.a_output_hex)
+        if read_ihex(args.a_output_hex) != a_memory:
+            raise SystemExit("generated APP A Bank0 HEX readback mismatch")
+        a_report["slot_hex"] = args.a_output_hex.name
+        a_report["slot_hex_sha256"] = hashlib.sha256(args.a_output_hex.read_bytes()).hexdigest().upper()
+    if args.b_output_hex:
+        args.b_output_hex.parent.mkdir(parents=True, exist_ok=True)
+        write_ihex(b_memory, args.b_output_hex)
+        if read_ihex(args.b_output_hex) != b_memory:
+            raise SystemExit("generated APP B Bank1 HEX readback mismatch")
+        b_report["slot_hex"] = args.b_output_hex.name
+        b_report["slot_hex_sha256"] = hashlib.sha256(args.b_output_hex.read_bytes()).hexdigest().upper()
+    memory = dict(a_memory)
     memory.update(b_memory)
     args.output_hex.parent.mkdir(parents=True, exist_ok=True)
     data_records = write_ihex(memory, args.output_hex)

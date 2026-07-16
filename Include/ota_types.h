@@ -30,12 +30,12 @@ typedef enum
 
 typedef struct
 {
-    uint32_t magic;
-    uint32_t header_version;
     uint32_t version;
     uint32_t version_inverted;
     uint32_t valid_code_lo;
     uint32_t valid_code_hi;
+    uint32_t magic;
+    uint32_t header_version;
     uint32_t image_size;
     uint32_t image_crc32;
     uint32_t build_timestamp;

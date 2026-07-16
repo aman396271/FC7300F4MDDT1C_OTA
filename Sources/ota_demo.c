@@ -59,6 +59,8 @@ ota_status_t ota_demo_get_info(ota_demo_info_t *info)
     info->fmc_ota_act_ver = ota_get_fmc_ota_active_version();
     info->ota_enabled = ota_is_hardware_ota_enabled() ? 1U : 0U;
     info->ota_locked = ota_is_hardware_ota_locked() ? 1U : 0U;
+    info->low_hw_valid = ota_is_slot_hardware_valid(OTA_SLOT_LOW) ? 1U : 0U;
+    info->high_hw_valid = ota_is_slot_hardware_valid(OTA_SLOT_HIGH) ? 1U : 0U;
     info->low_valid = ota_is_slot_valid(OTA_SLOT_LOW) ? 1U : 0U;
     info->high_valid = ota_is_slot_valid(OTA_SLOT_HIGH) ? 1U : 0U;
 

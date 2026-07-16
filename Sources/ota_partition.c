@@ -9,6 +9,14 @@ static bool ota_slot_is_known(ota_slot_t slot)
     return (slot == OTA_SLOT_LOW) || (slot == OTA_SLOT_HIGH);
 }
 
+static bool ota_header_hardware_valid(const ota_image_header_t *header)
+{
+    return (header != 0) &&
+           (header->version_inverted == (~header->version)) &&
+           (header->valid_code_lo == OTA_IMAGE_VALID_CODE_LO) &&
+           (header->valid_code_hi == OTA_IMAGE_VALID_CODE_HI);
+}
+
 uint32_t ota_get_fmc_ota_ctrl(void)
 {
     return FMC0->OTA_CTRL[0];
@@ -116,6 +124,18 @@ ota_status_t ota_read_slot_header(ota_slot_t slot, ota_image_header_t *header)
     return OTA_OK;
 }
 
+bool ota_is_slot_hardware_valid(ota_slot_t slot)
+{
+    ota_image_header_t header;
+
+    if (ota_read_slot_header(slot, &header) != OTA_OK)
+    {
+        return false;
+    }
+
+    return ota_header_hardware_valid(&header);
+}
+
 bool ota_is_slot_valid(ota_slot_t slot)
 {
     ota_image_header_t header;
@@ -128,9 +148,7 @@ bool ota_is_slot_valid(ota_slot_t slot)
 
     if ((header.magic != OTA_IMAGE_MAGIC) ||
         (header.header_version != OTA_IMAGE_HEADER_VERSION) ||
-        (header.version_inverted != (~header.version)) ||
-        (header.valid_code_lo != OTA_IMAGE_VALID_CODE_LO) ||
-        (header.valid_code_hi != OTA_IMAGE_VALID_CODE_HI) ||
+        (!ota_header_hardware_valid(&header)) ||
         (header.valid_flag != OTA_IMAGE_VALID_FLAG) ||
         (header.image_size == 0UL) ||
         (header.image_size > OTA_IMAGE_PAYLOAD_MAX_SIZE))
