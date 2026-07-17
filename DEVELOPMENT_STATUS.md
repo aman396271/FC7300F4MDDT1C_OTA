@@ -274,3 +274,20 @@ HEARTBEAT APP B count=0x00000001 PC=0x010xxxxx LED=LED2/PTD31
 7. 再下载 v3 到非活动 Bank0，完成 B -> A 回切演示。
 
 该闭环同时证明通讯传输、Flash 写入、断电安全、硬件 Version 选择、Bank Swap 和新版本确认，不只是证明两个预烧录 HEX 之间可以跳转。
+
+## 14. IDE HEX OTA 打包器与当前板测故障
+
+已增加 `Tools/ota_host/ide_hex.py`、`package_cli.py` 和 `package_gui.py`，以及可双击启动的
+`Tools/run_ide_hex_ota_packer.bat`。该工具直接读取 FCIDE 本次编译生成的单 Bank Intel HEX，
+从链接后的 `.ota_header` 模板继承版本号，自动检测 A/B 物理 Bank，补齐 `0xFF`，计算 payload/header
+CRC，并同时生成 JTAG HEX、UART `.pkg` 和 JSON 报告。工具拒绝混合 A+B、NVR、错误 VMA、错误
+version complement 和占用 header 保留区的输入。默认生成覆盖完整 2 MB Bank 的 HEX，以避免稀疏
+HEX 未触发完整 Bank 擦除而残留旧字节。
+
+2026-07-17 板测确认：打包 APP A 可正常打印 `image_valid=1`，但打印启动信息后 MCU 进入
+HardFault，导致 LED 停止且 Host HELLO 超时。J-Link 只读现场为 `CFSR=0x00000400`
+（BusFault IMPRECISERR）、`HFSR=0x40000000`，异常堆栈 PC `0x01003C34` 位于
+`ota_flash_erase_absolute()` 返回后的 cache maintenance 路径。原始 IDE HEX 因
+`image_valid=0` 使 `ota_mark_confirmed()` 提前返回，所以未暴露该问题。当前结论是正式 HEX 的
+入口、程序区、FCUART1 向量和 OTA header 均正确；P0 阻塞项是自动 confirmed DFlash 写入及
+Flash/cache 故障，不能通过退回无效 header 规避。
