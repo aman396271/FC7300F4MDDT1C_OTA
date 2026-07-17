@@ -21,12 +21,14 @@ from PySide6.QtWidgets import (
     QPlainTextEdit,
     QProgressBar,
     QPushButton,
+    QTabWidget,
     QVBoxLayout,
     QWidget,
 )
 
 from .client import OtaClient
 from .package import OtaPackage
+from .package_gui import PackageWidget
 from .transport.serial import SerialTransport
 from .upgrade_controller import UpgradeController, UpgradeProgress, UpgradeResult
 
@@ -57,8 +59,8 @@ class UpgradeWorker(QObject):
 class MainWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
-        self.setWindowTitle("FC7300F4MDDT1C UART OTA")
-        self.resize(820, 680)
+        self.setWindowTitle("FC7300F4MDDT1C OTA Tool")
+        self.resize(900, 760)
         self.client: OtaClient | None = None
         self.controller: UpgradeController | None = None
         self.package: OtaPackage | None = None
@@ -66,7 +68,14 @@ class MainWindow(QMainWindow):
         self.worker: UpgradeWorker | None = None
 
         root = QWidget()
-        layout = QVBoxLayout(root)
+        root_layout = QVBoxLayout(root)
+        self.tabs = QTabWidget()
+        upgrade_page = QWidget()
+        layout = QVBoxLayout(upgrade_page)
+        self.package_widget = PackageWidget()
+        self.tabs.addTab(upgrade_page, "UART OTA")
+        self.tabs.addTab(self.package_widget, "IDE HEX Packer")
+        root_layout.addWidget(self.tabs)
         self.setCentralWidget(root)
 
         self.connection_group = QGroupBox("Serial connection")
@@ -158,6 +167,7 @@ class MainWindow(QMainWindow):
         self.browse_button.clicked.connect(self.select_package)
         self.upgrade_button.clicked.connect(self.start_upgrade)
         self.cancel_button.clicked.connect(self.cancel_upgrade)
+        self.package_widget.package_created.connect(self.on_package_created)
         self.refresh_ports()
 
     def append_log(self, message: str) -> None:
@@ -243,6 +253,9 @@ class MainWindow(QMainWindow):
         path, _ = QFileDialog.getOpenFileName(self, "Select OTA package", "", "OTA package (*.pkg)")
         if not path:
             return
+        self.load_package(path)
+
+    def load_package(self, path: str | Path) -> bool:
         try:
             self.package = OtaPackage.load(path)
             self.package_path.setText(str(Path(path)))
@@ -250,10 +263,21 @@ class MainWindow(QMainWindow):
             self.package_size.setText(f"{self.package.header.image_size:,} bytes")
             self.append_log("Package parsed and CRC verified")
             self.update_upgrade_enabled()
+            return True
         except Exception as exc:
             self.package = None
             self.update_upgrade_enabled()
             QMessageBox.critical(self, "Invalid package", str(exc))
+            return False
+
+    @Slot(object)
+    def on_package_created(self, result) -> None:
+        if self.load_package(result.output_package):
+            self.tabs.setCurrentIndex(0)
+            self.append_log(
+                f"Loaded package generated from IDE HEX: APP {result.info.variant}, "
+                f"version 0x{result.info.version:08X}"
+            )
 
     def start_upgrade(self) -> None:
         if self.controller is None or self.package is None:

@@ -5,7 +5,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (
     QApplication,
     QCheckBox,
@@ -26,15 +26,14 @@ from PySide6.QtWidgets import (
 from .ide_hex import IdeHexError, IdeHexInfo, inspect_ide_hex, pack_ide_hex
 
 
-class PackageWindow(QMainWindow):
+class PackageWidget(QWidget):
+    package_created = Signal(object)
+
     def __init__(self) -> None:
         super().__init__()
-        self.setWindowTitle("FC7300F4MDDT1C IDE HEX OTA Packer")
-        self.resize(850, 620)
         self._info: IdeHexInfo | None = None
 
-        root = QWidget()
-        layout = QVBoxLayout(root)
+        layout = QVBoxLayout(self)
 
         source_group = QGroupBox("FCIDE output")
         source_layout = QFormLayout(source_group)
@@ -100,7 +99,6 @@ class PackageWindow(QMainWindow):
             "there is no independent version input."
         )
         layout.addWidget(self.log, 1)
-        self.setCentralWidget(root)
 
     def _browse_input(self) -> None:
         path, _ = QFileDialog.getOpenFileName(self, "Select FCIDE Intel HEX", "", "Intel HEX (*.hex)")
@@ -162,12 +160,22 @@ class PackageWindow(QMainWindow):
         self.log.appendPlainText(f"Report: {result.output_report}")
         self.log.appendPlainText(f"Payload CRC32: 0x{result.payload_crc32:08X}")
         self.log.appendPlainText(f"Header CRC32: 0x{result.header_crc32:08X}")
+        self.package_created.emit(result)
         QMessageBox.information(
             self,
             "Packaging complete",
             "Generated a version-consistent JTAG HEX and UART .pkg.\n\n"
             f"{result.output_hex}\n{result.output_package}",
         )
+
+
+class PackageWindow(QMainWindow):
+    def __init__(self) -> None:
+        super().__init__()
+        self.setWindowTitle("FC7300F4MDDT1C IDE HEX OTA Packer")
+        self.resize(850, 620)
+        self.package_widget = PackageWidget()
+        self.setCentralWidget(self.package_widget)
 
 
 def main() -> int:

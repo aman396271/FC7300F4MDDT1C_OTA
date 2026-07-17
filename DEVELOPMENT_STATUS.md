@@ -284,6 +284,10 @@ CRC，并同时生成 JTAG HEX、UART `.pkg` 和 JSON 报告。工具拒绝混�
 version complement 和占用 header 保留区的输入。默认生成覆盖完整 2 MB Bank 的 HEX，以避免稀疏
 HEX 未触发完整 Bank 擦除而残留旧字节。
 
+主 `Tools/ota_host/gui.py` 已将 UART OTA 与 IDE HEX Packer 合并为同一个窗口中的两个页签。
+打包成功后自动切回 UART OTA 页并加载新生成的 `.pkg`；独立窗口和 CLI 继续复用同一个
+`PackageWidget`/`ide_hex.py` 核心，不维护第二套打包逻辑。
+
 2026-07-17 板测确认：打包 APP A 可正常打印 `image_valid=1`，但打印启动信息后 MCU 进入
 HardFault，导致 LED 停止且 Host HELLO 超时。J-Link 只读现场为 `CFSR=0x00000400`
 （BusFault IMPRECISERR）、`HFSR=0x40000000`，异常堆栈 PC `0x01003C34` 位于
