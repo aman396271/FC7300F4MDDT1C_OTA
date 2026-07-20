@@ -1,6 +1,6 @@
 # FC7300F4MDDT1C OTA 开发记录
 
-更新时间：2026-07-16
+更新时间：2026-07-20
 
 ## 1. 项目目标
 
@@ -10,7 +10,7 @@
 2. 两个镜像使用相同逻辑执行地址，由硬件 Bank Swap 完成映射。
 3. NVR 开启硬件 OTA 后，POR 时比较两个 Bank 的 OTA Version。
 4. 当前阶段已经验证 A -> B 的硬件选择和跳转。
-5. 下一阶段接入 CAN/UDS 或 UART 通讯，实现完整在线升级。
+5. UART 已完成 A v1 到物理 Bank1/B v2 的真实全量下载、回读校验和提交；下一步完成 POR 后启动确认、B -> A 回写及故障注入矩阵。
 
 ## 2. 当前进度
 
@@ -31,7 +31,7 @@
 | 代码已有，未完整验证 | pending/confirm/rollback | 使用 DFlash 保存状态，仍需故障注入测试 |
 | 已完成并通过构建/模拟测试 | UART 通讯升级 | FCUART1 RX ISR、2 KB ring、COBS/CRC32、sequence/offset、ACK/NACK、timeout |
 | 已完成并通过自动化测试 | PC 升级工具 | package parser、SerialTransport、OtaClient、UpgradeController、CLI、PySide6 GUI、模拟设备 |
-| 待板级验收 | A/B 串口实流升级 | 软件闭环、A/B 构建和 31 项测试已通过；START 擦除显示、180 秒等待和长擦除会话时间戳已修正，仍需按 `Tools/UART_OTA_HW_TEST.md` 执行 POR/掉电用例 |
+| A -> B 实流写入已上板验证，完整验收继续 | A/B 串口实流升级 | 2026-07-20 经 COM7 将 2,093,056-byte B v2 `.pkg` 写入物理 Bank1 `0x01200000`，约 476.8 s、4.3 KiB/s；payload 回读 CRC、header body、最终 indicator 均成功并返回 `WAIT_POR`。POR 后 B 启动、B -> A 和掉电用例仍待执行 |
 
 ## 3. 已确认的硬件与 Demo 板规则
 
@@ -224,7 +224,7 @@ HEARTBEAT APP B count=0x00000001 PC=0x010xxxxx LED=LED2/PTD31
 ## 11. 已知问题和风险
 
 1. LED 管脚和高电平有效已由 BGA320 Demo Board V1.1 原理图确认；最新固件已编译，仍需在板上确认三路实际丝印对应关系和闪烁现象。
-2. UART RX、协议和Host已经实现并编译/模拟测试，但尚未在当前板上完成真实 `.pkg` 全量传输。
+2. UART RX、协议和 Host 已完成当前板真实 `.pkg` 全量传输，A v1 -> B v2 写入、回读 CRC、indicator 提交和 `WAIT_POR` 已验证；POR 后 B v2 启动、B -> A v3、断传/掉电和错误注入仍未完成。
 3. 4MDDT1C按两个独立Bank处理：一个Bank执行、另一个Bank读写；当前不增加跨Bank RAM/ITCM搬移约束。
 4. Flash API继续使用硬件remap后的CPU访问地址；GET_INFO和启动日志另行报告固定物理Bank地址，板测需重点核对B运行时写A的反向路径。
 5. `OTA_DEMO_AUTO_CONFIRM` 当前默认开启，不适合验证失败启动和自动回滚。
@@ -244,7 +244,8 @@ HEARTBEAT APP B count=0x00000001 PC=0x010xxxxx LED=LED2/PTD31
 - [x] CLI和PySide6 GUI共用UpgradeController。
 - [x] Python模拟设备及拆包/粘包、CRC、重复、丢包、timeout、NACK、版本和完整升级测试。
 - [ ] LED3 显示下载、写入、校验成功和错误状态。
-- [ ] 完成 APP A -> APP B 的在线下载和 POR 切换。
+- [x] 完成 APP A -> APP B 的在线下载、回读校验、indicator 提交和 `WAIT_POR`。
+- [ ] 完成真实 POR 后 APP B 启动确认，并继续 B -> A 回写。
 
 ### P1：工程化 CAN/UDS
 
@@ -275,7 +276,7 @@ HEARTBEAT APP B count=0x00000001 PC=0x010xxxxx LED=LED2/PTD31
 
 该闭环同时证明通讯传输、Flash 写入、断电安全、硬件 Version 选择、Bank Swap 和新版本确认，不只是证明两个预烧录 HEX 之间可以跳转。
 
-## 14. IDE HEX OTA 打包器与当前板测故障
+## 14. IDE HEX OTA 打包器与 UART 实流板测
 
 已增加 `Tools/ota_host/ide_hex.py`、`package_cli.py` 和 `package_gui.py`，以及可双击启动的
 `Tools/run_ide_hex_ota_packer.bat`。该工具直接读取 FCIDE 本次编译生成的单 Bank Intel HEX，
@@ -288,10 +289,24 @@ HEX 未触发完整 Bank 擦除而残留旧字节。
 打包成功后自动切回 UART OTA 页并加载新生成的 `.pkg`；独立窗口和 CLI 继续复用同一个
 `PackageWidget`/`ide_hex.py` 核心，不维护第二套打包逻辑。
 
-2026-07-17 板测确认：打包 APP A 可正常打印 `image_valid=1`，但打印启动信息后 MCU 进入
-HardFault，导致 LED 停止且 Host HELLO 超时。J-Link 只读现场为 `CFSR=0x00000400`
-（BusFault IMPRECISERR）、`HFSR=0x40000000`，异常堆栈 PC `0x01003C34` 位于
-`ota_flash_erase_absolute()` 返回后的 cache maintenance 路径。原始 IDE HEX 因
-`image_valid=0` 使 `ota_mark_confirmed()` 提前返回，所以未暴露该问题。当前结论是正式 HEX 的
-入口、程序区、FCUART1 向量和 OTA header 均正确；P0 阻塞项是自动 confirmed DFlash 写入及
-Flash/cache 故障，不能通过退回无效 header 规避。
+2026-07-17 板测曾确认：打包 APP A 可正常打印 `image_valid=1`，但自动 confirmed 的 DFlash
+写入后进入 HardFault。J-Link 现场为 `CFSR=0x00000400`（BusFault IMPRECISERR）、
+`HFSR=0x40000000`，异常 PC 位于 `ota_flash_erase_absolute()` 返回后的 cache maintenance。
+修复后仅在 Cortex-M7 cache 实际启用时执行对应的范围失效；没有有效 OTA state 的工厂基线不再
+无条件擦写 DFlash，同 slot/version 的 confirmed 操作保持幂等。修复后的正式 A HEX 可持续运行，
+`CFSR/HFSR=0`，HELLO/GET_INFO 正常。
+
+2026-07-20 首次真实 `START_UPDATE` 又在 `0x01201000` 返回 `FLASH_ERROR`。J-Link 现场证明
+`0x01200000` 的首个 4 KiB 扇区已成功、第二个扇区失败，Flash 控制器保持 idle 且无 CPU Fault。
+根因是厂商 `FLASHDRIVER_SyncErase/SyncWrite` 每完成一次操作就重新锁地址，但 T1C 的大部分
+PFlash 使用 64 KiB coarse-lock：将多个 4 KiB 扇区放进一次同步擦除后，第一个扇区的 relock
+会锁住同一 64 KiB 区域内的后续扇区。OTA Flash 适配层现改为每次只调用一个 4 KiB 擦除扇区，
+并在每次调用前重新解锁；写入同理限制在单个最多 128-byte 编程页内。厂商驱动和 NVR 地址规则
+均未修改。
+
+修复后 A v1 -> B v2 实流完成：COM7/115200 传输 2,093,056 bytes，平均约 4.3 KiB/s，总耗时
+约 476.8 s；目标固定物理地址为 `0x01200000`。MCU 完成 payload 流 CRC、PFlash 回读 CRC、
+header body 回读和最后 16-byte hardware indicator 提交，上位机收到
+`WAIT_POR: target B physical 0x01200000, version 0x00000002`。该结果证明 UART 到真实 PFlash B
+的完整写入闭环可行；截至本记录，POR 后读取 B v2 启动信息仍需单独留证，不能把 `WAIT_POR`
+等同于已经完成 Bank Swap。

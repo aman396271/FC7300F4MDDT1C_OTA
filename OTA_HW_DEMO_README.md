@@ -203,6 +203,27 @@ The PC implementation is under `Tools/ota_host`; its CLI and PySide6 GUI share
 one `UpgradeController`. See `Tools/ota_host/PROTOCOL.md` and
 `Tools/UART_OTA_HW_TEST.md`.
 
+## Verified UART Write Result (2026-07-20)
+
+The BGA320 board completed a real A v1 to B v2 UART update over COM7 at
+115200 8-N-1. The host transferred the complete 2,093,056-byte `app_b.pkg` to
+fixed physical Bank1 at `0x01200000`; average throughput was about 4.3 KiB/s
+and total time was about 476.8 seconds. The MCU passed the streaming CRC,
+PFlash readback CRC, header-body readback, and final 16-byte hardware indicator
+commit, then returned `WAIT_POR` for version `0x00000002`.
+
+Hardware testing exposed a vendor-driver relock mismatch: most T1C PFlash
+uses a 64 KiB coarse lock while erase sectors are 4 KiB. The synchronous
+driver relocks after each completed operation, so a multi-sector call erased
+`0x01200000` and then failed at `0x01201000`. `ota_flash.c` now issues one
+4 KiB erase per call and re-unlocks immediately before every call. Programming
+is similarly split so no driver call crosses a 128-byte program page. The SDK
+driver, NVR contents, Bank layout, and indicator rules remain unchanged.
+
+This result proves the complete transport-to-physical-B write and commit path.
+It does not by itself claim that Bank Swap has occurred: the acceptance record
+still requires a physical POR followed by B v2 boot/GET_INFO evidence.
+
 ## Expected Logs
 
 Normal upgrade:

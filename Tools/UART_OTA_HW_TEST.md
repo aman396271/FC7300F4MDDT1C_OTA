@@ -143,13 +143,19 @@ python -m Tools.ota_host.cli --port COM7 upgrade out\ota_package\a\app_a.pkg
 | `0x01000000` | `0x01200000` | Bank1/B | Bank0/A |
 | `0x01200000` | `0x01000000` | Bank0/A | Bank1/B |
 
-建议在调试器中给 `FLASHDRIVER_SyncErase` 设置断点，记录其 `u32Address/u32Length`。长度应为 `0x00200000`，地址必须等于 inactive Bank 的当前 CPU access base；同时用 `GET_INFO` 的 fixed physical 字段标记实际目标。任何一次 active Bank 擦除都判定验收失败。
+建议在调试器中给 `FLASHDRIVER_SyncErase` 设置断点，记录每次 `u32Address/u32Length`。由于 T1C
+厂商驱动会在每次操作后按 coarse-lock 粒度重新锁定，OTA 适配层按单扇区调用：2 MB Bank 共
+512 次 4 KiB 擦除，`u32Length` 应始终为 `0x1000`，地址覆盖 inactive Bank 的当前 CPU access
+范围。`FLASHDRIVER_SyncWrite` 每次不得跨越 128-byte 编程页，长度必须为 8-byte 对齐且不大于
+`0x80`。同时用 `GET_INFO` 的 fixed physical 字段标记实际目标；任何一次 active Bank 擦除都
+判定验收失败。
 
 ## 8. 验收记录
 
 | 用例 | 结果 | 日志/日期 |
 | --- | --- | --- |
-| A v1 → B v2，POR 后运行 B | 待执行 | |
+| A v1 → B v2 完整下载、CRC/indicator 提交、`WAIT_POR` | 已通过 | 2026-07-20，COM7，2,093,056 bytes，物理目标 `0x01200000`，约 476.8 s |
+| A v1 → B v2，POR 后运行 B | 待留证 | 尚未记录 POR 后 `GET_INFO`/启动日志 |
 | B v2 → A v3，POR 后运行 A | 待执行 | |
 | OTA_EN=0 明确拒绝 | 待执行 | |
 | 低版本拒绝且未擦除 | 待执行 | |
@@ -159,5 +165,21 @@ python -m Tools.ota_host.cli --port COM7 upgrade out\ota_package\a\app_a.pkg
 | FINISH CRC 错误不写 indicator | 待执行 | |
 | 重复 DATA 不重复写入 | 待执行 | |
 | 所有擦除均只命中 inactive Bank | 待执行 | |
+
+### 8.1 2026-07-20 A -> B 实流记录
+
+1. 初始设备：A/Bank0 active，`active_physical=0x01000000`，目标 B/Bank1，
+   `target_physical=0x01200000`，A/version=`0x00000001`，B/version=`0xFFFFFFFF`，`OTA_EN=1`。
+2. 输入包：`out/ab_demo/app_b.pkg`，版本 `0x00000002`，payload 2,093,056 bytes。
+3. 首次 START 在 `0x01201000` 返回 `FLASH_ERROR`。J-Link 证明首个 `0x1000` 扇区已擦除、
+   第二扇区因厂商驱动 coarse-lock relock 失败，没有命中 active Bank。
+4. 修复 `ota_flash.c`：擦除逐 4 KiB 扇区解锁/调用；编程逐不跨 128-byte 页解锁/调用；
+   cache 未启用时不执行 cache maintenance。
+5. 修复后完整擦除成功，DATA 全量 ACK，平均约 4.3 KiB/s，总耗时约 476.8 s。
+6. FINISH 日志：`Verifying programmed image and committing version indicator`，随后
+   `Upgrade committed; physical POR is required`。
+7. 最终返回：`WAIT_POR: target B physical 0x01200000, version 0x00000002`。
+8. 本记录证明真实 Bank B 写入、回读 CRC 和最终 indicator 提交可行；Bank Swap 仍以 POR 后
+   `active_physical=0x01200000`、`active_access=0x01000000` 和 B v2 启动日志为最终证据。
 
 只有上述板级项目全部留下证据后，才能把“UART 实流 OTA”从“待板级验收”改为“已完成”。

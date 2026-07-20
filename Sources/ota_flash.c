@@ -9,6 +9,25 @@
 static FLASH_HandleType s_flash_handle;
 static bool s_flash_initialized;
 
+static void ota_flash_invalidate_cache_range(uint32_t addr, uint32_t len)
+{
+    /*
+     * The demo startup does not enable either Cortex-M7 cache.  Calling the
+     * whole-cache set/way maintenance routine while D-cache is disabled caused
+     * a BusFault IMPRECISERR on the board after the first DFlash erase.  Only
+     * invalidate when the corresponding cache is actually enabled, and use
+     * the modified address range instead of cleaning unrelated dirty lines.
+     */
+    if ((SCB->CCR & SCB_CCR_IC_Msk) != 0UL)
+    {
+        SCB_InvalidateICache();
+    }
+    if (((SCB->CCR & SCB_CCR_DC_Msk) != 0UL) && (len > 0UL))
+    {
+        SCB_InvalidateDCache_by_Addr((volatile void *)addr, (int32_t)len);
+    }
+}
+
 static ota_status_t ota_flash_status_to_ota(FLASH_StatusType status)
 {
     return (status == FLASH_ERROR_OK) ? OTA_OK : OTA_ERR_FLASH;
@@ -64,39 +83,54 @@ static ota_status_t ota_flash_erase_absolute(uint32_t addr, uint32_t len, FLASH_
 {
     FLASH_DRIVER_ParamType param;
     ota_status_t status;
-    uint32_t primask;
+    uint32_t sector_size;
+    uint32_t offset;
 
-    status = ota_flash_unlock_range(addr, len, type);
-    if (status != OTA_OK)
+    sector_size = (type == PFlash) ? PFLASH_ERASE_SECTOR_SIZE : DFLASH_ERASE_SECTOR_SIZE;
+    if ((len == 0UL) || (!ota_is_aligned(addr, sector_size)) ||
+        (!ota_is_aligned(len, sector_size)))
     {
-        return status;
+        return OTA_ERR_RANGE;
     }
 
-    param.u32Address = addr;
-    param.u32Length = len;
-    param.pData = 0;
-    param.wdTriggerFct = 0;
-    param.u32ErrorAddress = 0UL;
-
-    primask = __get_PRIMASK();
-    __disable_irq();
-    status = ota_flash_status_to_ota(FLASHDRIVER_SyncErase(&s_flash_handle, &param));
-    if (primask == 0UL)
+    /*
+     * The T1C driver locks the completed address after every sector, while
+     * most of PFlash uses a 64 KiB coarse-lock bit for multiple 4 KiB erase
+     * sectors (DFlash has the same mismatch at 8 KiB versus 2 KiB).  Passing
+     * a multi-sector range therefore makes the second sector fail as locked.
+     * Re-unlock for each single-sector driver call so the vendor driver's
+     * automatic relock cannot block the following sector.
+     */
+    for (offset = 0UL; offset < len; offset += sector_size)
     {
-        __enable_irq();
+        status = ota_flash_unlock_range(addr + offset, sector_size, type);
+        if (status != OTA_OK)
+        {
+            return status;
+        }
+
+        param.u32Address = addr + offset;
+        param.u32Length = sector_size;
+        param.pData = 0;
+        param.wdTriggerFct = 0;
+        param.u32ErrorAddress = 0UL;
+
+        status = ota_flash_status_to_ota(FLASHDRIVER_SyncErase(&s_flash_handle, &param));
+        if (status != OTA_OK)
+        {
+            return status;
+        }
     }
 
-    SCB_InvalidateICache();
-    SCB_CleanInvalidateDCache();
-
-    return status;
+    ota_flash_invalidate_cache_range(addr, len);
+    return OTA_OK;
 }
 
 static ota_status_t ota_flash_program_absolute(uint32_t addr, const void *data, uint32_t len)
 {
     FLASH_DRIVER_ParamType param;
     ota_status_t status;
-    uint32_t primask;
+    uint32_t offset;
 
     if ((data == 0) || (len == 0UL))
     {
@@ -109,36 +143,49 @@ static ota_status_t ota_flash_program_absolute(uint32_t addr, const void *data, 
         return OTA_ERR_RANGE;
     }
 
-    status = ota_flash_unlock_range(addr, len, PFlash);
-    if (status != OTA_OK)
-    {
-        return status;
-    }
-
-    param.u32Address = addr;
-    param.u32Length = len;
-    param.pData = (uint8_t *)data;
-    param.wdTriggerFct = 0;
-    param.u32ErrorAddress = 0UL;
-
     /*
-     * The SDK ROM API performs the program operation, but interrupts are kept
-     * masked so an ISR cannot fetch from a PFlash bank while it is being
-     * programmed.  If the final product enables flash RWW/hold constraints,
-     * place this wrapper in RAM and add the RM-mandated hold configuration.
+     * SyncWrite has the same automatic relock behavior as SyncErase.  Keep
+     * every call inside one 128-byte programming page and unlock immediately
+     * before it.  The caller-facing API remains an arbitrary 8-byte-aligned
+     * range.
      */
-    primask = __get_PRIMASK();
-    __disable_irq();
-    status = ota_flash_status_to_ota(FLASHDRIVER_SyncWrite(&s_flash_handle, &param));
-    if (primask == 0UL)
+    offset = 0UL;
+    while (offset < len)
     {
-        __enable_irq();
+        uint32_t current_addr = addr + offset;
+        uint32_t page_remaining = FLASH_PROGRAM_PAGE_MAX_SIZE -
+                                  (current_addr & (FLASH_PROGRAM_PAGE_MAX_SIZE - 1UL));
+        uint32_t chunk_len = len - offset;
+
+        if (chunk_len > page_remaining)
+        {
+            chunk_len = page_remaining;
+        }
+
+        status = ota_flash_unlock_range(current_addr, chunk_len, PFlash);
+        if (status != OTA_OK)
+        {
+            return status;
+        }
+
+        param.u32Address = current_addr;
+        param.u32Length = chunk_len;
+        param.pData = &((uint8_t *)data)[offset];
+        param.wdTriggerFct = 0;
+        param.u32ErrorAddress = 0UL;
+
+        /* The FC7300F4MDDT1C uses independent Banks for active execution and target writes. */
+        status = ota_flash_status_to_ota(FLASHDRIVER_SyncWrite(&s_flash_handle, &param));
+        if (status != OTA_OK)
+        {
+            return status;
+        }
+
+        offset += chunk_len;
     }
 
-    SCB_InvalidateICache();
-    SCB_CleanInvalidateDCache();
-
-    return status;
+    ota_flash_invalidate_cache_range(addr, len);
+    return OTA_OK;
 }
 
 ota_status_t ota_flash_init(void)
@@ -427,6 +474,6 @@ ota_status_t ota_dflash_write_state(const void *data, uint32_t len)
         offset += copy_len;
     }
 
-    SCB_CleanInvalidateDCache();
+    ota_flash_invalidate_cache_range(OTA_STATE_FLASH_ADDR, aligned_len);
     return OTA_OK;
 }
