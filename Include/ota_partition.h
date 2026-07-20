@@ -8,11 +8,14 @@
 
 ota_slot_t ota_get_active_slot(void);
 ota_slot_t ota_get_inactive_slot(void);
+uint32_t ota_get_slot_physical_base(ota_slot_t slot);
+uint32_t ota_get_slot_access_base(ota_slot_t slot);
 uint32_t ota_get_slot_base(ota_slot_t slot);
 uint32_t ota_get_slot_end(ota_slot_t slot);
 uint32_t ota_get_slot_header_addr(ota_slot_t slot);
 uint32_t ota_get_slot_version_addr(ota_slot_t slot);
 ota_status_t ota_read_slot_header(ota_slot_t slot, ota_image_header_t *header);
+bool ota_is_slot_hardware_valid(ota_slot_t slot);
 bool ota_is_slot_valid(ota_slot_t slot);
 int ota_compare_version(uint32_t v1, uint32_t v2);
 uint32_t ota_get_fmc_ota_ctrl(void);

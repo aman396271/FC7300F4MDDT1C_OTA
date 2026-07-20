@@ -41,15 +41,23 @@ class NvrConfigToolTests(unittest.TestCase):
                 "low_end": "0x010FFFFF",
                 "high_start": "0x01100000",
                 "high_end": "0x011FFFFF",
-                "version_offset": "0x000FF008",
+                "version_offset": "0x000FF000",
                 "version_select": "high",
             },
         )
         differences = tool.word_diff(self.memory, output, tool.NVR_BASE, tool.NVR_SIZE)
         self.assertEqual([item["register"] for item in differences], ["OTAC0", "OTAC_HIGH0"])
-        self.assertEqual(tool.read_word(output, 0x04400100), 0xFFFFF008FFFF80EA)
+        self.assertEqual(tool.read_word(output, 0x04400100), 0xFFFFF000FFFF80EA)
         self.assertEqual(tool.read_word(output, 0x04400108), 0xFFFFFFFFFFFF8055)
-        self.assertEqual(report["effective_bank_offset"], "0x1FF008")
+        self.assertEqual(report["effective_bank_offset"], "0x1FF000")
+
+    def test_ota_indicator_offset_requires_16_byte_alignment(self) -> None:
+        with self.assertRaisesRegex(ValueError, "16-byte aligned"):
+            tool.apply_ota_config(
+                dict(self.memory),
+                tool.NVR_BASE,
+                {"version_offset": "0x000FF008", "version_select": "high"},
+            )
 
     def test_sensitive_register_requires_explicit_acknowledgement(self) -> None:
         with self.assertRaisesRegex(ValueError, "sensitive NVR word"):

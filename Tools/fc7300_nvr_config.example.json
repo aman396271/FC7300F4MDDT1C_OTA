@@ -14,7 +14,7 @@
     "low_end": "0x010FFFFF",
     "high_start": "0x01100000",
     "high_end": "0x011FFFFF",
-    "version_offset": "0x000FF008",
+    "version_offset": "0x000FF000",
     "version_select": "high"
   }
 }

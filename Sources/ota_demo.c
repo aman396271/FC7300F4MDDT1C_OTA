@@ -57,8 +57,16 @@ ota_status_t ota_demo_get_info(ota_demo_info_t *info)
     info->fmc_ota_ctrl = ota_get_fmc_ota_ctrl();
     info->fmc_ota_ver_loc = ota_get_fmc_ota_version_location();
     info->fmc_ota_act_ver = ota_get_fmc_ota_active_version();
+    info->active_physical_base = ota_get_slot_physical_base(info->active_slot);
+    info->inactive_physical_base = ota_get_slot_physical_base(info->inactive_slot);
+    info->active_access_base = ota_get_slot_access_base(info->active_slot);
+    info->inactive_access_base = ota_get_slot_access_base(info->inactive_slot);
+    info->execution_vma = OTA_SLOT_LOW_BASE;
+    info->max_image_size = OTA_IMAGE_PAYLOAD_MAX_SIZE;
     info->ota_enabled = ota_is_hardware_ota_enabled() ? 1U : 0U;
     info->ota_locked = ota_is_hardware_ota_locked() ? 1U : 0U;
+    info->low_hw_valid = ota_is_slot_hardware_valid(OTA_SLOT_LOW) ? 1U : 0U;
+    info->high_hw_valid = ota_is_slot_hardware_valid(OTA_SLOT_HIGH) ? 1U : 0U;
     info->low_valid = ota_is_slot_valid(OTA_SLOT_LOW) ? 1U : 0U;
     info->high_valid = ota_is_slot_valid(OTA_SLOT_HIGH) ? 1U : 0U;
 
@@ -76,15 +84,24 @@ ota_status_t ota_demo_get_info(ota_demo_info_t *info)
 
 ota_status_t ota_demo_install_package(const void *package, uint32_t len)
 {
+    const uint8_t *bytes = (const uint8_t *)package;
+    ota_image_header_t header;
     ota_status_t status;
 
-    status = ota_begin_update();
+    if ((package == 0) || (len < sizeof(ota_image_header_t)))
+    {
+        return OTA_ERR_PARAM;
+    }
+
+    (void)memcpy(&header, bytes, sizeof(header));
+    status = ota_begin_update(&header);
     if (status != OTA_OK)
     {
         return status;
     }
 
-    status = ota_write_chunk(package, len);
+    status = ota_write_chunk(&bytes[sizeof(ota_image_header_t)],
+                             len - (uint32_t)sizeof(ota_image_header_t));
     if (status != OTA_OK)
     {
         (void)ota_abort_update();
@@ -96,18 +113,25 @@ ota_status_t ota_demo_install_package(const void *package, uint32_t len)
 
 ota_status_t ota_demo_write_package_half_and_stop(const void *package, uint32_t len)
 {
+    const uint8_t *bytes = (const uint8_t *)package;
+    ota_image_header_t header;
     ota_status_t status;
     uint32_t half_len;
 
-    status = ota_begin_update();
+    if ((package == 0) || (len < sizeof(ota_image_header_t)))
+    {
+        return OTA_ERR_PARAM;
+    }
+
+    (void)memcpy(&header, bytes, sizeof(header));
+    status = ota_begin_update(&header);
     if (status != OTA_OK)
     {
         return status;
     }
 
-    half_len = len / 2UL;
-    half_len &= ~(PFLASH_PROGRAM_PAGE_MIN_SIZE - 1UL);
-    status = ota_write_chunk(package, half_len);
+    half_len = (len - (uint32_t)sizeof(ota_image_header_t)) / 2UL;
+    status = ota_write_chunk(&bytes[sizeof(ota_image_header_t)], half_len);
 
     /*
      * Keep the partially written inactive slot without writing the final header.

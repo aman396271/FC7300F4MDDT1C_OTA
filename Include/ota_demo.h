@@ -13,8 +13,16 @@ typedef struct
     uint32_t fmc_ota_ctrl;
     uint32_t fmc_ota_ver_loc;
     uint32_t fmc_ota_act_ver;
+    uint32_t active_physical_base;
+    uint32_t inactive_physical_base;
+    uint32_t active_access_base;
+    uint32_t inactive_access_base;
+    uint32_t execution_vma;
+    uint32_t max_image_size;
     uint32_t low_version;
     uint32_t high_version;
+    uint8_t low_hw_valid;
+    uint8_t high_hw_valid;
     uint8_t low_valid;
     uint8_t high_valid;
     uint8_t ota_enabled;

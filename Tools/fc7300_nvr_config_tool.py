@@ -467,9 +467,9 @@ def apply_ota_config(memory: MutableMapping[int, int], base: int, ota: Mapping[s
     high_end = ota_block(ota.get("high_end", "0x011FFFFF"), "ota0.high_end", True)
     if low_end < low_start or high_end < high_start:
         raise ValueError("ota0 end block must be greater than or equal to its start block")
-    version_offset = parse_int(ota.get("version_offset", "0x000FF008"), "ota0.version_offset")
-    if version_offset < 0 or version_offset + 16 > PFLASH_HALF_SIZE or version_offset & 0x3:
-        raise ValueError("ota0.version_offset must be word aligned and leave 16 bytes inside the selected 1 MB half")
+    version_offset = parse_int(ota.get("version_offset", "0x000FF000"), "ota0.version_offset")
+    if version_offset < 0 or version_offset + 16 > PFLASH_HALF_SIZE or version_offset & 0xF:
+        raise ValueError("ota0.version_offset must be 16-byte aligned and leave 16 bytes inside the selected 1 MB half")
     version_select = parse_ota_select(ota.get("version_select", "high"))
     if not 0 <= version_select <= 0xFF:
         raise ValueError("ota0.version_select must fit in 8 bits")
@@ -734,7 +734,7 @@ def command_init(args: argparse.Namespace) -> int:
             "low_end": "0x010FFFFF",
             "high_start": "0x01100000",
             "high_end": "0x011FFFFF",
-            "version_offset": "0x000FF008",
+            "version_offset": "0x000FF000",
             "version_select": "high",
         },
     }

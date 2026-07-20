@@ -1,5 +1,8 @@
 # FC7300F4MDDT1C Hardware OTA Demo
 
+Current implementation status, maintenance rules, verified results, and the
+next communication OTA tasks are tracked in `DEVELOPMENT_STATUS.md`.
+
 ## Existing Code Confirmed
 
 | Path | Symbol | Role | Reuse |
@@ -13,7 +16,7 @@
 | `Template/Driver/Include/module_driver_flash.h` | `FLASHDRIVER_Init`, `FLASHDRIVER_SyncErase`, `FLASHDRIVER_SyncWrite`, `FLASHDRIVER_Lock` | Flash erase/program API | Yes |
 | `Template/Driver/Source/module_driver_flash.c` | `FLASHDRIVER_EraseCheck`, `FLASHDRIVER_WriteCheck`, `NVRDRIVER_*` | SDK range/alignment checks | Yes |
 | `Template/HwA/Include/HwA_sec.h` | `SEC_HWA_EnReadB0NVR`, `SEC_HWA_EnWriteB0NVR`, `SEC_HWA_EnEraseB0NVR` | NVR permission helpers | Not used by runtime demo |
-| `Startup/FC7300_flash.ld` | `PFLASH_0`, `.isr_vector`, `.text` | Linker layout | Modified |
+| `Startup/FC7300_flash_A.ld`, `Startup/FC7300_flash_B.ld` | `.isr_vector`, `.text`, A/B VMA and LMA | Independent Bank0/Bank1 linker layouts | Yes |
 | `Startup/startup_FC7300.S` | `cpsid i`, `cpsie i` | Interrupt mask pattern | SDK/CMSIS reused |
 
 No FC7300 runtime NVR OTAC programming API was found in this project. The offline tool in `Tools/fc7300_nvr_config_tool.py` generates a complete NVR image from the reviewed default HEX; program it with the official device programming flow before using hardware swap.
@@ -28,21 +31,47 @@ Bank size: `0x00200000`
 
 Header sector offset inside each 2 MB bank: `0x001ff000`
 
-Effective OTA indicator offset inside each 2 MB bank: `0x001ff008`
+Effective OTA indicator offset inside each 2 MB bank: `0x001ff000`
 
-NVR raw version offset for OTAC0[51:32]: `0x000ff008`
+NVR raw version offset for OTAC0[51:32]: `0x000ff000`
 
 OTAC_HIGH0 version select: high 1 MB (`OTAC_HIGH0[7:0] != 0xAA`)
 
-Bank0 version address: `0x011ff008`
+Bank0 version address: `0x011ff000`
 
-Bank1 version address: `0x013ff008`
+Bank1 version address: `0x013ff000`
 
 DFlash state sector: `0x0403f800 .. 0x0403ffff`
 
 The source constants describe the physical Bank0/Bank1 images.  Runtime access is remap-aware: if Bank1 is active, Bank1 is read through the low logical boot window and the inactive Bank0 is accessed through the high logical window.
 
 The DFlash state records `pending/confirmed/boot_attempts`; it never replaces the PFlash OTA indicator used by hardware OTA selection.
+
+## BGA320 Demo Board Wiring
+
+The board mapping is taken from
+`../02_MD/FC7300F4MDDT1C_BGA320_Demo_Board_SCH_V1.1.pdf` in the development
+workspace. The PDF filename and
+change history identify V1.1, while the page title blocks still say
+`FC600_BGA320_Demo_Board`, revision `0.1`. This project names the target board
+by its fitted FC7300F4MDDT1C device and keeps that schematic naming mismatch
+visible instead of silently treating the title block as another board.
+
+The onboard USB Type-C port connects to UART1 through a CH340C. Signal
+directions are always stated from the MCU point of view:
+
+| Function | MCU pin | Schematic net | Connection |
+|---|---|---|---|
+| FCUART1 TX | PTA18 / PD2 | `PTA18_PD2_UART1_to_USB_TX` | Drives the CH340C RX path |
+| FCUART1 RX | PTA19 / PD3 | `PTA19_PD3_UART1_to_USB_RX` | Receives from the CH340C TX path |
+| LED1 | PTA26 / PL5 | `PTA26_PL5_LED1` | Active-high N-MOSFET gate drive |
+| LED2 | PTD31 / PE13 | `PTD31_PE13_LED2` | Active-high N-MOSFET gate drive |
+| LED3 | PTA14 / PE10 | `PTA14_PE10_LED3` | Active-high N-MOSFET gate drive |
+
+Each discrete LED is supplied from `VDD_HV_A_misc` through its resistor and
+switched to ground by an N-MOSFET. The MCU drives the MOSFET gate through a
+1 kOhm resistor with a 31.6 kOhm pull-down, so GPIO high means LED on; these
+are not direct GPIO-to-LED loads.
 
 ## Image Format
 
@@ -55,44 +84,63 @@ Flash slot:
 
 1. Payload at slot base
 2. Header at `slot_base + 0x001ff000`
-3. RM Table 55 OTA indicator at `slot_base + 0x001ff008`
+3. RM Table 55 OTA indicator at `slot_base + 0x001ff000`
 
-The first 16 bytes at `slot_base + 0x001ff008` are hardware-visible:
+The first 16 bytes at `slot_base + 0x001ff000` are hardware-visible and stay
+inside one 128-bit-aligned PFlash line:
 
 1. `version`
 2. `~version`
 3. F4MDD valid code `0xFC60FACE88886666`
 
-The final header write is the validity boundary. If power is lost before the header sector is programmed, the inactive slot has no valid header/version and the old active slot remains bootable.
+The final aligned 16-byte hardware indicator write is the validity boundary.
+Firmware first programs and verifies the payload, records pending, writes header
+bytes `0x10..0x7f`, verifies that body, and only then programs
+`version/~version/valid-code`. If power is lost before that final record, the
+inactive slot has no valid hardware version and the old active slot remains
+bootable.
 
 ## Link And Generate Images
 
-Both A and B apps use the same VMA: `0x01000000`. Hardware remap makes the selected physical slot appear at the same logical boot address.
+Both A and B apps use the same VMA: `0x01000000`. Hardware remap makes the selected physical slot appear at the same logical boot address. Do not give APP B a `0x01200000` linker VMA; only its programming/package address is high.
 
-For the default-NVR-to-OTA-NVR POR demonstration, generate the observable A/B
-applications and one combined PFlash HEX:
+The FCIDE project provides two independent build configurations:
+
+| Configuration | Compile definition | ELF output | Logical VMA |
+|---|---|---|---|
+| `Debug_FLASH_A` | `OTA_BUILD_VARIANT=0` | `OTA_7300F4MDDT1C_260707_APP_A.elf` | `0x01000000` |
+| `Debug_FLASH_B` | `OTA_BUILD_VARIANT=1` | `OTA_7300F4MDDT1C_260707_APP_B.elf` | `0x01000000` |
+
+They share `Sources`, `Include`, `Template`, and startup source code, but select
+different linker scripts: `Startup/FC7300_flash_A.ld` for Bank0 and
+`Startup/FC7300_flash_B.ld` for Bank1. This keeps fixes synchronized while
+giving each app its own objects, ELF, HEX and IDE debug symbols. After an
+external update to `.cproject`, refresh or reopen the FCIDE project so both
+configurations appear.
+
+Versions are maintained only in `Tools/ota_versions.json`. The generated
+`Include/ota_version_autogen.h` feeds the runtime and linked ELF header; the
+packer reads the linked version instead of accepting another version argument.
+
+Build `Debug_FLASH_A` and `Debug_FLASH_B` once in FCIDE, then generate the
+observable A/B applications and physical-bank HEX files:
 
 ```sh
 python Tools/build_ab_demo.py
 ```
 
-This produces `Artifacts/FC7300_AB_PFlash_Demo.hex`: APP A is placed in physical
-Bank0 with hardware version `0x00010000`; APP B is placed in physical Bank1 with
-hardware version `0x00020000`. The major demo version is kept in bits 31:16 so
-the 16-bit `FMC_OTA_ACT_VER` exposes `1` or `2`. See
-`Tools/AB_POR_SWAP_TEST.md` for the exact programming order.
+This produces:
 
-Build the project normally in `Debug_FLASH`, then convert ELF to binary and patch:
+- `Artifacts/FC7300_APP_A_Bank0.hex`: packed APP A at physical `0x01000000`.
+- `Artifacts/FC7300_APP_B_Bank1.hex`: packed APP B at physical `0x01200000`.
+- `Artifacts/FC7300_AB_PFlash_Demo.hex`: both physical banks combined.
 
-```sh
-arm-none-eabi-objcopy --gap-fill 0xFF -O binary OTA_7300F4MDDT1C_260707.elf app.bin
-python Tools/pack_hw_ota_image.py app.bin --version 0x00010000 --out-prefix out/app_v1
-python Tools/pack_hw_ota_image.py app.bin --version 0x00020000 --out-prefix out/app_v2
-```
-
-Program `out/app_v1_low.bin` at `0x01000000` for Bank0 version 1.
-
-Program `out/app_v2_high.bin` at `0x01200000` for Bank1 version 2, or send `out/app_v2.pkg` to `ota_demo_install_package()`.
+APP A has hardware version `0x00000001`; APP B has hardware version
+`0x00000002`. `FMC_OTA_ACT_VER` is a 32-bit register; an FAE-confirmed
+documentation erratum corrects the older 16-bit field description. The raw
+FCIDE HEX files have the correct physical bank addresses but still contain an unfinalized software
+header CRC. Use the packed HEX files under `Artifacts` for the POR swap test.
+See `Tools/AB_POR_SWAP_TEST.md` for the exact programming order.
 
 ## Required NVR OTA Configuration
 
@@ -106,15 +154,15 @@ Configure the lower 1 MB start/end as `0x01000000 .. 0x010fffff`.
 
 Configure the upper 1 MB start/end as `0x01100000 .. 0x011fffff`.
 
-`OTAC0[51:32] = 0x000ff008`.
+`OTAC0[51:32] = 0x000ff000`.
 
-`OTAC_HIGH0[7:0]` selects the high 1 MB, so the effective version offset inside each 2 MB bank is `0x001ff008`.
+`OTAC_HIGH0[7:0]` selects the high 1 MB, so the effective version offset inside each 2 MB bank is `0x001ff000`.
 
 The same effective version offset is used in Bank0 and Bank1.
 
 Do not put the hardware OTA indicator in DFlash.
 
-Use `Tools/fc7300_nvr_config_tool.py` for a complete 2 KB NVR HEX based on the known-good default image; see `Tools/NVR_CONFIG_TOOL.md`. The older `Tools/nvr_ota_config_tool.py` remains available for OTA-only 16-byte patches and PFlash indicator records.
+Use `Tools/fc7300_nvr_config_tool.py` for a complete 2 KB NVR HEX based on the known-good default image; see `Tools/NVR_CONFIG_TOOL.md`. PFlash indicator records are generated by the application image packer through `Tools/build_ab_demo.py`.
 
 ## Commands
 
@@ -130,43 +178,85 @@ Use `Tools/fc7300_nvr_config_tool.py` for a complete 2 KB NVR HEX based on the k
 
 `force_low` / `force_high`: write `FMC->OTA_CTRL[OTA_ACTIVE]` only if OTA is enabled, target is valid, and OTA lock is clear.
 
-The EVB demo now transmits boot identity and FMC OTA status through FCUART1
-(PTA18/PTA19, 115200) and uses PTA26/PTD31 for A/B LED behavior. UART receive
-and command parsing are not wired yet; call `ota_demo_handle_command()` from a
-future transport shell or invoke the module APIs directly in a test function.
+The BGA320 Demo Board application now transmits boot identity, FMC OTA status,
+and a periodic PC heartbeat through FCUART1 (MCU TX PTA18, MCU RX PTA19,
+115200 8-N-1) using the onboard CH340C USB-UART. APP A toggles LED1/PTA26 and
+APP B toggles LED2/PTD31; both LEDs are active-high. LED3/PTA14 is initialized
+off.
+
+FCUART1 RX now uses its interrupt/FIFO path and a 2 KB software ring buffer.
+`ota_protocol.c` implements COBS-delimited CRC32 framing and `ota_service.c`
+implements HELLO, GET_INFO, START_UPDATE, DATA, FINISH, ABORT and GET_STATUS.
+Each DATA is ACKed, duplicate requests return a cached response without another
+Flash write, and offset/sequence mismatches are rejected. Heartbeat and text
+logs stop after a valid HELLO so binary frames cannot be contaminated.
+
+GET_INFO and the boot log distinguish fixed physical placement from remapped
+access/execution addresses. For example, when B is active:
+
+```text
+ACTIVE_PHYSICAL=0x01200000 ACTIVE_ACCESS=0x01000000 EXEC_VMA=0x01000000
+TARGET_PHYSICAL=0x01000000 TARGET_ACCESS=0x01200000
+```
+
+The PC implementation is under `Tools/ota_host`; its CLI and PySide6 GUI share
+one `UpgradeController`. See `Tools/ota_host/PROTOCOL.md` and
+`Tools/UART_OTA_HW_TEST.md`.
+
+## Verified UART Write Result (2026-07-20)
+
+The BGA320 board completed a real A v1 to B v2 UART update over COM7 at
+115200 8-N-1. The host transferred the complete 2,093,056-byte `app_b.pkg` to
+fixed physical Bank1 at `0x01200000`; average throughput was about 4.3 KiB/s
+and total time was about 476.8 seconds. The MCU passed the streaming CRC,
+PFlash readback CRC, header-body readback, and final 16-byte hardware indicator
+commit, then returned `WAIT_POR` for version `0x00000002`.
+
+Hardware testing exposed a vendor-driver relock mismatch: most T1C PFlash
+uses a 64 KiB coarse lock while erase sectors are 4 KiB. The synchronous
+driver relocks after each completed operation, so a multi-sector call erased
+`0x01200000` and then failed at `0x01201000`. `ota_flash.c` now issues one
+4 KiB erase per call and re-unlocks immediately before every call. Programming
+is similarly split so no driver call crosses a 128-byte program page. The SDK
+driver, NVR contents, Bank layout, and indicator rules remain unchanged.
+
+This result proves the complete transport-to-physical-B write and commit path.
+It does not by itself claim that Bank Swap has occurred: the acceptance record
+still requires a physical POR followed by B v2 boot/GET_INFO evidence.
 
 ## Expected Logs
 
 Normal upgrade:
 
 ```text
-boot: active=LOW version=0x00010000
+boot: active=LOW version=0x00000001
 update: erase HIGH
 update: write payload
-update: verify CRC OK
-update: write HIGH header/version last
-reset
-boot: active=HIGH version=0x00020000 pending attempt 1
+update: stream CRC and PFlash readback CRC OK
+update: write HIGH header body, commit 16-byte version indicator last
+host: WAIT_POR target physical=0x01200000
+physical POR
+boot: active=HIGH version=0x00000002 pending attempt 1
 app: self-test OK, confirm
 ```
 
 Power loss during upgrade:
 
 ```text
-boot: active=LOW version=0x00010000
+boot: active=LOW version=0x00000001
 update: write half payload to HIGH
-reset
-boot: active=LOW version=0x00010000
+physical POR
+boot: active=LOW version=0x00000001
 HIGH: invalid header/version
 ```
 
 Failed new boot rollback:
 
 ```text
-boot: active=HIGH version=0x00020000 pending attempt 1
-reset without confirm
+boot: active=HIGH version=0x00000002 pending attempt 1
+physical POR without confirm
 boot: pending attempt exceeded, bump LOW version to HIGH+1
-reset
+physical POR
 boot: active=LOW
 ```
 
@@ -176,7 +266,7 @@ Manual rollback:
 boot: active=HIGH
 cmd rollback
 LOW header version rewritten to active+1
-reset
+physical POR
 boot: active=LOW
 ```
 
@@ -186,9 +276,13 @@ Confirm the exact NVR OTAC0/OTAC_HIGH0 bit layout in the FC7300F4MDDT1C RM/tool 
 
 Confirm whether runtime reads of `FMC->OTA_START/END_ADDR(_HIGH)` are full logical addresses or encoded register fields.
 
-Place flash erase/program wrappers in RAM if the final memory map violates FC7300 RWW requirements.
+FC7300F4MDDT1C is currently treated as two independent Banks: execute from the
+active Bank while reading/writing the inactive Bank, without RAM/ITCM wrapper
+relocation. Keep this assumption in the hardware acceptance record.
 
-Add UART/CAN/UDS receive and command parsing for streamed App OTA packages.
+Complete the A v1 -> B v2 -> A v3 serial package and power-cut hardware matrix.
+
+CAN/ISO-TP/UDS are intentionally only extension points in this phase.
 
 Add authentication/signature checks before accepting update packages in a real bootloader.
 

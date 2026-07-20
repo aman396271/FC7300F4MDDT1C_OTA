@@ -25,17 +25,20 @@ typedef enum
     OTA_ERR_STATE = -8,
     OTA_ERR_LOCKED = -9,
     OTA_ERR_NOT_SUPPORTED = -10,
-    OTA_ERR_BUSY = -11
+    OTA_ERR_BUSY = -11,
+    OTA_ERR_NOT_ENABLED = -12,
+    OTA_ERR_SEQUENCE = -13,
+    OTA_ERR_TIMEOUT = -14
 } ota_status_t;
 
 typedef struct
 {
-    uint32_t magic;
-    uint32_t header_version;
     uint32_t version;
     uint32_t version_inverted;
     uint32_t valid_code_lo;
     uint32_t valid_code_hi;
+    uint32_t magic;
+    uint32_t header_version;
     uint32_t image_size;
     uint32_t image_crc32;
     uint32_t build_timestamp;
@@ -43,5 +46,14 @@ typedef struct
     uint32_t header_crc32;
     uint32_t reserved[21];
 } ota_image_header_t;
+
+typedef struct
+{
+    bool busy;
+    ota_slot_t target_slot;
+    uint32_t image_size;
+    uint32_t received_bytes;
+    uint32_t programmed_bytes;
+} ota_update_progress_t;
 
 #endif /* OTA_TYPES_H_ */

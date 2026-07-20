@@ -5,7 +5,7 @@
   "base_hex_file_sha256": "744DF18302AAC98E062888E35B3C7746895833ABBBDD9801D54B87BE8807FB18",
   "nvr_base": "0x04400000",
   "nvr_size": "0x800",
-  "output_binary_sha256": "5E6111422FE50288A4615F617BD6CFB840701CE45931DACB80FE9839FFD105D0",
+  "output_binary_sha256": "10D639DEBCBFC45D8072BCCC206B91E182A4F261772EADEEB4CA308866FB1E61",
   "changed_word_count": 2,
   "changed_words": [
     {
@@ -13,9 +13,9 @@
       "offset": "0x100",
       "address": "0x04400100",
       "before": "0xFFFFFFFFFFFFFFFF",
-      "after": "0xFFFFF008FFFF80EA",
+      "after": "0xFFFFF000FFFF80EA",
       "bytes_before": "FF FF FF FF FF FF FF FF",
-      "bytes_after": "EA 80 FF FF 08 F0 FF FF"
+      "bytes_after": "EA 80 FF FF 00 F0 FF FF"
     },
     {
       "register": "OTAC_HIGH0",
@@ -32,9 +32,9 @@
     "enabled": true,
     "version_select_raw": "0x55",
     "version_select_meaning": "high",
-    "raw_version_offset": "0xFF008",
-    "effective_bank_offset": "0x1FF008",
-    "otac0": "0xFFFFF008FFFF80EA",
+    "raw_version_offset": "0xFF000",
+    "effective_bank_offset": "0x1FF000",
+    "otac0": "0xFFFFF000FFFF80EA",
     "otac_high0": "0xFFFFFFFFFFFF8055"
   },
   "warnings": [

@@ -107,7 +107,21 @@ ota_status_t ota_mark_confirmed(void)
 
     if (ota_state_read(&state) != OTA_OK)
     {
-        (void)memset(&state, 0xFF, sizeof(state));
+        /* A factory/baseline image has nothing pending and needs no DFlash write. */
+        return OTA_OK;
+    }
+
+    if (state.flag == OTA_STATE_FLAG_CONFIRMED)
+    {
+        return (((ota_slot_t)state.slot == active) && (state.version == header.version))
+            ? OTA_OK
+            : OTA_ERR_STATE;
+    }
+    if ((state.flag != OTA_STATE_FLAG_PENDING) ||
+        ((ota_slot_t)state.slot != active) ||
+        (state.version != header.version))
+    {
+        return OTA_ERR_STATE;
     }
 
     state.flag = OTA_STATE_FLAG_CONFIRMED;

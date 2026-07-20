@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "default_profile": "demo_ab",
+  "profiles": {
+    "demo_ab": {
+      "A": {
+        "version": "0x00000001"
+      },
+      "B": {
+        "version": "0x00000002"
+      }
+    },
+    "return_a_v3": {
+      "A": {
+        "version": "0x00000003"
+      },
+      "B": {
+        "version": "0x00000002"
+      }
+    }
+  }
+}
